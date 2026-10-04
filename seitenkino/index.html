@@ -367,6 +367,12 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 .poster h3{font-size:clamp(1.5rem,2.6vw,2rem);margin-top:8px}
 .poster .tagline{margin-top:8px;color:var(--text-secondary);font-size:.98rem}
 .poster .go{display:inline-block;margin-top:16px;font-weight:600;color:var(--accent)}
+.poster.has-img .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 70%;transition:transform 1.2s var(--ease-out)}
+.poster.has-img::before,.poster.has-img::after{z-index:3}
+.poster.has-img .info{margin-top:auto;padding-top:120px;background:linear-gradient(180deg,transparent,rgba(6,12,26,.82) 45%,rgba(6,12,26,.96))}
+.poster.has-img .genre,.poster.has-img .tagline{color:#c8d4ea}
+.poster.has-img:hover .bg,.poster.has-img:focus-visible .bg{transform:scale(1.05)}
+.poster .badge.now{background:var(--accent);color:#17120a;border-color:var(--accent);font-weight:600}
 .showcase .note{margin-top:28px;text-align:center;font-size:.88rem;color:var(--text-secondary)}
 @media (max-width:720px){.posters{grid-template-columns:minmax(0,380px)}}
 @media (prefers-reduced-motion:reduce){.poster .art .spin,.poster .art .sway{animation:none}.poster,.poster .sweep{transition:none}}
@@ -578,15 +584,9 @@ body.vp-flash .cables{animation:vpcable 1.2s var(--ease-out)}
         <p>Zwei Kostproben aus unserem Vorführraum. Klick rein und schau dich um.</p>
       </div>
       <div class="posters">
-        <a class="poster reveal" href="beispiele/kfz-werkstatt/" style="--i:1">
-          <span class="badge">Demnächst im Kino</span>
-          <div class="art" aria-hidden="true">
-            <svg viewBox="0 0 200 200">
-              <g class="spin"><circle class="ln" cx="100" cy="100" r="46"/><circle class="ln" cx="100" cy="100" r="16"/>
-                <path class="ln" d="M100 40v-14M100 174v-14M40 100H26M174 100h-14M57.6 57.6l-9.9-9.9M152.3 152.3l-9.9-9.9M57.6 142.4l-9.9 9.9M152.3 47.7l-9.9 9.9"/></g>
-              <path class="gd" d="M136 150l30 30a10 10 0 0 0 14-14l-30-30M150 136a26 26 0 0 0-34-34l16 16-6 14-14 6-16-16a26 26 0 0 0 34 34"/>
-            </svg>
-          </div>
+        <a class="poster has-img reveal" href="beispiele/kfz-werkstatt/" style="--i:1">
+          <span class="badge now">Jetzt im Kino</span>
+          <img class="bg" src="beispiele/kfz-werkstatt/assets/plakat.webp" alt="" width="720" height="1080" loading="lazy" decoding="async">
           <div class="info">
             <span class="genre">Kfz-Werkstatt</span>
             <h3>Musterkolben</h3>
