@@ -3,22 +3,30 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SeitenKino · Individuelles Webdesign für Firmen aus der Region</title>
-<meta name="description" content="SeitenKino baut Websites, die es nur einmal gibt. Kein Baukasten, keine Vorlage. Festpreis ab 1.499 €, alles gehört dir, rechtssicher umgesetzt.">
+<title>Website erstellen lassen zum Festpreis · SeitenKino</title>
+<meta name="description" content="Website erstellen lassen zum Festpreis ab 1.499 €: eigenes Design statt Baukasten, für Handwerker und Firmen in ganz Deutschland. Webdesign aus Bocholt.">
+<link rel="canonical" href="https://seitenkino.de/">
 <meta name="theme-color" content="#060c1a">
-<meta property="og:title" content="SeitenKino · Vorhang auf für deine Website">
-<meta property="og:description" content="Individuelles Webdesign für Firmen aus der Region. Festpreis ab 1.499 €.">
+<meta property="og:title" content="SeitenKino · Website erstellen lassen zum Festpreis">
+<meta property="og:description" content="Webdesign aus Bocholt für Handwerker und Firmen in ganz Deutschland. Festpreis ab 1.499 €.">
+<meta property="og:locale" content="de_DE">
 <meta property="og:type" content="website">
 <!-- DEPLOY STEP: og:url und og:image mit der echten Live-Adresse eintragen -->
 <meta property="og:url" content="https://seitenkino.de/">
 <meta property="og:image" content="https://seitenkino.de/assets/hero-ending.jpg">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23060c1a'/%3E%3Crect x='12' y='18' width='40' height='28' rx='4' fill='none' stroke='%235fe1ff' stroke-width='4'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%23e7c98f'/%3E%3C/svg%3E">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <script>
 /* Google Consent Mode v2: alles abgelehnt, bis im Vorprogramm zugestimmt wird */
 window.dataLayer = window.dataLayer || [];
 function gtag(){ dataLayer.push(arguments); }
 gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied', functionality_storage: 'granted', security_storage: 'granted', wait_for_update: 500 });
 gtag('set', 'ads_data_redaction', true);
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"ProfessionalService","@id":"https://seitenkino.de/#firma","name":"SeitenKino","url":"https://seitenkino.de/","email":"Info@SeitenKino.de","image":"https://seitenkino.de/assets/hero-ending.jpg","logo":"https://seitenkino.de/favicon.svg","description":"Individuelles Webdesign zum Festpreis für Handwerker und Firmen in ganz Deutschland.","address":{"@type":"PostalAddress","addressLocality":"Bocholt","postalCode":"46399","addressRegion":"NRW","addressCountry":"DE"},"areaServed":{"@type":"Country","name":"Deutschland"},"priceRange":"ab 1.499 €","makesOffer":[{"@type":"Offer","name":"Website erstellen lassen","price":"1499","priceCurrency":"EUR","description":"Einmaliger Festpreis ab 1.499 €"},{"@type":"Offer","name":"Hosting und Instandhaltung","price":"129","priceCurrency":"EUR","priceSpecification":{"@type":"UnitPriceSpecification","price":"129","priceCurrency":"EUR","unitText":"Monat"}}]},
+{"@type":"WebSite","@id":"https://seitenkino.de/#website","url":"https://seitenkino.de/","name":"SeitenKino","inLanguage":"de-DE","publisher":{"@id":"https://seitenkino.de/#firma"}}
+]}
 </script>
 <link rel="preload" href="assets/fonts/Unbounded.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/HankenGrotesk.woff2" as="font" type="font/woff2" crossorigin>
@@ -103,7 +111,9 @@ p{margin:0}
 .band.right{right:clamp(24px,6vw,96px);text-align:right}
 .band.on{pointer-events:auto}
 .band::before{content:"";position:absolute;inset:-60% -40%;z-index:-1;pointer-events:none;opacity:calc(.3 + .7*var(--k,1));background:radial-gradient(ellipse 60% 55% at 50% 50%,rgba(3,6,14,var(--sa,.66)) 0%,rgba(3,6,14,calc(var(--sa,.66)*.6)) 46%,rgba(3,6,14,0) 76%)}
-.band h2{font-size:clamp(1.9rem,3.3vw,3.4rem);font-weight:700}
+.band .hl{font-family:var(--display);font-weight:700;line-height:1.12;letter-spacing:-.01em;margin:0;font-size:clamp(1.9rem,3.3vw,3.4rem)}
+.blur .soft::before{content:attr(data-t)}
+.split .w[data-t]::before,.split .c[data-t]::before{content:attr(data-t)}
 .band .kicker{display:block;margin-bottom:18px}
 .band .w{display:inline-block;white-space:nowrap}
 /* entrances, all scrubbed off --k */
@@ -473,24 +483,24 @@ body.vp-flash .cables{animation:vpcable 1.2s var(--ease-out)}
     <div class="scrim" aria-hidden="true"></div>
 
     <div class="band left blur" data-a="0" data-b="0.125" style="--sa:.6">
-      <span class="kicker">SeitenKino · Webdesign</span>
+      <span class="kicker">SeitenKino · Webdesign aus Bocholt</span>
       <div class="wrap-t" style="position:relative">
-        <h2 class="soft" aria-hidden="true">Jede gute Website beginnt mit einer Idee.</h2>
-        <h2 class="sharp">Jede gute Website beginnt mit einer Idee.</h2>
+        <div class="hl soft" aria-hidden="true" data-t="Jede gute Website beginnt mit einer Idee."></div>
+        <p class="hl sharp">Jede gute Website beginnt mit einer Idee.</p>
       </div>
     </div>
     <div class="band right punch" data-a="0.15" data-b="0.30" style="--sa:.64">
-      <h2 class="split" data-mode="w">Mit deiner.</h2>
+      <p class="hl split" data-mode="w">Mit deiner.</p>
     </div>
     <div class="band left drift" data-a="0.34" data-b="0.50" style="--sa:.68">
-      <h2 class="split" data-mode="w">Wir legen die Leitung zu deinen Kunden.</h2>
+      <p class="hl split" data-mode="w">Wir legen die Leitung zu deinen Kunden.</p>
     </div>
     <div class="band right weave" data-a="0.54" data-b="0.74" style="--sa:.72">
-      <h2 class="split" data-mode="c">Kein Baukasten. Keine Vorlage. Nur du.</h2>
+      <p class="hl split" data-mode="c">Kein Baukasten. Keine Vorlage. Nur du.</p>
     </div>
     <div class="band settle" data-a="0.84" data-b="1" style="--sa:.55">
       <h1 class="split" data-mode="w">Vorhang auf für deine Website.</h1>
-      <p class="sub">Individuelles Webdesign für Firmen aus der Region. Festpreis ab 1.499 €.</p>
+      <p class="sub">Webdesign aus Bocholt für Handwerker und Firmen in ganz Deutschland. Festpreis ab 1.499 €.</p>
       <div class="row">
         <a class="btn" href="#kontakt">Erstgespräch buchen</a>
         <a class="btn ghost" href="#ablauf">So läuft's ab</a>
@@ -607,7 +617,7 @@ body.vp-flash .cables{animation:vpcable 1.2s var(--ease-out)}
           <span class="sweep" aria-hidden="true"></span>
         </a>
       </div>
-      <p class="note reveal">Beispielseiten mit erfundenen Firmen, gebaut von SeitenKino.</p>
+      <p class="note reveal">Beispielseiten mit erfundenen Firmen, gebaut von SeitenKino. Mehr dazu: <a href="website-fuer-handwerker/">Website für Handwerker</a>.</p>
     </div>
   </section>
 
@@ -654,9 +664,13 @@ body.vp-flash .cables{animation:vpcable 1.2s var(--ease-out)}
     <div class="wrap">
       <div class="sec-head reveal">
         <span class="kicker">Fragen</span>
-        <h2>Was andere vorher wissen wollten.</h2>
+        <h2>Was kostet eine Website? Und was andere vorher wissen wollten.</h2>
       </div>
       <div class="list reveal" style="--i:1">
+        <details><summary>Was kostet eine Website bei SeitenKino?</summary><p>Deine Website kostet einmalig ab 1.499 € zum Festpreis. Der genaue Preis steht nach dem Erstgespräch fest, bevor du dich entscheidest. Dazu kommen 129 € im Monat für Hosting und Instandhaltung. Als Kleinunternehmen berechnen wir keine Umsatzsteuer, die Preise sind Endpreise.</p></details>
+        <details><summary>Was ist in den 129 € im Monat enthalten?</summary><p>Hosting mit SSL-Verschlüsselung, regelmäßige Backups, ein Ausfall-Wächter rund um die Uhr, aktuelle Rechtstexte, die Anmeldung bei Google (Search Console) und dein Google-Unternehmensprofil, eingerichtet und gepflegt.</p></details>
+        <details><summary>Warum Festpreis statt Stundensatz?</summary><p>Weil du vorher wissen sollst, was deine Website kostet. Bei Stundensätzen weißt du das erst mit der Rechnung. Bei uns steht der Preis fest, bevor es losgeht.</p></details>
+        <details><summary>Arbeitet ihr nur in Bocholt?</summary><p>Nein. Wir sitzen in Bocholt und sind im Kreis Borken auch gern vor Ort, zum Beispiel in Borken, Rhede oder Isselburg. Websites bauen wir für Firmen in ganz Deutschland, das Erstgespräch läuft dann per Telefon oder Video.</p></details>
         <details><summary>Gibt es versteckte Kosten?</summary><p>Nein. Du bekommst vor dem Start einen Festpreis für deine Website, ab 1.499 €. Hosting und Instandhaltung kosten 129 € im Monat. Wenn später neue Wünsche dazukommen, sagen wir dir vorher, was sie kosten.</p></details>
         <details><summary>Bin ich danach an euch gebunden?</summary><p>Nein. Domain, Zugänge und Inhalte gehören dir. Wenn du wechseln willst, bekommst du alles mit.</p></details>
         <details><summary>Wie lange dauert es?</summary><p>Das hängt von deinem Projekt ab. Im Erstgespräch bekommst du einen klaren Zeitplan, bevor es losgeht.</p></details>
@@ -718,7 +732,7 @@ body.vp-flash .cables{animation:vpcable 1.2s var(--ease-out)}
   <div class="wrap">
     <div>
       <a class="brand" href="#top"><span class="s">Seiten</span><span class="k">Kino</span><span class="dot" aria-hidden="true"></span></a>
-      <p style="margin-top:12px;max-width:34ch">Individuelles Webdesign für Firmen aus der Region.</p>
+      <p style="margin-top:12px;max-width:34ch">Webdesign aus Bocholt für Firmen in ganz Deutschland. <a href="website-fuer-handwerker/">Website für Handwerker</a></p>
     </div>
     <div>
       <h4>Kontakt</h4>
@@ -752,11 +766,11 @@ body.vp-flash .cables{animation:vpcable 1.2s var(--ease-out)}
     words.forEach((word, wi) => {
       const w = document.createElement('span'); w.className = 'w';
       if (mode === 'w') {
-        w.textContent = word;
+        w.dataset.t = word;
         w.style.setProperty('--th', (wi / words.length * 0.5 + r() * 0.04).toFixed(3));
       } else {
         [...word].forEach(ch => {
-          const c = document.createElement('span'); c.className = 'c'; c.textContent = ch;
+          const c = document.createElement('span'); c.className = 'c'; c.dataset.t = ch;
           c.style.setProperty('--th', (ci / totalChars * 0.55 + r() * 0.06).toFixed(3));
           c.style.setProperty('--jy', ((ci % 2 ? 1 : -1) * (14 + r() * 16)).toFixed(1) + 'px');
           w.appendChild(c); ci++;
