@@ -317,6 +317,35 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   .reveal{opacity:1;transform:none}
   .unique .payoff{opacity:1;transform:none}
 }
+/* ---------- Beispiele: Filmplakate ---------- */
+.showcase .sec-head{margin-inline:auto;text-align:center}
+.showcase .sec-head p{margin-inline:auto}
+.posters{display:grid;grid-template-columns:repeat(2,minmax(0,380px));justify-content:center;gap:clamp(22px,4vw,48px);margin-top:clamp(40px,7vh,70px)}
+.poster{position:relative;display:flex;flex-direction:column;aspect-ratio:3/4.2;border-radius:22px;overflow:hidden;text-decoration:none;color:var(--text-primary);background:linear-gradient(170deg,#10203f 0%,#0a1530 55%,#060c1a 100%);border:1px solid var(--border);box-shadow:0 30px 80px -40px rgba(0,0,0,.9);transition:transform .6s var(--ease-out),border-color .6s var(--ease-out),box-shadow .6s var(--ease-out)}
+.poster::before,.poster::after{content:"";position:absolute;top:0;bottom:0;width:14px;background:repeating-linear-gradient(180deg,transparent 0 10px,rgba(238,243,251,.12) 10px 18px);opacity:.7;z-index:2}
+.poster::before{left:8px}.poster::after{right:8px}
+.poster .sweep{position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.10) 50%,transparent 65%);transform:translateX(-120%);transition:transform 1s var(--ease-out)}
+.poster:hover,.poster:focus-visible{transform:translateY(-8px) rotate(-.6deg);border-color:rgba(95,225,255,.55);box-shadow:0 40px 100px -40px rgba(95,225,255,.45)}
+.poster:nth-child(2):hover,.poster:nth-child(2):focus-visible{transform:translateY(-8px) rotate(.6deg)}
+.poster:hover .sweep,.poster:focus-visible .sweep{transform:translateX(120%)}
+.poster .badge{position:absolute;top:18px;left:50%;transform:translateX(-50%);z-index:4;font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent-muted);background:rgba(6,12,26,.7);padding:5px 12px;border-radius:6px;white-space:nowrap}
+.poster .art{flex:1;display:grid;place-items:center;padding:56px 34px 0}
+.poster .art svg{width:78%;height:auto;overflow:visible}
+.poster .art .ln{fill:none;stroke:var(--line);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(95,225,255,.7))}
+.poster .art .gd{fill:none;stroke:var(--accent);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(231,201,143,.6))}
+.poster .art .spin{transform-box:fill-box;transform-origin:center;animation:pspin 14s linear infinite}
+@keyframes pspin{to{transform:rotate(360deg)}}
+.poster .art .sway{transform-box:fill-box;transform-origin:50% 100%;animation:psway 5s ease-in-out infinite}
+@keyframes psway{50%{transform:rotate(3deg)}}
+.poster .info{position:relative;z-index:4;padding:0 34px 30px;text-align:center}
+.poster .genre{font-family:var(--mono);font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-secondary)}
+.poster h3{font-size:clamp(1.5rem,2.6vw,2rem);margin-top:8px}
+.poster .tagline{margin-top:8px;color:var(--text-secondary);font-size:.98rem}
+.poster .go{display:inline-block;margin-top:16px;font-weight:600;color:var(--accent)}
+.showcase .note{margin-top:28px;text-align:center;font-size:.88rem;color:var(--text-secondary)}
+@media (max-width:720px){.posters{grid-template-columns:minmax(0,380px)}}
+@media (prefers-reduced-motion:reduce){.poster .art .spin,.poster .art .sway{animation:none}.poster,.poster .sweep{transition:none}}
+
 /* ---------- Vorprogramm: Cookie-Abfrage im Stil eines Kino-Werbespots ---------- */
 .vp{position:fixed;inset:0;z-index:90;display:none;align-items:flex-end;justify-content:center;padding:16px 16px max(16px,env(safe-area-inset-bottom))}
 .vp.on{display:flex}
@@ -396,6 +425,7 @@ body.vp-flash .cables{animation:vpcable 1.2s var(--ease-out)}
   <ul>
     <li><a href="#versprechen">So arbeiten wir</a></li>
     <li><a href="#ablauf">Ablauf</a></li>
+    <li><a href="#beispiele">Beispiele</a></li>
     <li><a href="#preise">Preise</a></li>
     <li><a href="#fragen">Fragen</a></li>
   </ul>
@@ -512,6 +542,52 @@ body.vp-flash .cables{animation:vpcable 1.2s var(--ease-out)}
         <article class="step"><figure><img src="assets/schritt-4.jpg" alt="" loading="lazy" width="1200" height="900"></figure><div class="txt"><span class="num">Schritt 04</span><h3>Online</h3><p>Deine Seite geht live, schnell und rechtssicher. Domain und Zugänge gehören dir.</p></div></article>
         <span class="end" aria-hidden="true"></span>
       </div>
+    </div>
+  </section>
+
+  <section class="sec showcase" id="beispiele" data-x="0.5">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="kicker">Beispiele</span>
+        <h2>So könnte deine Website aussehen.</h2>
+        <p>Zwei Kostproben aus unserem Vorführraum. Klick rein und schau dich um.</p>
+      </div>
+      <div class="posters">
+        <a class="poster reveal" href="beispiele/kfz-werkstatt/" style="--i:1">
+          <span class="badge">Demnächst im Kino</span>
+          <div class="art" aria-hidden="true">
+            <svg viewBox="0 0 200 200">
+              <g class="spin"><circle class="ln" cx="100" cy="100" r="46"/><circle class="ln" cx="100" cy="100" r="16"/>
+                <path class="ln" d="M100 40v-14M100 174v-14M40 100H26M174 100h-14M57.6 57.6l-9.9-9.9M152.3 152.3l-9.9-9.9M57.6 142.4l-9.9 9.9M152.3 47.7l-9.9 9.9"/></g>
+              <path class="gd" d="M136 150l30 30a10 10 0 0 0 14-14l-30-30M150 136a26 26 0 0 0-34-34l16 16-6 14-14 6-16-16a26 26 0 0 0 34 34"/>
+            </svg>
+          </div>
+          <div class="info">
+            <span class="genre">Kfz-Werkstatt</span>
+            <h3>Musterkolben</h3>
+            <p class="tagline">Ein Werkstattfilm mit Motor und Humor.</p>
+            <span class="go">Ansehen →</span>
+          </div>
+          <span class="sweep" aria-hidden="true"></span>
+        </a>
+        <a class="poster reveal" href="beispiele/gartenbau/" style="--i:2">
+          <span class="badge">Demnächst im Kino</span>
+          <div class="art" aria-hidden="true">
+            <svg viewBox="0 0 200 200">
+              <g class="sway"><path class="ln" d="M100 178V70"/><path class="ln" d="M100 120c-30-4-46-24-48-50 26 2 44 18 48 50zM100 100c26-6 40-26 40-52-24 4-38 22-40 52zM100 78c-14-10-18-26-12-44 14 8 18 24 12 44z"/></g>
+              <path class="gd" d="M40 178h120M58 178c4-14 14-22 26-22M142 178c-4-14-14-22-26-22"/>
+            </svg>
+          </div>
+          <div class="info">
+            <span class="genre">Garten- und Landschaftsbau</span>
+            <h3>Grünwerk</h3>
+            <p class="tagline">Ein Naturfilm, der draußen spielt.</p>
+            <span class="go">Ansehen →</span>
+          </div>
+          <span class="sweep" aria-hidden="true"></span>
+        </a>
+      </div>
+      <p class="note reveal">Beispielseiten mit erfundenen Firmen, gebaut von SeitenKino.</p>
     </div>
   </section>
 
@@ -872,7 +948,7 @@ body.vp-flash .cables{animation:vpcable 1.2s var(--ease-out)}
     tmask.appendChild(full);
     const gHole = document.createElementNS(NS, 'g'); gHole.setAttribute('filter', 'url(#tb)');
     const ar = after.getBoundingClientRect();
-    after.querySelectorAll('.sec-head h2,.sec-head p,.sec-head .kicker,.pcard,.turn,.pitem,.facts,.payoff,.price,.faq details,.contact .box').forEach(el => {
+    after.querySelectorAll('.sec-head h2,.sec-head p,.sec-head .kicker,.pcard,.turn,.pitem,.facts,.payoff,.price,.faq details,.contact .box,.poster').forEach(el => {
       const r = el.getBoundingClientRect();
       const rc = document.createElementNS(NS, 'rect');
       rc.setAttribute('x', r.left - ar.left - 18); rc.setAttribute('y', r.top - ar.top - 14);
