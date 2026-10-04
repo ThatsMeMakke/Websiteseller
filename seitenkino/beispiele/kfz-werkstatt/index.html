@@ -3,41 +3,548 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex">
-<title>Musterkolben · Beispielseite · SeitenKino</title>
-<meta name="theme-color" content="#060c1a">
+<meta name="robots" content="noindex, nofollow">
+<title>Musterkolben · Kfz-Meisterbetrieb · Beispielseite von SeitenKino</title>
+<meta name="description" content="Musterkolben ist eine erfundene Kfz-Werkstatt. Diese Beispielseite zeigt, was SeitenKino für Werkstätten baut.">
+<meta name="theme-color" content="#14110d">
+<link rel="preload" href="assets/fonts/Bangers.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-@font-face{font-family:"Unbounded";font-weight:400 700;font-display:swap;src:url("../../assets/fonts/Unbounded.woff2") format("woff2")}
-@font-face{font-family:"Hanken Grotesk";font-weight:400 600;font-display:swap;src:url("../../assets/fonts/HankenGrotesk.woff2") format("woff2")}
-@font-face{font-family:"IBM Plex Mono";font-weight:400;font-display:swap;src:url("../../assets/fonts/IBMPlexMono.woff2") format("woff2")}
-:root{--canvas:#060c1a;--accent:#e7c98f;--line:#5fe1ff;--text:#eef3fb;--muted:#a9badb;color-scheme:dark}
+@font-face{font-family:"Bangers";font-weight:400;font-display:swap;src:url("assets/fonts/Bangers.woff2") format("woff2")}
+@font-face{font-family:"Hanken Grotesk";font-weight:400 700;font-display:swap;src:url("../../assets/fonts/HankenGrotesk.woff2") format("woff2")}
+:root{
+  --ink:#14110d;--paper:#fff6e3;--paper-2:#ffe9b8;--teal:#16a9bd;--teal-d:#0c7383;
+  --yellow:#ffd23f;--orange:#ff7a2f;--red:#e8452c;--blue:#2348c9;--muted:#5d5246;
+  --asphalt:#3b3a40;--line:3px;--shadow:6px 6px 0 var(--ink);
+  color-scheme:light;
+}
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:radial-gradient(120% 80% at 50% 0%,#0b1a38 0%,var(--canvas) 60%) fixed;color:var(--text);font-family:"Hanken Grotesk",system-ui,sans-serif}
-.bar{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 20px;font-size:.9rem;background:rgba(6,12,26,.8);backdrop-filter:blur(8px);border-bottom:1px solid rgba(140,190,230,.22)}
-.bar a{color:var(--accent);text-decoration:none;font-weight:600}
-main{min-height:100vh;min-height:100svh;display:grid;place-items:center;text-align:center;padding:90px 20px 40px}
-.k{font-family:"IBM Plex Mono",monospace;font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(231,201,143,.28);padding:6px 14px;border-radius:6px;display:inline-block}
-.g{margin-top:26px;font-family:"IBM Plex Mono",monospace;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
-h1{font-family:"Unbounded",system-ui,sans-serif;font-size:clamp(2.2rem,7vw,4.4rem);line-height:1.05;margin:10px 0 0;color:var(--text)}
-p{color:var(--muted);max-width:42ch;margin:18px auto 0;line-height:1.6}
-.btn{display:inline-block;margin-top:32px;padding:14px 26px;border-radius:999px;background:var(--accent);color:#17120a;font-weight:600;text-decoration:none}
-.reel{width:90px;height:90px;margin:0 auto 26px;border:2px solid var(--line);border-radius:50%;position:relative;box-shadow:0 0 24px rgba(95,225,255,.4);animation:r 6s linear infinite}
-.reel::before{content:"";position:absolute;inset:18px;border-radius:50%;border:2px dashed var(--line)}
-@keyframes r{to{transform:rotate(360deg)}}
-@media (prefers-reduced-motion:reduce){.reel{animation:none}}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Hanken Grotesk",system-ui,sans-serif;font-size:17px;line-height:1.55;overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit}
+h1,h2,h3,.comic{font-family:"Bangers",Impact,system-ui,sans-serif;font-weight:400;letter-spacing:.03em;line-height:1}
+.dots{background-image:radial-gradient(rgba(20,17,13,.13) 1.3px,transparent 1.6px);background-size:12px 12px}
+
+/* SeitenKino demo bar */
+.demo-bar{position:fixed;z-index:50;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 16px;font-size:.85rem;background:#060c1a;color:#eef3fb;border-bottom:var(--line) solid var(--ink)}
+.demo-bar b{color:#e7c98f;font-weight:600}
+.demo-bar a{color:#e7c98f;text-decoration:none;font-weight:600;white-space:nowrap}
+
+/* hero scrub */
+.hero{position:relative;height:420vh;background:var(--ink)}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.stage video,.stage .still{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.stage .still{background:center/cover no-repeat}
+.stage .still.end{opacity:0;transition:opacity .4s}
+.stage.no-video .still.end{opacity:0}
+.stage video{opacity:0;transition:opacity .5s}
+.stage.ready video{opacity:1}
+.stage::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 50%,transparent 60%,rgba(20,17,13,.35))}
+.cap{position:absolute;z-index:3;opacity:0;transform:translateY(14px) scale(.96);transition:opacity .35s,transform .35s cubic-bezier(.3,1.6,.5,1);pointer-events:none}
+.cap.on{opacity:1;transform:none;pointer-events:auto}
+.box{background:var(--yellow);border:var(--line) solid var(--ink);box-shadow:var(--shadow);padding:12px 18px;max-width:min(520px,86vw)}
+.box h1{font-size:clamp(2.6rem,7vw,5.2rem);margin:0;color:var(--ink);-webkit-text-stroke:0}
+.box p{margin:4px 0 0;font-weight:600}
+.kicker{font-family:"Bangers",Impact,sans-serif;letter-spacing:.12em;font-size:1rem;background:var(--ink);color:var(--yellow);display:inline-block;padding:3px 10px;margin-bottom:8px}
+.bubble{position:relative;background:#fff;border:var(--line) solid var(--ink);border-radius:28px;padding:14px 22px;box-shadow:var(--shadow);font-family:"Bangers",Impact,sans-serif;font-size:clamp(1.5rem,3.4vw,2.5rem);letter-spacing:.03em;line-height:1.05;max-width:min(460px,80vw)}
+.bubble::after{content:"";position:absolute;bottom:-22px;left:42px;width:30px;height:24px;background:#fff;border:var(--line) solid var(--ink);border-top:0;border-left:0;transform:skewX(-35deg);clip-path:polygon(0 0,100% 0,100% 100%)}
+.bubble.r::after{left:auto;right:42px;transform:skewX(35deg) scaleX(-1)}
+.sfx{font-family:"Bangers",Impact,sans-serif;font-size:clamp(3rem,9vw,7rem);color:var(--yellow);-webkit-text-stroke:3px var(--ink);text-shadow:5px 5px 0 var(--ink);transform:rotate(-8deg)}
+.sfx.o{color:var(--orange);transform:rotate(6deg)}
+.c1{left:5vw;top:15vh}
+.c2{right:6vw;top:22vh}
+.c3{left:5vw;top:18vh}
+.c3s{right:8vw;top:12vh}
+.c4{right:5vw;top:16vh}
+.c5{left:50%;top:50%;transform:translate(-50%,-40%) scale(.96)}
+.c5.on{transform:translate(-50%,-50%)}
+.c5 .box{text-align:center}
+.scroll-hint{position:absolute;z-index:3;left:50%;bottom:22px;transform:translateX(-50%);font-family:"Bangers",Impact,sans-serif;letter-spacing:.1em;color:#fff;font-size:1.1rem;text-shadow:2px 2px 0 var(--ink);transition:opacity .3s}
+.scroll-hint span{display:block;text-align:center;animation:bob 1.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(6px)}}
+.stage.past .scroll-hint{opacity:0}
+.loader{position:absolute;z-index:4;right:16px;bottom:16px;font:600 .8rem "Hanken Grotesk",sans-serif;color:#fff;background:rgba(20,17,13,.7);padding:4px 10px;border-radius:99px;transition:opacity .4s}
+.stage.ready .loader,.stage.no-video .loader{opacity:0}
+
+.btn{display:inline-block;font-family:"Bangers",Impact,sans-serif;letter-spacing:.06em;font-size:1.35rem;padding:12px 24px;background:var(--orange);color:var(--ink);border:var(--line) solid var(--ink);box-shadow:4px 4px 0 var(--ink);text-decoration:none;cursor:pointer;transition:transform .12s,box-shadow .12s}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)}
+.btn:focus-visible,.chip:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.btn.alt{background:#fff}
+.btn[disabled]{opacity:.45;pointer-events:none}
+
+/* road + sections */
+.ride{position:relative;padding:80px 0 0;background:var(--paper)}
+.ride svg.road{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:visible}
+.road .asph{fill:none;stroke:var(--asphalt);stroke-linecap:round;stroke-linejoin:round}
+.road .edge{fill:none;stroke:var(--ink);stroke-linecap:round;stroke-linejoin:round}
+.road .mid{fill:none;stroke:var(--yellow);stroke-linecap:butt;stroke-dasharray:22 20}
+.car{position:absolute;z-index:0;left:0;top:0;width:clamp(150px,19vw,250px);pointer-events:none;will-change:transform;filter:drop-shadow(0 8px 0 rgba(20,17,13,.18))}
+.car img{width:100%;transform-origin:50% 80%}
+.car.flip img{transform:scaleX(-1)}
+.car .puff{position:absolute;width:26px;height:26px;border-radius:50%;background:#fff;border:2px solid var(--ink);opacity:0}
+.stop{position:relative;z-index:1;width:min(1180px,92vw);margin:0 auto;padding:130px 0}
+.stop .panel{max-width:620px}
+.stop .panel{width:min(640px,100%);background:#fff;border:var(--line) solid var(--ink);box-shadow:8px 8px 0 var(--ink);padding:28px clamp(18px,3vw,36px) 32px}
+.stop.r .panel{margin-left:auto}
+.stop.wide .panel{width:100%}
+.panel h2{font-size:clamp(2.4rem,5.5vw,4rem);margin:0 0 6px}
+.panel h2 em{font-style:normal;color:var(--teal-d)}
+.panel .lead{margin:0 0 22px;color:var(--muted);font-size:1.05rem}
+.tag{position:absolute;top:-18px;left:24px;font-family:"Bangers",Impact,sans-serif;letter-spacing:.1em;background:var(--teal);color:#fff;border:var(--line) solid var(--ink);padding:3px 12px;font-size:1.05rem;transform:rotate(-3deg)}
+.stop .panel{position:relative}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:14px}
+.card{border:var(--line) solid var(--ink);padding:16px 16px 14px;background:var(--paper)}
+.card:nth-child(3n+2){background:#e3f6f8}
+.card:nth-child(3n){background:#fff1d6}
+.card h3{font-size:1.7rem;margin:0 0 4px}
+.card p{margin:0;font-size:.98rem}
+.card .ico{width:44px;height:44px;margin-bottom:8px}
+
+.prices{width:100%;border-collapse:collapse;font-size:1.02rem}
+.prices td{padding:11px 4px;border-bottom:2px dashed rgba(20,17,13,.25);vertical-align:top}
+.prices td:last-child{text-align:right;white-space:nowrap;font-family:"Bangers",Impact,sans-serif;font-size:1.6rem;letter-spacing:.03em}
+.prices small{display:block;color:var(--muted);font-size:.88rem}
+.note{font-size:.88rem;color:var(--muted);margin:14px 0 0}
+.stamp{display:inline-block;margin-top:16px;font-family:"Bangers",Impact,sans-serif;letter-spacing:.08em;color:var(--red);border:3px solid var(--red);padding:4px 12px;transform:rotate(-4deg);font-size:1.15rem}
+
+/* booking */
+.steps{display:flex;gap:6px;margin:0 0 18px;padding:0;list-style:none;flex-wrap:wrap}
+.steps li{font-family:"Bangers",Impact,sans-serif;letter-spacing:.06em;padding:3px 10px;border:2px solid var(--ink);background:#fff;font-size:1rem}
+.steps li.on{background:var(--yellow)}
+.steps li.done{background:var(--teal);color:#fff}
+.step{display:none}
+.step.on{display:block;animation:pop .3s cubic-bezier(.3,1.5,.5,1)}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}}
+.step h3{font-size:1.7rem;margin:0 0 12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:600 .98rem "Hanken Grotesk",sans-serif;padding:9px 14px;border:2px solid var(--ink);background:#fff;cursor:pointer;color:var(--ink)}
+.chip:hover{background:var(--paper-2)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--yellow)}
+.chip small{display:block;font-weight:400;font-size:.8rem;opacity:.75}
+.form{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+.form label{display:grid;gap:4px;font-weight:600;font-size:.92rem}
+.form label.full{grid-column:1/-1}
+input,select{font:inherit;padding:10px 12px;border:2px solid var(--ink);background:#fff;border-radius:0;color:var(--ink);width:100%}
+.nav-row{display:flex;justify-content:space-between;gap:10px;margin-top:20px;flex-wrap:wrap}
+.summary{border:2px dashed var(--ink);padding:14px 16px;background:var(--paper);margin:0 0 6px}
+.summary div{display:flex;justify-content:space-between;gap:12px;padding:3px 0}
+.summary span{color:var(--muted)}
+.done-box{text-align:center;padding:10px 0}
+.done-box .sfx{display:inline-block;font-size:clamp(2.8rem,8vw,4.6rem);margin-bottom:8px}
+
+/* contact */
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.contact .card{background:#fff}
+.contact dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 14px}
+.contact dt{font-weight:700}
+.contact dd{margin:0}
+
+/* finale */
+.finale{position:relative;z-index:1;text-align:center;padding:60px 20px 150px}
+.finale .bubble{display:inline-block;margin-bottom:28px}
+footer{background:var(--ink);color:#eadfca;padding:44px 20px 50px;text-align:center;border-top:var(--line) solid var(--ink)}
+footer p{margin:6px auto;max-width:60ch}
+footer .sk{font-family:"Bangers",Impact,sans-serif;letter-spacing:.05em;font-size:2rem;color:var(--yellow);margin:0 0 6px}
+footer a{color:#e7c98f;font-weight:600}
+footer small{display:block;margin-top:18px;opacity:.7}
+
+.reveal{opacity:0;transform:translateY(26px) rotate(-.6deg);transition:opacity .5s,transform .6s cubic-bezier(.3,1.4,.5,1)}
+.reveal.in{opacity:1;transform:none}
+
+@media (max-width:760px){
+  body{font-size:16px}
+  .hero{height:380vh}
+  .c1,.c3{left:4vw;top:12vh}
+  .c2,.c3s,.c4{right:4vw;top:auto;bottom:16vh}
+  .stop{padding:120px 0 100px}
+  .stop .panel{width:calc(100% - 34px)}
+  .stop.r .panel{margin-left:34px}
+  .stop:not(.r) .panel{margin-right:34px}
+  .form,.contact{grid-template-columns:1fr}
+  .car{width:clamp(120px,34vw,170px)}
+}
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  .cap,.step.on{transition:none;animation:none}
+  .scroll-hint span{animation:none}
+}
 </style>
 </head>
 <body>
-<div class="bar"><span>Beispielseite von SeitenKino</span><a href="../../#beispiele">← Zurück</a></div>
+
+<div class="demo-bar" role="note"><span><b>Beispielseite</b> von SeitenKino · Diese Werkstatt ist erfunden</span><a href="../../#beispiele">← Zurück zu SeitenKino</a></div>
+
 <main>
-  <div>
-    <div class="reel" aria-hidden="true"></div>
-    <span class="k">Demnächst im Kino</span>
-    <div class="g">Kfz-Werkstatt</div>
-    <h1>Musterkolben</h1>
-    <p>Dieser Film wird gerade gedreht. Schau bald wieder vorbei.</p>
-    <a class="btn" href="../../#beispiele">Zurück zu SeitenKino</a>
+<!-- HERO: scroll-driven repair film -->
+<section class="hero" id="start" aria-label="Musterkolben, Ihre Kfz-Werkstatt">
+  <div class="stage" id="stage">
+    <div class="still start" style="background-image:url('assets/poster-start.jpg')" role="img" aria-label="Ein qualmender Familienkombi steht vor der Werkstatt Musterkolben"></div>
+    <video id="film" muted playsinline preload="none" aria-hidden="true"></video>
+    <div class="still end" style="background-image:url('assets/poster-ende.jpg')"></div>
+
+    <div class="cap c1" data-a="0" data-b=".16">
+      <div class="box"><span class="kicker">Kfz-Meisterbetrieb</span><h1>Musterkolben</h1><p>Wir bringen Ihr Auto wieder zum Laufen.</p></div>
+    </div>
+    <div class="cap c2" data-a=".04" data-b=".18"><div class="sfx">HUST! HUST!</div></div>
+    <div class="cap c3" data-a=".2" data-b=".46"><div class="bubble">Er will nicht mehr? Wir finden raus, warum. Teil für Teil.</div></div>
+    <div class="cap c3s" data-a=".28" data-b=".44"><div class="sfx o">KLONK!</div></div>
+    <div class="cap c4" data-a=".56" data-b=".77"><div class="bubble r">Und ja: Am Ende passt alles wieder rein.</div></div>
+    <div class="cap c5" data-a=".83" data-b="1.01">
+      <div class="box"><span class="kicker">Läuft wieder</span><h1 style="font-size:clamp(2.4rem,6vw,4.4rem)">Und Ihr Auto?</h1><p style="margin:8px 0 16px">Termin in einer Minute gebucht. Ehrlich.</p><a class="btn" href="#termin">Termin buchen</a></div>
+    </div>
+    <div class="scroll-hint" aria-hidden="true">Scrollen<span>▼</span></div>
+    <div class="loader" id="loader" aria-hidden="true">Film lädt …</div>
   </div>
+</section>
+
+<!-- RIDE: zigzag road with the repaired car -->
+<div class="ride dots" id="ride">
+  <svg class="road" id="road" aria-hidden="true"><path class="edge" id="road-edge"/><path class="asph" id="road-asph"/><path class="mid" id="road-mid"/></svg>
+  <div class="car" id="car" aria-hidden="true"><img src="assets/auto-seite.webp" alt="" width="900" height="600"></div>
+
+  <section class="stop" id="leistungen">
+    <div class="panel reveal">
+      <span class="tag">Leistungen</span>
+      <h2>Was wir <em>können</em></h2>
+      <p class="lead">Alles rund ums Auto. Außer Ausreden, die können wir nicht.</p>
+      <div class="grid">
+        <div class="card"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17" fill="#ffd23f" stroke="#14110d" stroke-width="3"/><path d="M24 13v11l7 5" fill="none" stroke="#14110d" stroke-width="3.5" stroke-linecap="round"/></svg><h3>Inspektion</h3><p>Nach Herstellervorgaben. Ihre Garantie bleibt, wo sie hingehört.</p></div>
+        <div class="card"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17" fill="#16a9bd" stroke="#14110d" stroke-width="3"/><path d="m16 24 6 6 11-12" fill="none" stroke="#14110d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>HU/AU</h3><p>Die Plakette gibt es beim Prüfer. Dass sie klappt, dafür sorgen wir vorher.</p></div>
+        <div class="card"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17" fill="#ff7a2f" stroke="#14110d" stroke-width="3"/><circle cx="24" cy="24" r="6" fill="#fff" stroke="#14110d" stroke-width="3"/></svg><h3>Bremsen</h3><p>Über Bremsen machen wir keine Witze. Nur über alles andere.</p></div>
+        <div class="card"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17" fill="#3b3a40" stroke="#14110d" stroke-width="3"/><circle cx="24" cy="24" r="8" fill="#ddd" stroke="#14110d" stroke-width="3"/></svg><h3>Reifen</h3><p>Wechsel, Einlagerung, Auswuchten. Sommer, Winter, Ruhe.</p></div>
+        <div class="card"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17" fill="#e3f6f8" stroke="#14110d" stroke-width="3"/><path d="M24 11v26M13 17.5l22 13M35 17.5l-22 13" stroke="#14110d" stroke-width="3" stroke-linecap="round"/></svg><h3>Klimaservice</h3><p>Damit im Sommer nur die Stimmung heiß ist.</p></div>
+        <div class="card"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 8 41 38H7z" fill="#ffd23f" stroke="#14110d" stroke-width="3" stroke-linejoin="round"/><path d="M24 19v9" stroke="#14110d" stroke-width="4" stroke-linecap="round"/><circle cx="24" cy="33" r="2.3" fill="#14110d"/></svg><h3>Fehlerdiagnose</h3><p>Die gelbe Lampe im Cockpit hat uns schon alles erzählt.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stop r" id="preise">
+    <div class="panel reveal">
+      <span class="tag" style="background:var(--orange)">Preise</span>
+      <h2>Festpreise. <em>Vorher.</em></h2>
+      <p class="lead">Sie wissen, was es kostet, bevor wir den ersten Schlüssel anfassen.</p>
+      <table class="prices">
+        <tr><td>Inspektion<small>nach Herstellervorgabe, zzgl. Material</small></td><td>ab 149 €</td></tr>
+        <tr><td>Ölwechsel<small>inkl. Filter, Öl nach Freigabe</small></td><td>ab 79 €</td></tr>
+        <tr><td>HU/AU-Vorbereitung<small>zzgl. Prüfgebühr der Prüforganisation</small></td><td>ab 39 €</td></tr>
+        <tr><td>Bremsbeläge vorne<small>inkl. Teile, je nach Modell</small></td><td>ab 129 €</td></tr>
+        <tr><td>Reifenwechsel<small>4 Räder, inkl. Sichtprüfung</small></td><td>ab 25 €</td></tr>
+        <tr><td>Klimaservice<small>Kältemittel nach Bedarf</small></td><td>ab 89 €</td></tr>
+      </table>
+      <span class="stamp">Keine Überraschungen. Außer guten.</span>
+      <p class="note">Beispielpreise für diese Demo-Seite.</p>
+    </div>
+  </section>
+
+  <section class="stop" id="termin">
+    <div class="panel reveal">
+      <span class="tag" style="background:var(--blue)">Termin</span>
+      <h2>Termin <em>buchen</em></h2>
+      <p class="lead">Schneller gebucht als ein Ölwechsel. Vier Klicks, fertig.</p>
+      <ol class="steps" id="steps" aria-label="Fortschritt"><li>1 Leistung</li><li>2 Tag</li><li>3 Uhrzeit</li><li>4 Fahrzeug</li><li>5 Fertig</li></ol>
+
+      <div class="step on" data-step="0">
+        <h3>Was dürfen wir tun?</h3>
+        <div class="chips" data-pick="leistung">
+          <button class="chip" type="button" aria-pressed="false">Inspektion</button>
+          <button class="chip" type="button" aria-pressed="false">Ölwechsel</button>
+          <button class="chip" type="button" aria-pressed="false">HU/AU-Vorbereitung</button>
+          <button class="chip" type="button" aria-pressed="false">Bremsen</button>
+          <button class="chip" type="button" aria-pressed="false">Reifenwechsel</button>
+          <button class="chip" type="button" aria-pressed="false">Klimaservice</button>
+          <button class="chip" type="button" aria-pressed="false">Es macht komische Geräusche</button>
+        </div>
+      </div>
+      <div class="step" data-step="1">
+        <h3>An welchem Tag?</h3>
+        <div class="chips" data-pick="tag" id="days"></div>
+      </div>
+      <div class="step" data-step="2">
+        <h3>Um wie viel Uhr?</h3>
+        <div class="chips" data-pick="zeit" id="times"></div>
+      </div>
+      <div class="step" data-step="3">
+        <h3>Um welches Auto geht es?</h3>
+        <div class="form">
+          <label>Marke<input id="f-marke" autocomplete="off" placeholder="z. B. Familienkombi"></label>
+          <label>Modell<input id="f-modell" autocomplete="off" placeholder="z. B. mit Dachbox"></label>
+          <label class="full">Ihr Name<input id="f-name" autocomplete="off" placeholder="Max Mustermann"></label>
+        </div>
+        <div class="nav-row"><button class="btn alt" type="button" data-back>Zurück</button><button class="btn" type="button" id="to-summary">Weiter</button></div>
+      </div>
+      <div class="step" data-step="4">
+        <div class="done-box">
+          <div class="sfx">TERMIN!</div>
+          <div class="summary" id="summary"></div>
+          <p class="note"><strong>Hinweis:</strong> Das ist eine Demo. Es wurde nichts gebucht und nichts gespeichert. Auf einer echten Werkstatt-Seite käme jetzt die Bestätigung per E-Mail.</p>
+          <div class="nav-row" style="justify-content:center"><button class="btn alt" type="button" id="restart">Nochmal ausprobieren</button></div>
+        </div>
+      </div>
+      <div class="nav-row" id="back-row" hidden><button class="btn alt" type="button" data-back>Zurück</button></div>
+    </div>
+  </section>
+
+  <section class="stop r" id="kontakt">
+    <div class="panel reveal">
+      <span class="tag" style="background:var(--red)">Kontakt</span>
+      <h2>So finden <em>Sie uns</em></h2>
+      <p class="lead">Kaffee steht bereit. Die Werkstatt riecht trotzdem nach Öl.</p>
+      <div class="contact">
+        <div class="card"><h3>Adresse</h3><dl><dt>Wo</dt><dd>Musterstraße 1<br>12345 Musterstadt</dd><dt>Tel.</dt><dd>01234 567890</dd><dt>Mail</dt><dd>hallo@musterkolben.example</dd></dl></div>
+        <div class="card"><h3>Öffnungszeiten</h3><dl><dt>Mo–Fr</dt><dd>7:30–17:30 Uhr</dd><dt>Sa</dt><dd>8:00–12:00 Uhr</dd><dt>So</dt><dd>Auch Autos brauchen Pause.</dd></dl></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="finale" id="finale">
+    <div class="bubble">Gute Fahrt! Und bis zur nächsten Inspektion.</div><br>
+    <a class="btn" href="#termin">Termin buchen</a>
+  </div>
+</div>
 </main>
+
+<footer>
+  <p class="sk">So eine Seite willst du auch?</p>
+  <p>Musterkolben gibt es nicht. Die Website schon: gebaut von <strong>SeitenKino</strong>. Genau so bauen wir auch deine.</p>
+  <p><a href="../../#beispiele">← Zurück zu SeitenKino</a> · <a href="../../#kontakt">Erstgespräch buchen</a></p>
+  <small><a href="../../impressum.html">Impressum</a> · <a href="../../datenschutz.html">Datenschutz</a></small>
+</footer>
+
+<script>
+(() => {
+'use strict';
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- hero: scroll-scrubbed film ---------- */
+const hero = document.getElementById('start');
+const stage = document.getElementById('stage');
+const film = document.getElementById('film');
+const caps = [...stage.querySelectorAll('.cap')].map(el => ({ el, a: +el.dataset.a, b: +el.dataset.b, on: null }));
+const FILM_URL = 'assets/werkstatt-film.mp4';
+
+function heroP(){
+  const r = hero.getBoundingClientRect();
+  const range = hero.offsetHeight - innerHeight;
+  return range > 0 ? clamp(-r.top / range, 0, 1) : 1;
+}
+function updateCaps(p){
+  caps.forEach(c => { const on = p >= c.a && p < c.b; if (on !== c.on) { c.on = on; c.el.classList.toggle('on', on); } });
+  stage.classList.toggle('past', p > 0.02);
+}
+/* keep the explosion slow: map scroll to film time with a calmer middle */
+const KEYS = [[0,0],[.18,.25],[.45,.45],[.55,.52],[.80,.80],[1,1]];
+function filmT(p){
+  for (let i = 1; i < KEYS.length; i++) {
+    const [p0,t0] = KEYS[i-1], [p1,t1] = KEYS[i];
+    if (p <= p1) return t0 + (t1 - t0) * (p - p0) / (p1 - p0);
+  }
+  return 1;
+}
+let busy = false, pending = null;
+function seek(t){ if (!film.duration) return; if (busy) { pending = t; return; } busy = true; film.currentTime = t; }
+film.addEventListener('error', () => { if (!stage.classList.contains('no-video')) noFilm(); });
+film.addEventListener('seeked', () => { busy = false; if (pending !== null) { const t = pending; pending = null; seek(t); } });
+
+let target = 0, shown = 0, raf = null, last = 0;
+function tick(now){
+  const dt = Math.min(100, now - (last || now)); last = now;
+  shown += (target - shown) * (1 - Math.pow(1 - 0.16, dt / 16.667));
+  if (Math.abs(target - shown) < 0.0006) { shown = target; raf = null; last = 0; } else raf = requestAnimationFrame(tick);
+  if (film.duration) seek(filmT(shown) * (film.duration - 0.05));
+  updateCaps(shown);
+}
+function onHeroScroll(){ target = heroP(); if (raf === null) raf = requestAnimationFrame(tick); }
+
+const useFilm = !reduced && !matchMedia('(max-width: 720px) and (pointer: coarse)').matches;
+async function loadFilm(){
+  try {
+    const res = await fetch(FILM_URL);
+    if (!res.ok) throw 0;
+    const blob = await res.blob();
+    film.src = URL.createObjectURL(blob);
+    film.load();
+    film.addEventListener('loadeddata', () => { stage.classList.add('ready'); seek(filmT(heroP()) * (film.duration - 0.05)); }, { once: true });
+  } catch (e) { noFilm(); }
+}
+function noFilm(){
+  stage.classList.add('no-video');
+  const end = stage.querySelector('.still.end');
+  const swap = () => { end.style.opacity = heroP() > 0.5 ? 1 : 0; };
+  addEventListener('scroll', swap, { passive: true }); swap();
+}
+addEventListener('scroll', onHeroScroll, { passive: true });
+if (useFilm) loadFilm(); else noFilm();
+onHeroScroll();
+
+/* ---------- ride: zigzag road + car ---------- */
+const ride = document.getElementById('ride');
+const svg = document.getElementById('road');
+const pEdge = document.getElementById('road-edge'), pAsph = document.getElementById('road-asph'), pMid = document.getElementById('road-mid');
+const car = document.getElementById('car');
+const carImg = car.querySelector('img');
+let lut = [], rideTop = 0, rideH = 0, roadW = 40;
+
+function buildRoad(){
+  const W = ride.clientWidth;
+  const rr = ride.getBoundingClientRect();
+  rideTop = rr.top + scrollY;
+  rideH = ride.offsetHeight;
+  svg.setAttribute('viewBox', `0 0 ${W} ${rideH}`);
+  const edge = W < 760 ? 16 : 0;
+  const panels = [...ride.querySelectorAll('.stop .panel')].map(el => {
+    const r = el.getBoundingClientRect();
+    const left = r.left - rr.left, right = r.right - rr.left, top = r.top - rr.top, bottom = r.bottom - rr.top;
+    const onLeft = left + (right - left) / 2 < W / 2;
+    // the road runs down the free column beside each panel
+    const x = onLeft ? Math.min(W - edge - 20, (right + W) / 2) : Math.max(edge + 20, left / 2);
+    return { top, bottom, x };
+  });
+  const fin = document.getElementById('finale');
+  const finY = fin.offsetTop + fin.offsetHeight - 60;
+  const pts = [[-220, 30]];
+  panels.forEach((pn, i) => {
+    pts.push([pn.x, pn.top + 30]);
+    pts.push([pn.x, pn.bottom - 30]);
+  });
+  const lastX = panels.length ? panels[panels.length - 1].x : W / 2;
+  pts.push([lastX, finY]);
+  pts.push([W + 300, finY]);
+  const R = Math.min(120, W * 0.1);
+  let d = `M${pts[0][0]},${pts[0][1]}`;
+  for (let i = 1; i < pts.length - 1; i++) {
+    const [x0,y0] = pts[i-1], [x1,y1] = pts[i], [x2,y2] = pts[i+1];
+    const l1 = Math.hypot(x1-x0, y1-y0) || 1, l2 = Math.hypot(x2-x1, y2-y1) || 1;
+    const r = Math.min(R, l1/2, l2/2);
+    const ax = x1 - (x1-x0)/l1*r, ay = y1 - (y1-y0)/l1*r;
+    const bx = x1 + (x2-x1)/l2*r, by = y1 + (y2-y1)/l2*r;
+    d += ` L${ax.toFixed(1)},${ay.toFixed(1)} Q${x1.toFixed(1)},${y1.toFixed(1)} ${bx.toFixed(1)},${by.toFixed(1)}`;
+  }
+  d += ` L${pts[pts.length-1][0]},${pts[pts.length-1][1]}`;
+  roadW = W < 760 ? 26 : 44;
+  [pEdge, pAsph, pMid].forEach(p => p.setAttribute('d', d));
+  pEdge.style.strokeWidth = roadW + 8; pAsph.style.strokeWidth = roadW; pMid.style.strokeWidth = W < 760 ? 3 : 4;
+  const L = pAsph.getTotalLength(); lut = [];
+  const N = Math.max(600, Math.round(L / 6));
+  for (let i = 0; i <= N; i++) { const pt = pAsph.getPointAtLength(L * i / N); lut.push([pt.x, pt.y]); }
+  placeCar();
+}
+let flip = false;
+function placeCar(){
+  if (!lut.length) return;
+  const yWant = scrollY + innerHeight * 0.55 - rideTop;
+  const endY = lut[lut.length - 1][1];
+  let idx = 0;
+  if (yWant < endY) {
+    while (idx < lut.length - 1 && lut[idx+1][1] <= yWant) idx++;
+  } else {
+    // final straight: drive off with the last bit of scrolling
+    let j = lut.length - 1; while (j > 0 && lut[j-1][1] >= endY - 0.5) j--;
+    const maxScroll = document.documentElement.scrollHeight - innerHeight;
+    const startS = rideTop + endY - innerHeight * 0.55;
+    const k = clamp((scrollY - startS) / Math.max(1, maxScroll - startS), 0, 1);
+    idx = Math.round(j + (lut.length - 1 - j) * k);
+  }
+  const [x, y] = lut[idx];
+  const [xn, yn] = lut[Math.min(lut.length - 1, idx + 4)];
+  const [xp, yp] = lut[Math.max(0, idx - 4)];
+  const dx = xn - xp, dy = yn - yp;
+  if (Math.abs(dx) > Math.abs(dy) * 0.25) flip = dx < 0;
+  let ang = Math.atan2(dy, Math.abs(dx) || 0.001) * 180 / Math.PI;
+  ang = clamp(ang * 0.4, -12, 12) * (flip ? -1 : 1);
+  const w = car.offsetWidth, h = w * 0.667;
+  car.style.transform = `translate(${(x - w/2).toFixed(1)}px, ${(y - h*0.82).toFixed(1)}px) rotate(${ang.toFixed(1)}deg)`;
+  car.classList.toggle('flip', flip);
+}
+let rideRaf = null;
+addEventListener('scroll', () => { if (rideRaf === null) rideRaf = requestAnimationFrame(() => { rideRaf = null; placeCar(); }); }, { passive: true });
+let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(buildRoad, 120); });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(buildRoad);
+addEventListener('load', buildRoad);
+buildRoad();
+
+/* ---------- reveals ---------- */
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -12% 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ---------- booking demo (nothing is sent or stored) ---------- */
+const state = {};
+const stepEls = [...document.querySelectorAll('.step')];
+const stepLis = [...document.querySelectorAll('#steps li')];
+const backRow = document.getElementById('back-row');
+let cur = 0;
+function go(n){
+  cur = n;
+  stepEls.forEach((s, i) => s.classList.toggle('on', i === n));
+  stepLis.forEach((li, i) => { li.classList.toggle('on', i === n); li.classList.toggle('done', i < n); });
+  backRow.hidden = !(n === 1 || n === 2);
+  const focusEl = stepEls[n].querySelector('button, input');
+  if (focusEl && n > 0) focusEl.focus({ preventScroll: true });
+  requestAnimationFrame(buildRoad);
+}
+const WD = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+const days = document.getElementById('days');
+(() => {
+  const d = new Date(); let added = 0;
+  while (added < 8) {
+    d.setDate(d.getDate() + 1);
+    if (d.getDay() === 0) continue;
+    const b = document.createElement('button');
+    b.className = 'chip'; b.type = 'button'; b.setAttribute('aria-pressed', 'false');
+    b.innerHTML = `${WD[d.getDay()]}<small>${d.getDate()}.${d.getMonth() + 1}.</small>`;
+    b.dataset.val = `${WD[d.getDay()]}, ${d.getDate()}.${d.getMonth() + 1}.`;
+    b.dataset.sat = d.getDay() === 6 ? '1' : '';
+    days.appendChild(b); added++;
+  }
+})();
+const times = document.getElementById('times');
+function fillTimes(sat){
+  times.innerHTML = '';
+  const slots = sat ? ['8:00','9:00','10:00','11:00'] : ['7:30','8:30','9:30','11:00','13:00','14:30','16:00'];
+  // pretend a few are taken
+  slots.forEach((t, i) => {
+    const b = document.createElement('button');
+    b.className = 'chip'; b.type = 'button'; b.setAttribute('aria-pressed', 'false'); b.dataset.val = t + ' Uhr';
+    const taken = !sat && (i === 1 || i === 4);
+    b.innerHTML = taken ? `${t}<small>schon weg</small>` : `${t}<small>frei</small>`;
+    if (taken) { b.disabled = true; b.style.opacity = .4; b.style.cursor = 'not-allowed'; }
+    times.appendChild(b);
+  });
+}
+document.querySelectorAll('.chips').forEach(group => {
+  group.addEventListener('click', e => {
+    const b = e.target.closest('.chip'); if (!b || b.disabled) return;
+    group.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', c === b ? 'true' : 'false'));
+    const key = group.dataset.pick;
+    state[key] = b.dataset.val || b.textContent.trim();
+    if (key === 'tag') fillTimes(b.dataset.sat === '1');
+    setTimeout(() => go(cur + 1), reduced ? 0 : 220);
+  });
+});
+document.querySelectorAll('[data-back]').forEach(b => b.addEventListener('click', () => go(Math.max(0, cur - 1))));
+const esc = s => s.replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+document.getElementById('to-summary').addEventListener('click', () => {
+  const marke = document.getElementById('f-marke').value.trim();
+  const modell = document.getElementById('f-modell').value.trim();
+  const name = document.getElementById('f-name').value.trim();
+  const auto = [marke, modell].filter(Boolean).join(' ') || 'Ihr Auto';
+  document.getElementById('summary').innerHTML =
+    `<div><span>Leistung</span><b>${esc(state.leistung || '')}</b></div>` +
+    `<div><span>Termin</span><b>${esc(state.tag || '')}, ${esc(state.zeit || '')}</b></div>` +
+    `<div><span>Fahrzeug</span><b>${esc(auto)}</b></div>` +
+    (name ? `<div><span>Name</span><b>${esc(name)}</b></div>` : '');
+  go(4);
+});
+document.getElementById('restart').addEventListener('click', () => {
+  document.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', 'false'));
+  ['f-marke','f-modell','f-name'].forEach(id => document.getElementById(id).value = '');
+  go(0);
+});
+})();
+</script>
 </body>
 </html>
