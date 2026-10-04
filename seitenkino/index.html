@@ -317,6 +317,31 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   .reveal{opacity:1;transform:none}
   .unique .payoff{opacity:1;transform:none}
 }
+/* ---------- Terminwahl im Kontaktformular ---------- */
+.slots{border:1px solid var(--border);border-radius:16px;padding:16px 16px 14px;margin:0;min-width:0;display:grid;gap:12px;background:rgba(4,9,20,.35)}
+.slots legend{padding:0 6px;font-size:.9rem;color:var(--text-secondary)}
+.slots legend span{opacity:.75}
+.seg{display:inline-flex;justify-self:start;border:1px solid var(--border-strong);border-radius:999px;padding:3px;gap:3px}
+.seg label{cursor:pointer}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg span{display:block;padding:7px 16px;border-radius:999px;font-size:.9rem;color:var(--text-secondary);transition:background .25s,color .25s}
+.seg input:checked + span{background:var(--line);color:#04121c;font-weight:600}
+.seg input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px}
+.days{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x proximity;scrollbar-width:thin;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}
+.day,.time{font:inherit;cursor:pointer;border:1px solid var(--border);background:rgba(4,9,20,.6);color:var(--text-primary);border-radius:12px;transition:border-color .25s,background .25s,color .25s}
+.day{flex:0 0 auto;scroll-snap-align:start;display:grid;justify-items:center;gap:2px;padding:8px 12px;min-width:62px}
+.day b{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-secondary);font-weight:400}
+.day span{font-family:var(--display);font-size:1rem}
+.day small{font-size:.72rem;color:var(--text-secondary)}
+.times{display:flex;flex-wrap:wrap;gap:8px}
+.times:empty{display:none}
+.time{padding:8px 14px;font-size:.92rem}
+.day:hover,.time:hover{border-color:var(--line)}
+.day[aria-selected="true"],.time[aria-selected="true"]{border-color:var(--line);background:rgba(95,225,255,.16)}
+.day[aria-selected="true"] b,.day[aria-selected="true"] small{color:var(--text-primary)}
+.slotnote{font-size:.84rem;color:var(--text-secondary)}
+.slotnote.warn{color:var(--accent)}
+
 /* ---------- Beispiele: Filmplakate ---------- */
 .showcase .sec-head{margin-inline:auto;text-align:center}
 .showcase .sec-head p{margin-inline:auto}
@@ -664,9 +689,20 @@ body.vp-flash .cables{animation:vpcable 1.2s var(--ease-out)}
             </div>
             <div class="two">
               <div class="field"><label for="f-mail">E-Mail</label><input id="f-mail" name="email" type="email" autocomplete="email" required placeholder="max@beispiel.de"></div>
-              <div class="field"><label for="f-tel">Telefon (optional)</label><input id="f-tel" name="tel" type="tel" autocomplete="tel" placeholder="0171 2345678"></div>
+              <div class="field"><label for="f-tel" id="f-tel-l">Telefon (optional)</label><input id="f-tel" name="tel" type="tel" autocomplete="tel" placeholder="0171 2345678"></div>
             </div>
             <div class="field"><label for="f-msg">Worum geht es?</label><textarea id="f-msg" name="nachricht" placeholder="Zum Beispiel: Ich brauche eine neue Website für meinen Betrieb."></textarea></div>
+            <fieldset class="slots" id="slots">
+              <legend>Wunschtermin für einen Call <span>(optional)</span></legend>
+              <div class="seg" role="radiogroup" aria-label="Dauer">
+                <label><input type="radio" name="termin_dauer" value="30" checked><span>30 Min.</span></label>
+                <label><input type="radio" name="termin_dauer" value="60"><span>60 Min.</span></label>
+              </div>
+              <div class="days" id="days" role="listbox" aria-label="Tag wählen"></div>
+              <div class="times" id="times" role="listbox" aria-label="Uhrzeit wählen"></div>
+              <p class="slotnote" id="slotnote">Calls Mo bis Fr 17 bis 20 Uhr, Sa 14 bis 16 Uhr, frühestens übermorgen. Wir bestätigen dir den Termin per E-Mail.</p>
+              <input type="hidden" name="termin_datum" id="t-date"><input type="hidden" name="termin_zeit" id="t-time">
+            </fieldset>
             <div class="hp" aria-hidden="true"><label for="f-web">Website</label><input id="f-web" name="website" tabindex="-1" autocomplete="off"></div>
             <div class="ts" id="ts"></div>
             <button class="btn" type="submit">Erstgespräch anfragen</button>
@@ -1062,11 +1098,90 @@ body.vp-flash .cables{animation:vpcable 1.2s var(--ease-out)}
     fetch('/api/kontakt', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(c => {
       if (c && c.ready && c.sitekey) { api = c; loadTurnstile(c.sitekey); } else useMailtoNote();
     }).catch(useMailtoNote);
+    loadSlots();
   }, { rootMargin: '800px 0px' });
   formIO.observe(form);
 
+
+  /* ---------- Terminwahl: freie Tage vom Server, sonst nach denselben Regeln im Browser ---------- */
+  const daysEl = document.getElementById('days'), timesEl = document.getElementById('times');
+  const tDate = document.getElementById('t-date'), tTime = document.getElementById('t-time');
+  const telIn = document.getElementById('f-tel'), telLabel = document.getElementById('f-tel-l'), slotNote = document.getElementById('slotnote');
+  const slotNoteText = slotNote.textContent;
+  let slotDays = [];
+  const WD = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+  const WIN = { 1: [1020, 1200], 2: [1020, 1200], 3: [1020, 1200], 4: [1020, 1200], 5: [1020, 1200], 6: [840, 960] };
+  const hhmm = m => String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+  function localDays(){
+    const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Berlin', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+    const [y, m, d] = today.split('-').map(Number), out = [];
+    for (let i = 2; i < 23; i++) {
+      const dt = new Date(Date.UTC(y, m - 1, d + i)), w = WIN[dt.getUTCDay()];
+      if (!w) continue;
+      const s = dur => { const a = []; for (let x = w[0]; x + dur <= w[1]; x += 30) a.push(hhmm(x)); return a; };
+      out.push({ date: dt.toISOString().slice(0, 10), s30: s(30), s60: s(60) });
+    }
+    return out;
+  }
+  const dur = () => +form.querySelector('input[name=termin_dauer]:checked').value;
+  function renderDays(){
+    daysEl.innerHTML = '';
+    slotDays.forEach(d => {
+      const [y, m, day] = d.date.split('-').map(Number), w = new Date(Date.UTC(y, m - 1, day)).getUTCDay();
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'day'; b.setAttribute('role', 'option'); b.dataset.date = d.date;
+      b.setAttribute('aria-selected', String(d.date === tDate.value));
+      b.innerHTML = `<b>${WD[w]}</b><span>${String(day).padStart(2, '0')}.${String(m).padStart(2, '0')}.</span><small>${w === 6 ? '14 bis 16' : '17 bis 20'}</small>`;
+      daysEl.appendChild(b);
+    });
+    renderTimes();
+  }
+  function renderTimes(){
+    timesEl.innerHTML = '';
+    const d = slotDays.find(x => x.date === tDate.value);
+    if (!d) { setSlot('', ''); return; }
+    const list = dur() === 60 ? d.s60 : d.s30;
+    if (!list.includes(tTime.value)) tTime.value = '';
+    list.forEach(t => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'time'; b.setAttribute('role', 'option'); b.dataset.time = t;
+      b.setAttribute('aria-selected', String(t === tTime.value)); b.textContent = t + ' Uhr';
+      timesEl.appendChild(b);
+    });
+    setSlot(tDate.value, tTime.value);
+  }
+  function setSlot(date, time){
+    tDate.value = date; tTime.value = time;
+    const on = Boolean(date && time);
+    telIn.required = on;
+    telLabel.textContent = on ? 'Telefon (für den Call)' : 'Telefon (optional)';
+    slotNote.classList.remove('warn');
+    slotNote.textContent = on ? `Dein Wunschtermin: ${daysEl.querySelector('[aria-selected=true]')?.querySelector('b').textContent}, ${date.split('-').reverse().slice(0, 2).join('.')}., ${time} Uhr (${dur()} Min.). Wir bestätigen ihn dir per E-Mail.` : slotNoteText;
+  }
+  daysEl.addEventListener('click', e => {
+    const b = e.target.closest('.day'); if (!b) return;
+    tDate.value = tDate.value === b.dataset.date ? '' : b.dataset.date; tTime.value = '';
+    daysEl.querySelectorAll('.day').forEach(x => x.setAttribute('aria-selected', String(x.dataset.date === tDate.value)));
+    renderTimes();
+  });
+  timesEl.addEventListener('click', e => {
+    const b = e.target.closest('.time'); if (!b) return;
+    tTime.value = tTime.value === b.dataset.time ? '' : b.dataset.time;
+    timesEl.querySelectorAll('.time').forEach(x => x.setAttribute('aria-selected', String(x.dataset.time === tTime.value)));
+    setSlot(tDate.value, tTime.value);
+  });
+  form.querySelectorAll('input[name=termin_dauer]').forEach(r => r.addEventListener('change', renderTimes));
+  function loadSlots(){
+    return fetch('/api/termin', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null).then(c => {
+      slotDays = c && c.ready ? c.days : localDays();
+      if (tDate.value && !slotDays.some(d => d.date === tDate.value)) { tDate.value = ''; tTime.value = ''; }
+      renderDays();
+    });
+  }
+
   function sendMailto(f, name, mail){
-    const body = `Name: ${name}\nFirma: ${f.get('firma') || ''}\nE-Mail: ${mail}\nTelefon: ${f.get('tel') || ''}\n\n${f.get('nachricht') || ''}`;
+    const wish = f.get('termin_datum') && f.get('termin_zeit') ? `Wunschtermin: ${f.get('termin_datum').split('-').reverse().join('.')}, ${f.get('termin_zeit')} Uhr (${f.get('termin_dauer')} Min.)\n` : '';
+    const body = `${wish}Name: ${name}\nFirma: ${f.get('firma') || ''}\nE-Mail: ${mail}\nTelefon: ${f.get('tel') || ''}\n\n${f.get('nachricht') || ''}`;
     location.href = `mailto:Info@SeitenKino.de?subject=${encodeURIComponent('Erstgespräch: ' + (f.get('firma') || name))}&body=${encodeURIComponent(body)}`;
     setSuccess('Fast geschafft.', 'Dein E-Mail-Programm hat sich mit deiner Nachricht geöffnet. Einfach dort absenden, dann melden wir uns bei dir.');
     form.classList.add('sent');
@@ -1080,16 +1195,30 @@ body.vp-flash .cables{animation:vpcable 1.2s var(--ease-out)}
       form.querySelector(!name ? '#f-name' : '#f-mail').setAttribute('aria-invalid', 'true');
       return;
     }
+    if (telIn.required && !(f.get('tel') || '').trim()) { telIn.focus(); telIn.setAttribute('aria-invalid', 'true'); return; }
+    if (!(f.get('termin_datum') && f.get('termin_zeit'))) { f.delete('termin_datum'); f.delete('termin_zeit'); f.delete('termin_dauer'); }
     if (!api) { sendMailto(f, name, mail); return; }
     if (!tsToken) { document.getElementById('formnote').textContent = 'Einen Moment, die Spam-Prüfung läuft noch. Bitte gleich noch einmal auf „Erstgespräch anfragen“ tippen.'; return; }
     formBtn.disabled = true; formBtn.textContent = 'Wird gesendet …';
     const data = Object.fromEntries(f); data.token = tsToken;
-    let ok = false;
+    let ok = false, res = null, status = 0;
     try {
       const r = await fetch('/api/kontakt', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(data) });
-      ok = r.ok && (await r.json()).ok;
+      status = r.status; res = await r.json(); ok = r.ok && res.ok;
     } catch (_) {}
-    if (ok) { form.classList.add('sent'); return; }
+    if (ok) {
+      if (res.booked) setSuccess('Danke, deine Terminanfrage ist da.', 'Du bekommst gleich eine E-Mail. Sobald wir den Termin bestätigt haben, kommt die zweite mit dem Kalendereintrag.');
+      form.classList.add('sent'); return;
+    }
+    if (status === 409 || status === 422) {
+      // Termin inzwischen vergeben oder ungültig: neu laden, nichts doppelt senden.
+      formBtn.disabled = false; formBtn.textContent = 'Erstgespräch anfragen';
+      if (tsWidget !== null) { try { turnstile.reset(tsWidget); } catch (_) {} tsToken = ''; }
+      await loadSlots();
+      slotNote.textContent = status === 409 ? 'Dieser Tag wurde gerade vergeben. Bitte wähl einen anderen.' : 'Bitte wähl Tag und Uhrzeit neu und gib deine Telefonnummer an.';
+      slotNote.classList.add('warn'); slotNote.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      return;
+    }
     // Senden fehlgeschlagen: nichts geht verloren, das E-Mail-Programm übernimmt.
     formBtn.disabled = false; formBtn.textContent = 'Erstgespräch anfragen';
     if (tsWidget !== null) { try { turnstile.reset(tsWidget); } catch (_) {} tsToken = ''; }
