@@ -3,41 +3,694 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex">
-<title>RankTastisch · Beispielseite · SeitenKino</title>
-<meta name="theme-color" content="#060c1a">
+<meta name="robots" content="noindex, nofollow">
+<title>RankTastisch · Garten- und Landschaftsbau · Beispielseite von SeitenKino</title>
+<meta name="description" content="RankTastisch ist ein erfundener Garten- und Landschaftsbauer. Diese Beispielseite zeigt, was SeitenKino für Gartenbauer baut.">
+<meta name="theme-color" content="#17110c">
+<link rel="preload" href="assets/fonts/Fraunces.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-@font-face{font-family:"Unbounded";font-weight:400 700;font-display:swap;src:url("../../assets/fonts/Unbounded.woff2") format("woff2")}
-@font-face{font-family:"Hanken Grotesk";font-weight:400 600;font-display:swap;src:url("../../assets/fonts/HankenGrotesk.woff2") format("woff2")}
-@font-face{font-family:"IBM Plex Mono";font-weight:400;font-display:swap;src:url("../../assets/fonts/IBMPlexMono.woff2") format("woff2")}
-:root{--canvas:#060c1a;--accent:#e7c98f;--line:#5fe1ff;--text:#eef3fb;--muted:#a9badb;color-scheme:dark}
+@font-face{font-family:"Fraunces";font-style:normal;font-weight:300 700;font-display:swap;src:url("assets/fonts/Fraunces.woff2") format("woff2")}
+@font-face{font-family:"Fraunces";font-style:italic;font-weight:400;font-display:swap;src:url("assets/fonts/Fraunces-Italic.woff2") format("woff2")}
+@font-face{font-family:"Hanken Grotesk";font-weight:400 700;font-display:swap;src:url("../../assets/fonts/HankenGrotesk.woff2") format("woff2")}
+:root{
+  --soil:#17110c;--soil-2:#231a12;--soil-3:#33261a;
+  --paper:#f4eee3;--paper-2:#e9e0cf;--ink:#1f1912;--muted:#6b5e4e;
+  --leaf:#3f6b3a;--leaf-2:#5f8f4f;--gold:#e0a84a;--gold-2:#f3cf86;--root:#cfae82;
+  --cream:#f7f1e6;--line:rgba(31,25,18,.14);
+  --r:18px;--shadow:0 24px 60px -24px rgba(0,0,0,.55);
+  color-scheme:dark;
+}
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:radial-gradient(120% 80% at 50% 0%,#0b1a38 0%,var(--canvas) 60%) fixed;color:var(--text);font-family:"Hanken Grotesk",system-ui,sans-serif}
-.bar{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 20px;font-size:.9rem;background:rgba(6,12,26,.8);backdrop-filter:blur(8px);border-bottom:1px solid rgba(140,190,230,.22)}
-.bar a{color:var(--accent);text-decoration:none;font-weight:600}
-main{min-height:100vh;min-height:100svh;display:grid;place-items:center;text-align:center;padding:90px 20px 40px}
-.k{font-family:"IBM Plex Mono",monospace;font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(231,201,143,.28);padding:6px 14px;border-radius:6px;display:inline-block}
-.g{margin-top:26px;font-family:"IBM Plex Mono",monospace;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
-h1{font-family:"Unbounded",system-ui,sans-serif;font-size:clamp(2.2rem,7vw,4.4rem);line-height:1.05;margin:10px 0 0;color:var(--text)}
-p{color:var(--muted);max-width:42ch;margin:18px auto 0;line-height:1.6}
-.btn{display:inline-block;margin-top:32px;padding:14px 26px;border-radius:999px;background:var(--accent);color:#17120a;font-weight:600;text-decoration:none}
-.reel{width:90px;height:90px;margin:0 auto 26px;border:2px solid var(--line);border-radius:50%;position:relative;box-shadow:0 0 24px rgba(95,225,255,.4);animation:r 6s linear infinite}
-.reel::before{content:"";position:absolute;inset:18px;border-radius:50%;border:2px dashed var(--line)}
-@keyframes r{to{transform:rotate(360deg)}}
-@media (prefers-reduced-motion:reduce){.reel{animation:none}}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--soil);color:var(--cream);font-family:"Hanken Grotesk",system-ui,sans-serif;font-size:17px;line-height:1.6;overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.08;letter-spacing:-.01em}
+h1 em,h2 em{font-style:italic;font-weight:400;color:var(--leaf)}
+
+/* SeitenKino demo bar */
+.demo-bar{position:fixed;z-index:50;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 16px;font-size:.85rem;background:rgba(6,12,26,.92);color:#eef3fb;backdrop-filter:blur(8px)}
+.demo-bar b{color:#e7c98f;font-weight:600}
+.demo-bar a{color:#e7c98f;text-decoration:none;font-weight:600;white-space:nowrap}
+
+/* hero scrub */
+.hero{position:relative;height:440vh;background:var(--soil)}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.stage video,.stage .still{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.stage .still{background:center/cover no-repeat}
+.stage .still.end{opacity:0;transition:opacity .6s}
+.stage video{opacity:0;transition:opacity .5s}
+.stage.ready video{opacity:1}
+.stage::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(23,17,12,.35),transparent 30%,transparent 70%,rgba(23,17,12,.75))}
+.cap{position:absolute;z-index:3;opacity:0;transform:translateY(18px);transition:opacity .6s,transform .8s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.cap.on{opacity:1;transform:none;pointer-events:auto}
+.glass{background:rgba(23,17,12,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(243,207,134,.22);border-radius:var(--r);padding:20px 26px;max-width:min(520px,88vw);box-shadow:var(--shadow)}
+.glass h1{font-size:clamp(2.8rem,7.5vw,5.6rem);margin:0;color:var(--cream)}
+.glass h1 em{color:var(--gold-2)}
+.glass p{margin:8px 0 0;font-size:1.08rem;color:#eadfca}
+.say{font-family:"Fraunces",Georgia,serif;font-size:clamp(1.5rem,3.2vw,2.4rem);line-height:1.15;color:var(--cream)}
+.say em{color:var(--gold-2)}
+.kicker{display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-2);margin-bottom:8px}
+.c1{left:5vw;top:14vh}
+.c2{left:5vw;top:18vh}
+.c3{right:5vw;top:24vh}
+.c4{left:5vw;bottom:14vh}
+.c5{left:5vw;top:13vh}
+.scroll-hint{position:absolute;z-index:3;left:50%;bottom:22px;transform:translateX(-50%);font-size:.8rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);transition:opacity .3s}
+.scroll-hint span{display:block;text-align:center;animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(6px)}}
+.stage.past .scroll-hint{opacity:0}
+.loader{position:absolute;z-index:4;right:16px;bottom:16px;font:600 .8rem "Hanken Grotesk",sans-serif;color:var(--cream);background:rgba(23,17,12,.7);padding:4px 10px;border-radius:99px;transition:opacity .4s}
+.stage.ready .loader,.stage.no-video .loader{opacity:0}
+
+.btn{display:inline-flex;align-items:center;gap:8px;font:700 1rem "Hanken Grotesk",sans-serif;padding:13px 24px;border-radius:99px;background:var(--gold);color:var(--ink);border:0;text-decoration:none;cursor:pointer;transition:transform .15s,background .15s,box-shadow .15s;box-shadow:0 8px 24px -8px rgba(224,168,74,.7)}
+.btn:hover{background:var(--gold-2);transform:translateY(-2px)}
+.btn.alt{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+.btn.alt:hover{background:var(--paper-2)}
+.btn[disabled]{opacity:.4;pointer-events:none}
+.btn:focus-visible,.chip:focus-visible,input:focus-visible,.slider input:focus-visible+.knob,.layer:focus-visible,.toggle:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+
+/* underground: growing root + sections */
+.ground{position:relative;padding:60px 0 0;background:
+  radial-gradient(60% 40% at 15% 20%,rgba(80,58,36,.35),transparent 70%),
+  radial-gradient(50% 35% at 85% 55%,rgba(80,58,36,.28),transparent 70%),
+  linear-gradient(180deg,var(--soil) 0%,var(--soil-2) 40%,var(--soil-3) 100%)}
+.ground::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;background-image:radial-gradient(rgba(207,174,130,.10) 1px,transparent 1.4px),radial-gradient(rgba(0,0,0,.25) 1px,transparent 1.5px);background-size:9px 9px,13px 13px;background-position:0 0,4px 6px}
+svg.roots{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:visible}
+.roots path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.roots .main{stroke:var(--root)}
+.roots .glowline{stroke:var(--gold);opacity:.35;filter:blur(4px)}
+.roots .br{stroke:var(--root);opacity:0;transition:stroke-dashoffset 1.4s cubic-bezier(.2,.8,.2,1),opacity .3s}
+.roots .grown .br{opacity:.85}
+.roots .tipdot{fill:var(--gold-2)}
+.roots .tiphalo{fill:var(--gold);opacity:.45;filter:blur(8px)}
+.roots .bt{fill:var(--gold-2);opacity:0;transition:opacity .8s .9s}
+.roots .grown .bt{opacity:.9}
+
+.stop{position:relative;z-index:1;width:min(1180px,92vw);margin:0 auto;padding:110px 0}
+.panel{position:relative;width:min(660px,100%);background:var(--paper);color:var(--ink);border-radius:var(--r);box-shadow:var(--shadow);padding:34px clamp(20px,3.4vw,40px) 36px}
+.stop.r .panel{margin-left:auto}
+.stop.wide .panel{width:100%}
+.panel h2{font-size:clamp(2.1rem,4.6vw,3.3rem);margin:0 0 8px}
+.panel .lead{margin:0 0 24px;color:var(--muted);font-size:1.06rem}
+.tag{display:inline-block;font-size:.74rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--leaf);margin-bottom:10px}
+.tag::before{content:"";display:inline-block;width:22px;height:2px;background:var(--gold);vertical-align:middle;margin-right:10px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px}
+.card{border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;background:#fbf8f2}
+.card h3{font-size:1.35rem;margin:0 0 4px}
+.card p{margin:0;font-size:.97rem;color:#4a4034}
+.card .ico{width:40px;height:40px;margin-bottom:10px}
+
+/* layers */
+.layers-wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px;align-items:start}
+.stack{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+.layer{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;border:0;border-bottom:1px solid rgba(0,0,0,.08);padding:0 14px;font:600 .92rem "Hanken Grotesk",sans-serif;text-align:left;cursor:pointer;color:var(--ink);transition:height .7s cubic-bezier(.2,.8,.2,1),filter .2s,transform .7s cubic-bezier(.2,.8,.2,1)}
+.layer small{font-weight:500;opacity:.75;white-space:nowrap}
+.layer:hover,.layer[aria-pressed="true"]{filter:brightness(1.08)}
+.layer[aria-pressed="true"]{box-shadow:inset 4px 0 0 var(--gold)}
+.l-stone{height:44px;background:repeating-linear-gradient(90deg,#d8d0c1 0 86px,#a99f8e 86px 89px)}
+.l-split{height:34px;background:#b9ab93 radial-gradient(#8f8370 1px,transparent 1.6px) 0 0/6px 6px}
+.l-trag{height:84px;background:#8c7d68 radial-gradient(circle at 30% 40%,#a29179 3px,transparent 4px) 0 0/16px 14px;color:#fff}
+.l-frost{height:104px;background:#6e5e4b radial-gradient(circle,#82705a 5px,transparent 6px) 0 0/24px 22px;color:#fff}
+.l-boden{height:56px;background:#4b3a2a;color:#eadfca}
+.stack.pfusch .l-stone{transform:rotate(-2.2deg) translateY(6px)}
+.stack.pfusch .l-split{height:70px;background:#d9c9a4}
+.stack.pfusch .l-trag,.stack.pfusch .l-frost{height:0;padding:0;overflow:hidden;border:0}
+.stack.pfusch .l-boden{height:120px}
+.info{border-radius:12px;background:#fbf8f2;border:1px solid var(--line);padding:18px}
+.info h3{font-size:1.3rem;margin:0 0 6px}
+.info p{margin:0;font-size:.97rem;color:#4a4034}
+.toggle{margin-top:14px;display:flex;gap:10px;align-items:center;font:600 .92rem "Hanken Grotesk",sans-serif;background:none;border:0;padding:0;cursor:pointer;color:var(--ink)}
+.toggle .sw{width:44px;height:24px;border-radius:99px;background:var(--leaf);position:relative;transition:background .2s;flex:none}
+.toggle .sw::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .2s}
+.toggle[aria-pressed="true"] .sw{background:#b5452f}
+.toggle[aria-pressed="true"] .sw::after{transform:translateX(20px)}
+.warn{margin-top:10px;font-size:.92rem;color:#b5452f;font-weight:600}
+
+/* before/after */
+.ba{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:16/9;background:#000;user-select:none;touch-action:pan-y}
+.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ba .after{clip-path:inset(0 0 0 var(--x,50%))}
+/* line the wild ground up with the garden ground (photos were framed slightly differently) */
+.ba .before{transform:scale(1.15);transform-origin:50% -.2%}
+.ba .bar{position:absolute;top:0;bottom:0;left:var(--x,50%);width:2px;background:#fff;transform:translateX(-1px);pointer-events:none}
+.ba .knob{position:absolute;top:50%;left:var(--x,50%);width:46px;height:46px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);display:grid;place-items:center;box-shadow:0 6px 18px rgba(0,0,0,.35);pointer-events:none;color:var(--ink);font-weight:700}
+.ba .lbl{position:absolute;top:12px;font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;background:rgba(23,17,12,.7);color:var(--cream);padding:4px 10px;border-radius:99px}
+.ba .lbl.l{left:12px}.ba .lbl.rr{right:12px}
+.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+
+/* planner + jobs */
+.steps{display:flex;gap:6px;margin:0 0 18px;padding:0;list-style:none;flex-wrap:wrap}
+.steps li{font-size:.8rem;font-weight:700;padding:4px 12px;border-radius:99px;background:var(--paper-2);color:var(--muted)}
+.steps li.on{background:var(--ink);color:var(--cream)}
+.steps li.done{background:var(--leaf);color:#fff}
+.step{display:none}
+.step.on{display:block;animation:rise .4s cubic-bezier(.2,.8,.2,1)}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}}
+.step h3{font-size:1.4rem;margin:0 0 12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:600 .96rem "Hanken Grotesk",sans-serif;padding:10px 16px;border-radius:99px;border:1.5px solid rgba(31,25,18,.25);background:#fff;cursor:pointer;color:var(--ink);transition:background .15s,border-color .15s}
+.chip:hover{border-color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--leaf);border-color:var(--leaf);color:#fff}
+.chip small{display:block;font-weight:500;font-size:.78rem;opacity:.75}
+.nav-row{display:flex;justify-content:space-between;gap:10px;margin-top:20px;flex-wrap:wrap}
+.result{border-radius:14px;padding:20px;background:#fbf8f2;border:1px solid var(--line)}
+.result .big{font-family:"Fraunces",Georgia,serif;font-size:clamp(1.9rem,4vw,2.6rem);line-height:1.1;margin:4px 0 10px}
+.result .verdict{border-radius:10px;padding:12px 14px;font-weight:600;margin:12px 0 0}
+.verdict.ok{background:#e4efdc;color:#2c4d28}
+.verdict.hm{background:#fbebd0;color:#7a4b10}
+.note{font-size:.86rem;color:var(--muted);margin:14px 0 0}
+.form{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+.form label{display:grid;gap:4px;font-weight:600;font-size:.92rem}
+.form label.full{grid-column:1/-1}
+input[type=text],input[type=tel]{font:inherit;padding:11px 14px;border:1.5px solid rgba(31,25,18,.25);border-radius:10px;background:#fff;color:var(--ink);width:100%}
+.jobs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
+.jobs .card b{display:block;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--leaf);margin-bottom:4px}
+.thanks{text-align:center;padding:16px 0 4px}
+.thanks .big{font-family:"Fraunces",Georgia,serif;font-size:2.2rem;margin:0 0 6px}
+
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.contact dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 14px}
+.contact dt{font-weight:700}
+.contact dd{margin:0}
+
+.finale{position:relative;z-index:1;text-align:center;padding:80px 20px 140px}
+.finale .say{max-width:22ch;margin:0 auto 26px}
+footer{background:#0f0b08;color:#eadfca;padding:44px 20px 50px;text-align:center}
+footer p{margin:6px auto;max-width:60ch}
+footer .sk{font-family:"Fraunces",Georgia,serif;font-size:2rem;color:var(--gold-2);margin:0 0 6px}
+footer a{color:#e7c98f;font-weight:600}
+footer small{display:block;margin-top:18px;opacity:.7}
+
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s,transform .9s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+@media (max-width:760px){
+  body{font-size:16px}
+  .hero{height:400vh}
+  .c1,.c2,.c5{left:4vw;right:4vw;top:11vh}
+  .c3{right:4vw;left:4vw;top:auto;bottom:16vh}
+  .c4{left:4vw;right:4vw;bottom:14vh}
+  .stop{padding:90px 0 80px}
+  .stop .panel{width:calc(100% - 30px)}
+  .stop.r .panel{margin-left:30px}
+  .stop:not(.r) .panel{margin-right:30px}
+  .stop.wide .panel{width:calc(100% - 30px)}
+  .layers-wrap,.form,.contact,.jobs{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  .cap,.step.on,.layer,.roots .br{transition:none;animation:none}
+  .scroll-hint span{animation:none}
+}
 </style>
 </head>
 <body>
-<div class="bar"><span>Beispielseite von SeitenKino</span><a href="../../#beispiele">← Zurück</a></div>
+
+<div class="demo-bar" role="note"><span><b>Beispielseite</b> von SeitenKino · Dieser Betrieb ist erfunden</span><a href="../../#beispiele">← Zurück zu SeitenKino</a></div>
+
 <main>
-  <div>
-    <div class="reel" aria-hidden="true"></div>
-    <span class="k">Demnächst im Kino</span>
-    <div class="g">Garten- und Landschaftsbau</div>
-    <h1>RankTastisch</h1>
-    <p>Dieser Film wird gerade gedreht. Schau bald wieder vorbei.</p>
-    <a class="btn" href="../../#beispiele">Zurück zu SeitenKino</a>
+<!-- HERO: scroll-driven film, seedling -> roots -> finished garden -->
+<section class="hero" id="start" aria-label="RankTastisch, Garten- und Landschaftsbau">
+  <div class="stage" id="stage">
+    <div class="still start" style="background-image:url('assets/poster-start.jpg')" role="img" aria-label="Ein Keimling wächst auf einer wilden Wiese, darunter sieht man die Erde im Querschnitt"></div>
+    <video id="film" muted playsinline preload="none" aria-hidden="true"></video>
+    <div class="still end" style="background-image:url('assets/poster-ende.jpg')"></div>
+
+    <div class="cap c1" data-a="0" data-b=".13">
+      <div class="glass"><span class="kicker">Garten- und Landschaftsbau</span><h1>Rank<em>Tastisch</em></h1><p>Gärten, die von Grund auf wachsen.</p></div>
+    </div>
+    <div class="cap c2" data-a=".17" data-b=".36"><div class="glass say">Ein schöner Garten fängt nicht oben an …</div></div>
+    <div class="cap c3" data-a=".38" data-b=".53"><div class="glass say">… sondern hier unten. <em>Boden, Wurzeln, Unterbau.</em></div></div>
+    <div class="cap c4" data-a=".56" data-b=".7"><div class="glass say">Wer hier spart, sieht es nach zwei Wintern. Die Terrasse leider auch.</div></div>
+    <div class="cap c5" data-a=".86" data-b="1.01">
+      <div class="glass"><span class="kicker">Ein paar Jahre später</span><h1 style="font-size:clamp(2.4rem,6vw,4.4rem)">Dein <em>Garten.</em></h1><p style="margin:8px 0 18px">Gebaut für Jahrzehnte. Nicht nur fürs Foto.</p><a class="btn" href="#planer">Projekt planen</a></div>
+    </div>
+    <div class="scroll-hint" aria-hidden="true">Scrollen<span>▼</span></div>
+    <div class="loader" id="loader" aria-hidden="true">Film lädt …</div>
   </div>
+</section>
+
+<!-- GROUND: a root grows down the page while you scroll -->
+<div class="ground" id="ground">
+  <svg class="roots" id="roots" aria-hidden="true"><g id="branches"></g><path class="glowline" id="r-glow"/><path class="main" id="r-main"/><circle class="tiphalo" id="tip-halo" r="14"/><circle class="tipdot" id="tip" r="4"/></svg>
+
+  <section class="stop" id="leistungen">
+    <div class="panel reveal">
+      <span class="tag">Leistungen</span>
+      <h2>Alles, was <em>wächst.</em></h2>
+      <p class="lead">Und alles, was darunter liegt. Nur Unkraut hat bei uns keine Lobby.</p>
+      <div class="grid">
+        <div class="card"><svg class="ico" viewBox="0 0 40 40" aria-hidden="true"><rect x="5" y="9" width="30" height="22" rx="3" fill="none" stroke="#3f6b3a" stroke-width="2.5"/><path d="M5 17h30M15 9v22" stroke="#3f6b3a" stroke-width="2.5"/></svg><h3>Gartenplanung</h3><p>Erst der Plan, dann der Bagger. Nicht andersrum.</p></div>
+        <div class="card"><svg class="ico" viewBox="0 0 40 40" aria-hidden="true"><path d="M4 26h32M4 32h32" stroke="#e0a84a" stroke-width="2.5"/><path d="M6 20h10v6H6zM18 20h16v6H18z" fill="none" stroke="#3f6b3a" stroke-width="2.5"/></svg><h3>Terrassen und Wege</h3><p>Naturstein, Pflaster, Holz. Mit Unterbau, der hält.</p></div>
+        <div class="card"><svg class="ico" viewBox="0 0 40 40" aria-hidden="true"><path d="M6 32c4-8 4-14 4-20M14 32c2-6 2-10 2-16M22 32c1-6 0-12 0-18M30 32c-1-6 0-10 2-16" fill="none" stroke="#5f8f4f" stroke-width="2.5" stroke-linecap="round"/></svg><h3>Rasen</h3><p>Fertigrasen oder gesät. Grüner wird's nur beim Nachbarn, der neidisch rüberschaut.</p></div>
+        <div class="card"><svg class="ico" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="14" r="8" fill="none" stroke="#5f8f4f" stroke-width="2.5"/><path d="M20 22v12M14 34h12" stroke="#3f6b3a" stroke-width="2.5" stroke-linecap="round"/></svg><h3>Bepflanzung</h3><p>Bäume, Hecken, Stauden. Ausgesucht für deinen Boden, nicht für den Katalog.</p></div>
+        <div class="card"><svg class="ico" viewBox="0 0 40 40" aria-hidden="true"><ellipse cx="20" cy="24" rx="15" ry="8" fill="none" stroke="#3f6b3a" stroke-width="2.5"/><path d="M12 24c3-2 5 2 8 0s5 2 8 0" fill="none" stroke="#e0a84a" stroke-width="2" stroke-linecap="round"/></svg><h3>Wasser im Garten</h3><p>Teiche, Wasserbecken, Bewässerung. Plätschern inklusive.</p></div>
+        <div class="card"><svg class="ico" viewBox="0 0 40 40" aria-hidden="true"><path d="M8 34V12l6-5 6 5v22M20 34V12l6-5 6 5v22M4 34h32" fill="none" stroke="#3f6b3a" stroke-width="2.5" stroke-linejoin="round"/></svg><h3>Gartenpflege</h3><p>Damit dein Garten in fünf Jahren noch so aussieht. Gibt's auch im Abo.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stop r" id="grund">
+    <div class="panel reveal">
+      <span class="tag">Von Grund auf</span>
+      <h2>Was unter deiner <em>Terrasse</em> liegt.</h2>
+      <p class="lead">Den Unterschied zwischen Profi und Pfusch sieht man nicht am ersten Tag. Sondern nach dem zweiten Winter. Tipp auf eine Schicht.</p>
+      <div class="layers-wrap">
+        <div class="stack" id="stack">
+          <button class="layer l-stone" type="button" data-i="0" aria-pressed="true">Naturstein <small>4–6 cm</small></button>
+          <button class="layer l-split" type="button" data-i="1" aria-pressed="false">Splittbett <small>3–5 cm</small></button>
+          <button class="layer l-trag" type="button" data-i="2" aria-pressed="false">Tragschicht <small>15–20 cm</small></button>
+          <button class="layer l-frost" type="button" data-i="3" aria-pressed="false">Frostschutz <small>20–30 cm</small></button>
+          <button class="layer l-boden" type="button" data-i="4" aria-pressed="false">Untergrund <small>verdichtet</small></button>
+        </div>
+        <div>
+          <div class="info" id="layer-info" aria-live="polite"></div>
+          <button class="toggle" type="button" id="pfusch" aria-pressed="false"><span class="sw"></span>So machen's die anderen</button>
+          <p class="warn" id="pfusch-warn" hidden>Sand drunter, fertig, Rechnung. Nach dem ersten Frost: Stolperfalle mit Pfützen-Garantie.</p>
+        </div>
+      </div>
+      <p class="note">Die Schichtdicken sind Richtwerte. Was dein Boden braucht, prüfen wir vor Ort.</p>
+    </div>
+  </section>
+
+  <section class="stop wide" id="vorher-nachher">
+    <div class="panel reveal">
+      <span class="tag">Vorher, nachher</span>
+      <h2>Gleicher Ort. <em>Anderes Leben.</em></h2>
+      <p class="lead">Zieh den Regler. So schnell geht es in echt nicht, aber das Ergebnis bleibt länger.</p>
+      <div class="ba" id="ba">
+        <img class="before" src="assets/vorher.webp" alt="Vorher: wilde Wiese mit einem kleinen Keimling" width="1400" height="788" loading="lazy">
+        <img class="after" src="assets/nachher.webp" alt="Nachher: fertiger Garten mit Baum, Terrasse und Rasen im Abendlicht" width="1400" height="788" loading="lazy">
+        <span class="lbl l">Vorher</span><span class="lbl rr">Nachher</span>
+        <span class="bar"></span><span class="knob" aria-hidden="true">↔</span>
+        <input type="range" min="0" max="100" value="50" aria-label="Vorher und nachher vergleichen">
+      </div>
+    </div>
+  </section>
+
+  <section class="stop" id="planer">
+    <div class="panel reveal">
+      <span class="tag">Projekt-Planer</span>
+      <h2>Was schwebt <em>dir</em> vor?</h2>
+      <p class="lead">Drei Klicks, und du weißt, in welchem Rahmen wir uns bewegen. Ehrlich, bevor jemand zur Besichtigung fährt.</p>
+      <ol class="steps" id="p-steps" aria-label="Fortschritt"><li>1 Wünsche</li><li>2 Größe</li><li>3 Budget</li><li>4 Ergebnis</li></ol>
+
+      <div class="step on" data-step="0">
+        <h3>Was soll gemacht werden? <small style="font:500 .9rem 'Hanken Grotesk',sans-serif;color:var(--muted)">(mehrere möglich)</small></h3>
+        <div class="chips multi" id="wishes">
+          <button class="chip" type="button" aria-pressed="false" data-k="terrasse">Terrasse</button>
+          <button class="chip" type="button" aria-pressed="false" data-k="rasen">Rasen</button>
+          <button class="chip" type="button" aria-pressed="false" data-k="pflanzen">Bepflanzung</button>
+          <button class="chip" type="button" aria-pressed="false" data-k="wasser">Teich oder Wasser</button>
+          <button class="chip" type="button" aria-pressed="false" data-k="zaun">Sichtschutz</button>
+          <button class="chip" type="button" aria-pressed="false" data-k="pflege">Pflege-Abo</button>
+        </div>
+        <div class="nav-row"><span></span><button class="btn" type="button" id="p-next" disabled>Weiter</button></div>
+      </div>
+      <div class="step" data-step="1">
+        <h3>Wie groß ist dein Garten?</h3>
+        <div class="chips single" data-pick="size">
+          <button class="chip" type="button" aria-pressed="false" data-v="0">Klein<small>bis 100 m²</small></button>
+          <button class="chip" type="button" aria-pressed="false" data-v="1">Mittel<small>100–300 m²</small></button>
+          <button class="chip" type="button" aria-pressed="false" data-v="2">Groß<small>über 300 m²</small></button>
+        </div>
+        <div class="nav-row"><button class="btn alt" type="button" data-back>Zurück</button></div>
+      </div>
+      <div class="step" data-step="2">
+        <h3>Was möchtest du ungefähr ausgeben?</h3>
+        <div class="chips single" data-pick="budget">
+          <button class="chip" type="button" aria-pressed="false" data-v="5000">bis 5.000 €</button>
+          <button class="chip" type="button" aria-pressed="false" data-v="15000">5.000–15.000 €</button>
+          <button class="chip" type="button" aria-pressed="false" data-v="30000">15.000–30.000 €</button>
+          <button class="chip" type="button" aria-pressed="false" data-v="999999">über 30.000 €</button>
+        </div>
+        <div class="nav-row"><button class="btn alt" type="button" data-back>Zurück</button></div>
+      </div>
+      <div class="step" data-step="3">
+        <div class="result" id="p-result"></div>
+        <p class="note"><strong>Hinweis:</strong> Das ist eine Demo mit Beispielwerten. Es wurde nichts gesendet oder gespeichert. Auf einer echten Gartenbau-Seite kämen hier noch Fotos vom Garten dazu, und die Anfrage ginge vorsortiert an den Betrieb.</p>
+        <div class="nav-row"><button class="btn alt" type="button" id="p-restart">Nochmal planen</button><a class="btn" href="#kontakt">Besichtigung anfragen</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stop r" id="jobs">
+    <div class="panel reveal">
+      <span class="tag">Jobs</span>
+      <h2>Wir suchen <em>dich.</em></h2>
+      <p class="lead">Kein Anschreiben, kein Lebenslauf. Wir lesen lieber Pflanzen als Bewerbungsmappen.</p>
+      <div class="jobs">
+        <div class="card"><b>Vollzeit</b><h3>Gärtner/in GaLaBau (m/w/d)</h3><p>Pflastern, pflanzen, planen. Mit Firmenwagen und Feierabend um vier.</p></div>
+        <div class="card"><b>Auch Quereinsteiger</b><h3>Helfer/in im Garten (m/w/d)</h3><p>Du packst gern an? Den Rest bringen wir dir bei.</p></div>
+      </div>
+      <form id="apply" novalidate>
+        <h3 style="font-size:1.3rem;margin:0 0 12px">Bewerben in 60 Sekunden</h3>
+        <div class="form">
+          <label>Dein Name<input type="text" id="a-name" autocomplete="off" placeholder="Max Mustermann"></label>
+          <label>Telefon<input type="tel" id="a-tel" autocomplete="off" placeholder="0123 456789"></label>
+          <div class="full" style="grid-column:1/-1"><span style="font-weight:600;font-size:.92rem">Ab wann kannst du?</span>
+            <div class="chips single" data-pick="start" style="margin-top:6px">
+              <button class="chip" type="button" aria-pressed="false">Sofort</button>
+              <button class="chip" type="button" aria-pressed="false">In einem Monat</button>
+              <button class="chip" type="button" aria-pressed="false">Später</button>
+            </div>
+          </div>
+        </div>
+        <div class="nav-row"><span></span><button class="btn" type="submit">Abschicken</button></div>
+      </form>
+      <div class="thanks" id="thanks" hidden>
+        <p class="big">Danke<span id="t-name"></span>!</p>
+        <p>Wir rufen dich in den nächsten Tagen an.</p>
+        <p class="note"><strong>Hinweis:</strong> Demo. Nichts wurde gesendet oder gespeichert.</p>
+        <div class="nav-row" style="justify-content:center"><button class="btn alt" type="button" id="a-restart">Nochmal ausprobieren</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stop" id="kontakt">
+    <div class="panel reveal">
+      <span class="tag">Kontakt</span>
+      <h2>Lass uns über deinen <em>Garten</em> reden.</h2>
+      <p class="lead">Am liebsten direkt bei dir. Gummistiefel bringen wir selbst mit.</p>
+      <div class="contact">
+        <div class="card"><h3>Adresse</h3><dl><dt>Wo</dt><dd>Musterweg 7<br>12345 Musterstadt</dd><dt>Tel.</dt><dd>01234 567891</dd><dt>Mail</dt><dd>hallo@ranktastisch.example</dd></dl></div>
+        <div class="card"><h3>Erreichbar</h3><dl><dt>Mo–Fr</dt><dd>7:00–17:00 Uhr</dd><dt>Sa</dt><dd>nach Absprache</dd><dt>So</dt><dd>Da wächst alles von allein.</dd></dl></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="finale" id="finale">
+    <p class="say">Und jetzt raus mit dir. <em>Ab in den Garten.</em></p>
+    <a class="btn" href="#planer">Projekt planen</a>
+  </div>
+</div>
 </main>
+
+<footer>
+  <p class="sk">So eine Seite willst du auch?</p>
+  <p>RankTastisch gibt es nicht. Die Website schon: gebaut von <strong>SeitenKino</strong>. Genau so bauen wir auch deine.</p>
+  <p><a href="../../#beispiele">← Zurück zu SeitenKino</a> · <a href="../../#kontakt">Erstgespräch buchen</a></p>
+  <small><a href="../../impressum.html">Impressum</a> · <a href="../../datenschutz.html">Datenschutz</a></small>
+</footer>
+
+<script>
+(() => {
+'use strict';
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- hero: scroll-scrubbed film ---------- */
+const hero = document.getElementById('start');
+const stage = document.getElementById('stage');
+const film = document.getElementById('film');
+const caps = [...stage.querySelectorAll('.cap')].map(el => ({ el, a: +el.dataset.a, b: +el.dataset.b, on: null }));
+const FILM_URL = 'assets/garten-film.mp4';
+
+function heroP(){
+  const r = hero.getBoundingClientRect();
+  const range = hero.offsetHeight - innerHeight;
+  return range > 0 ? clamp(-r.top / range, 0, 1) : 1;
+}
+function updateCaps(p){
+  caps.forEach(c => { const on = p >= c.a && p < c.b; if (on !== c.on) { c.on = on; c.el.classList.toggle('on', on); } });
+  stage.classList.toggle('past', p > 0.02);
+}
+/* hold the title a moment, slow down the moment we surface in the garden */
+const KEYS = [[0,0],[.12,.03],[.55,.5],[.62,.58],[.84,.8],[1,1]];
+function filmT(p){
+  for (let i = 1; i < KEYS.length; i++) {
+    const [p0,t0] = KEYS[i-1], [p1,t1] = KEYS[i];
+    if (p <= p1) return t0 + (t1 - t0) * (p - p0) / (p1 - p0);
+  }
+  return 1;
+}
+let busy = false, pending = null;
+function seek(t){ if (!film.duration) return; if (busy) { pending = t; return; } busy = true; film.currentTime = t; }
+film.addEventListener('error', () => { if (!stage.classList.contains('no-video')) noFilm(); });
+film.addEventListener('seeked', () => { busy = false; if (pending !== null) { const t = pending; pending = null; seek(t); } });
+
+let target = 0, shown = 0, raf = null, last = 0;
+function tick(now){
+  const dt = Math.min(100, now - (last || now)); last = now;
+  shown += (target - shown) * (1 - Math.pow(1 - 0.16, dt / 16.667));
+  if (Math.abs(target - shown) < 0.0006) { shown = target; raf = null; last = 0; } else raf = requestAnimationFrame(tick);
+  if (film.duration) seek(filmT(shown) * (film.duration - 0.05));
+  updateCaps(shown);
+}
+function onHeroScroll(){ target = heroP(); if (raf === null) raf = requestAnimationFrame(tick); }
+
+const useFilm = !reduced && !matchMedia('(max-width: 720px) and (pointer: coarse)').matches;
+async function loadFilm(){
+  try {
+    const res = await fetch(FILM_URL);
+    if (!res.ok) throw 0;
+    const blob = await res.blob();
+    film.src = URL.createObjectURL(blob);
+    film.load();
+    film.addEventListener('loadeddata', () => { stage.classList.add('ready'); seek(filmT(heroP()) * (film.duration - 0.05)); }, { once: true });
+  } catch (e) { noFilm(); }
+}
+function noFilm(){
+  stage.classList.add('no-video');
+  const end = stage.querySelector('.still.end');
+  const swap = () => { end.style.opacity = heroP() > 0.5 ? 1 : 0; };
+  addEventListener('scroll', swap, { passive: true }); swap();
+}
+addEventListener('scroll', onHeroScroll, { passive: true });
+if (useFilm) loadFilm(); else noFilm();
+onHeroScroll();
+
+/* ---------- ground: a root that grows down the page ---------- */
+const ground = document.getElementById('ground');
+const svg = document.getElementById('roots');
+const pMain = document.getElementById('r-main'), pGlow = document.getElementById('r-glow');
+const tip = document.getElementById('tip'), halo = document.getElementById('tip-halo');
+const gBr = document.getElementById('branches');
+const NS = 'http://www.w3.org/2000/svg';
+let L = 0, lut = [], groundTop = 0, branches = [];
+
+// tiny deterministic noise so the root wiggles the same way every load
+let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+
+function buildRoots(){
+  const W = ground.clientWidth;
+  const gr = ground.getBoundingClientRect();
+  groundTop = gr.top + scrollY;
+  const H = ground.offsetHeight;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const small = W < 760;
+  const panels = [...ground.querySelectorAll('.stop .panel')].map(el => {
+    const r = el.getBoundingClientRect();
+    const left = r.left - gr.left, right = r.right - gr.left, top = r.top - gr.top, bottom = r.bottom - gr.top;
+    const wide = (right - left) > W * 0.8;
+    const onLeft = left + (right - left) / 2 < W / 2;
+    // free column beside the panel; full-width panels push the root to the edge
+    let x = wide ? (small ? 14 : Math.max(18, left / 2)) : onLeft ? (right + W) / 2 : left / 2;
+    if (small) x = wide ? 14 : onLeft ? W - 14 : 14;
+    return { top, bottom, x, onLeft };
+  });
+  const fin = document.getElementById('finale');
+  const endY = fin.offsetTop + 30;
+  const pts = [[W / 2, 0], [W / 2, 40]];
+  panels.forEach(pn => { pts.push([pn.x, pn.top + 40]); pts.push([pn.x, pn.bottom - 40]); });
+  pts.push([W / 2, endY]);
+
+  // organic path: smooth curve through points with a gentle sideways wobble
+  seed = 7;
+  const amp = small ? 4 : 14;
+  const dense = [];
+  for (let i = 0; i < pts.length - 1; i++) {
+    const [x0,y0] = pts[i], [x1,y1] = pts[i+1];
+    const n = Math.max(2, Math.round(Math.hypot(x1 - x0, y1 - y0) / 70));
+    for (let k = 0; k < n; k++) {
+      const t = k / n, e = t * t * (3 - 2 * t);
+      dense.push([x0 + (x1 - x0) * e + (rnd() - .5) * amp, y0 + (y1 - y0) * t]);
+    }
+  }
+  dense.push(pts[pts.length - 1]);
+  let d = `M${dense[0][0].toFixed(1)},${dense[0][1].toFixed(1)}`;
+  for (let i = 1; i < dense.length - 1; i++) {
+    const mx = (dense[i][0] + dense[i+1][0]) / 2, my = (dense[i][1] + dense[i+1][1]) / 2;
+    d += ` Q${dense[i][0].toFixed(1)},${dense[i][1].toFixed(1)} ${mx.toFixed(1)},${my.toFixed(1)}`;
+  }
+  const lp = dense[dense.length - 1]; d += ` L${lp[0].toFixed(1)},${lp[1].toFixed(1)}`;
+  pMain.setAttribute('d', d); pGlow.setAttribute('d', d);
+  const sw = small ? 3 : 5;
+  pMain.style.strokeWidth = sw; pGlow.style.strokeWidth = sw * 3;
+  L = pMain.getTotalLength();
+  [pMain, pGlow].forEach(p => { p.style.strokeDasharray = L; });
+  lut = [];
+  const N = Math.max(500, Math.round(L / 8));
+  for (let i = 0; i <= N; i++) { const pt = pMain.getPointAtLength(L * i / N); lut.push([pt.x, pt.y, L * i / N]); }
+
+  // side roots sprout from the main root every so often
+  gBr.innerHTML = ''; branches = [];
+  const every = small ? 260 : 190;
+  for (let s = every * .6; s < L - 80; s += every * (0.7 + rnd() * 0.6)) {
+    const p = pMain.getPointAtLength(s);
+    const side = rnd() < .5 ? -1 : 1;
+    const len = (small ? 26 : 50) + rnd() * (small ? 24 : 70);
+    // roots grow down: aim each side root diagonally downwards, left or right
+    const a1 = Math.PI / 2 - side * (0.7 + rnd() * 0.5);
+    const cx = p.x + Math.cos(a1) * len * .5, cy = p.y + Math.sin(a1) * len * .5;
+    const a2 = a1 + side * 0.4 + (rnd() - .5) * .4;
+    const ex = p.x + Math.cos(a2) * len, ey = p.y + Math.sin(a2) * len + len * .25;
+    const g = document.createElementNS(NS, 'g');
+    const path = document.createElementNS(NS, 'path');
+    path.setAttribute('class', 'br');
+    path.setAttribute('d', `M${p.x.toFixed(1)},${p.y.toFixed(1)} Q${cx.toFixed(1)},${cy.toFixed(1)} ${ex.toFixed(1)},${ey.toFixed(1)}`);
+    path.style.strokeWidth = (small ? 1.4 : 2.2) * (0.7 + rnd() * .5);
+    g.appendChild(path);
+    const dot = document.createElementNS(NS, 'circle');
+    dot.setAttribute('class', 'bt'); dot.setAttribute('cx', ex.toFixed(1)); dot.setAttribute('cy', ey.toFixed(1)); dot.setAttribute('r', small ? 1.8 : 2.6);
+    g.appendChild(dot);
+    gBr.appendChild(g);
+    const bl = path.getTotalLength();
+    path.style.strokeDasharray = `${bl} ${bl + 20}`; path.style.strokeDashoffset = bl;
+    branches.push({ s, g, path, bl, on: false });
+  }
+  grow();
+}
+function grow(){
+  if (!lut.length) return;
+  const yWant = reduced ? Infinity : scrollY + innerHeight * 0.6 - groundTop;
+  let idx = 0;
+  while (idx < lut.length - 1 && lut[idx + 1][1] <= yWant) idx++;
+  const len = lut[idx][2];
+  const off = Math.max(0, L - len);
+  pMain.style.strokeDashoffset = off; pGlow.style.strokeDashoffset = off;
+  const [x, y] = lut[idx];
+  tip.setAttribute('cx', x); tip.setAttribute('cy', y); halo.setAttribute('cx', x); halo.setAttribute('cy', y);
+  const vis = len > 2 && idx < lut.length - 1 ? 1 : 0;
+  tip.style.opacity = vis; halo.style.opacity = vis * .45;
+  branches.forEach(b => {
+    const on = len >= b.s + 10;
+    if (on !== b.on) { b.on = on; b.path.style.strokeDashoffset = on ? 0 : b.bl; b.g.classList.toggle('grown', on); }
+  });
+}
+let gRaf = null;
+addEventListener('scroll', () => { if (gRaf === null) gRaf = requestAnimationFrame(() => { gRaf = null; grow(); }); }, { passive: true });
+let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(buildRoots, 120); });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(buildRoots);
+addEventListener('load', buildRoots);
+buildRoots();
+const relayout = () => requestAnimationFrame(buildRoots);
+
+/* ---------- reveals ---------- */
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -12% 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ---------- layers: what is under the terrace ---------- */
+const LAYERS = [
+  ['Naturstein', 'Die Platten, auf denen du später grillst. Frostfest, rutschfest und mit Gefälle verlegt, damit Regen abläuft und nicht in der Fuge wohnt.'],
+  ['Splittbett', 'Feiner Splitt, auf den Millimeter abgezogen. Hier entscheidet sich, ob später eine Platte wackelt.'],
+  ['Tragschicht', 'Schotter, Lage für Lage verdichtet. Sie trägt alles, was oben passiert: Gartenmöbel, Partys, Schwiegermutter.'],
+  ['Frostschutzschicht', 'Lässt Wasser ablaufen, bevor es gefriert. Ohne sie hebt der Frost die Terrasse jeden Winter ein Stück an.'],
+  ['Untergrund', 'Wir prüfen den Boden und verdichten ihn, bevor überhaupt etwas draufkommt. Lehm, Sand oder Bauschutt: Das muss man wissen.']
+];
+const stack = document.getElementById('stack');
+const info = document.getElementById('layer-info');
+function showLayer(i){
+  stack.querySelectorAll('.layer').forEach((b, k) => b.setAttribute('aria-pressed', k === i ? 'true' : 'false'));
+  info.innerHTML = `<h3>${LAYERS[i][0]}</h3><p>${LAYERS[i][1]}</p>`;
+}
+stack.addEventListener('click', e => { const b = e.target.closest('.layer'); if (b) showLayer(+b.dataset.i); });
+showLayer(0);
+const pf = document.getElementById('pfusch');
+pf.addEventListener('click', () => {
+  const on = pf.getAttribute('aria-pressed') !== 'true';
+  pf.setAttribute('aria-pressed', on);
+  stack.classList.toggle('pfusch', on);
+  document.getElementById('pfusch-warn').hidden = !on;
+  if (on) info.innerHTML = '<h3>Die Spar-Version</h3><p>Platten direkt auf eine dicke Sandschicht. Keine Tragschicht, kein Frostschutz. Sieht am ersten Tag genauso aus. Kostet am Ende doppelt.</p>';
+  else showLayer(0);
+  setTimeout(relayout, 750);
+});
+
+/* ---------- before / after ---------- */
+const ba = document.getElementById('ba');
+const baIn = ba.querySelector('input');
+const setX = v => ba.style.setProperty('--x', v + '%');
+baIn.addEventListener('input', () => setX(baIn.value));
+setX(50);
+
+/* ---------- planner (demo, nothing is sent) ---------- */
+const COST = { terrasse:[6000,12000,20000], rasen:[1500,3500,7000], pflanzen:[2000,4500,9000], wasser:[4000,8000,15000], zaun:[2500,5000,9000], pflege:[0,0,0] };
+const pState = { wishes: new Set(), size: null, budget: null };
+const pSteps = [...document.querySelectorAll('#planer .step')];
+const pLis = [...document.querySelectorAll('#p-steps li')];
+let pCur = 0;
+function pGo(n){
+  pCur = n;
+  pSteps.forEach((s, i) => s.classList.toggle('on', i === n));
+  pLis.forEach((li, i) => { li.classList.toggle('on', i === n); li.classList.toggle('done', i < n); });
+  const f = pSteps[n].querySelector('.chip, button'); if (f && n > 0) f.focus({ preventScroll: true });
+  if (n === 3) pSteps[n].scrollIntoView({ block: 'nearest', behavior: reduced ? 'auto' : 'smooth' });
+  relayout();
+}
+const pNext = document.getElementById('p-next');
+document.getElementById('wishes').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if (!b) return;
+  const on = b.getAttribute('aria-pressed') !== 'true';
+  b.setAttribute('aria-pressed', on);
+  on ? pState.wishes.add(b.dataset.k) : pState.wishes.delete(b.dataset.k);
+  pNext.disabled = pState.wishes.size === 0;
+});
+pNext.addEventListener('click', () => pGo(1));
+const eur = n => n.toLocaleString('de-DE', { maximumFractionDigits: 0 }) + ' €';
+const round = n => Math.round(n / 500) * 500;
+function result(){
+  let sum = 0; pState.wishes.forEach(k => sum += COST[k][pState.size]);
+  const lo = round(sum * 0.8), hi = round(sum * 1.3);
+  const names = [...document.querySelectorAll('#wishes .chip[aria-pressed="true"]')].map(b => b.textContent.trim());
+  const onlyCare = sum === 0;
+  let html = `<span class="tag">Dein Rahmen</span>`;
+  if (onlyCare) {
+    html += `<p class="big">ab 79 € im Monat</p><p>Pflege-Abo: Rasen, Hecke, Beete. Wir kommen, du genießt.</p><div class="verdict ok">Passt in jedes Budget. Wir melden uns mit einem Termin.</div>`;
+  } else {
+    html += `<p class="big">${eur(lo)} bis ${eur(hi)}</p><p>Für: ${names.join(', ')}.${pState.wishes.has('pflege') ? ' Pflege-Abo ab 79 € im Monat kommt dazu.' : ''}</p>`;
+    html += pState.budget >= lo
+      ? `<div class="verdict ok">Das passt gut zusammen. Wir melden uns mit einem Termin für die Besichtigung.</div>`
+      : `<div class="verdict hm">Ehrlich gesagt: Dafür wird das Budget knapp. Unser Vorschlag: in Etappen bauen, zuerst das, was dir am wichtigsten ist. Das sagen wir dir lieber jetzt als nach der Besichtigung.</div>`;
+  }
+  document.getElementById('p-result').innerHTML = html;
+}
+document.querySelectorAll('#planer .chips.single').forEach(group => {
+  group.addEventListener('click', e => {
+    const b = e.target.closest('.chip'); if (!b) return;
+    group.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', c === b ? 'true' : 'false'));
+    pState[group.dataset.pick] = +b.dataset.v;
+    setTimeout(() => { if (pCur === 2) { result(); pGo(3); } else pGo(pCur + 1); }, reduced ? 0 : 220);
+  });
+});
+document.querySelectorAll('#planer [data-back]').forEach(b => b.addEventListener('click', () => pGo(Math.max(0, pCur - 1))));
+document.getElementById('p-restart').addEventListener('click', () => {
+  document.querySelectorAll('#planer .chip').forEach(c => c.setAttribute('aria-pressed', 'false'));
+  pState.wishes.clear(); pState.size = pState.budget = null; pNext.disabled = true;
+  pGo(0);
+});
+
+/* ---------- 60-second application (demo, nothing is sent) ---------- */
+const apply = document.getElementById('apply'), thanks = document.getElementById('thanks');
+apply.querySelector('[data-pick="start"]').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if (!b) return;
+  b.parentElement.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', c === b ? 'true' : 'false'));
+});
+apply.addEventListener('submit', e => {
+  e.preventDefault();
+  const name = document.getElementById('a-name').value.trim().split(/\s+/)[0] || '';
+  document.getElementById('t-name').textContent = name ? ', ' + name : '';
+  apply.hidden = true; thanks.hidden = false; relayout();
+});
+document.getElementById('a-restart').addEventListener('click', () => {
+  apply.reset(); apply.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', 'false'));
+  thanks.hidden = true; apply.hidden = false; relayout();
+});
+})();
+</script>
 </body>
 </html>
