@@ -144,6 +144,15 @@ input,select{font:inherit;padding:10px 12px;border:2px solid var(--ink);backgrou
 .contact dd{margin:0}
 
 /* finale */
+.car.gone{opacity:0;transition:opacity .2s}
+.car .lines{position:absolute;top:30%;right:92%;width:140%;height:40%;opacity:calc(var(--speed,0) * 1);pointer-events:none;
+  background:repeating-linear-gradient(180deg,transparent 0 9px,var(--ink) 9px 12px,transparent 12px 22px);
+  -webkit-mask:linear-gradient(90deg,transparent,#000 70%);mask:linear-gradient(90deg,transparent,#000 70%)}
+.car.flip .lines{right:auto;left:92%;-webkit-mask:linear-gradient(270deg,transparent,#000 70%);mask:linear-gradient(270deg,transparent,#000 70%)}
+.car:not(.dashing) .lines{opacity:0}
+.sfx.wroom{position:absolute;right:6vw;bottom:70px;font-size:clamp(2.6rem,7vw,5.5rem);opacity:0;transform:rotate(-6deg) scale(.6);transition:opacity .25s,transform .35s cubic-bezier(.3,1.8,.5,1);pointer-events:none}
+.sfx.wroom.on{opacity:1;transform:rotate(-6deg) scale(1)}
+
 .finale{position:relative;z-index:1;text-align:center;padding:60px 20px 150px}
 .finale .bubble{display:inline-block;margin-bottom:28px}
 footer{background:var(--ink);color:#eadfca;padding:44px 20px 50px;text-align:center;border-top:var(--line) solid var(--ink)}
@@ -204,7 +213,7 @@ footer small{display:block;margin-top:18px;opacity:.7}
 <!-- RIDE: zigzag road with the repaired car -->
 <div class="ride dots" id="ride">
   <svg class="road" id="road" aria-hidden="true"><path class="edge" id="road-edge"/><path class="asph" id="road-asph"/><path class="mid" id="road-mid"/></svg>
-  <div class="car" id="car" aria-hidden="true"><img src="assets/auto-seite.webp" alt="" width="900" height="600"></div>
+  <div class="car" id="car" aria-hidden="true"><span class="lines"></span><img src="assets/auto-seite.webp" alt="" width="900" height="600"></div>
 
   <section class="stop" id="leistungen">
     <div class="panel reveal">
@@ -301,6 +310,7 @@ footer small{display:block;margin-top:18px;opacity:.7}
   </section>
 
   <div class="finale" id="finale">
+    <div class="sfx wroom" id="wroom" aria-hidden="true">WROOOOM!</div>
     <div class="bubble">Gute Fahrt! Und bis zur nächsten Inspektion.</div><br>
     <a class="btn" href="#termin">Termin buchen</a>
   </div>
@@ -387,6 +397,7 @@ const svg = document.getElementById('road');
 const pEdge = document.getElementById('road-edge'), pAsph = document.getElementById('road-asph'), pMid = document.getElementById('road-mid');
 const car = document.getElementById('car');
 const carImg = car.querySelector('img');
+const sfxWroom = document.getElementById('wroom');
 let lut = [], rideTop = 0, rideH = 0, roadW = 40;
 
 function buildRoad(){
@@ -433,32 +444,59 @@ function buildRoad(){
   for (let i = 0; i <= N; i++) { const pt = pAsph.getPointAtLength(L * i / N); lut.push([pt.x, pt.y]); }
   placeCar();
 }
-let flip = false;
-function placeCar(){
-  if (!lut.length) return;
-  const yWant = scrollY + innerHeight * 0.55 - rideTop;
-  const endY = lut[lut.length - 1][1];
-  let idx = 0;
-  if (yWant < endY) {
-    while (idx < lut.length - 1 && lut[idx+1][1] <= yWant) idx++;
-  } else {
-    // final straight: drive off with the last bit of scrolling
-    let j = lut.length - 1; while (j > 0 && lut[j-1][1] >= endY - 0.5) j--;
-    const maxScroll = document.documentElement.scrollHeight - innerHeight;
-    const startS = rideTop + endY - innerHeight * 0.55;
-    const k = clamp((scrollY - startS) / Math.max(1, maxScroll - startS), 0, 1);
-    idx = Math.round(j + (lut.length - 1 - j) * k);
-  }
+let flip = false, dash = null, gone = false;
+function poseAt(idx, extraAng){
   const [x, y] = lut[idx];
   const [xn, yn] = lut[Math.min(lut.length - 1, idx + 4)];
   const [xp, yp] = lut[Math.max(0, idx - 4)];
   const dx = xn - xp, dy = yn - yp;
   if (Math.abs(dx) > Math.abs(dy) * 0.25) flip = dx < 0;
   let ang = Math.atan2(dy, Math.abs(dx) || 0.001) * 180 / Math.PI;
-  ang = clamp(ang * 0.4, -12, 12) * (flip ? -1 : 1);
+  ang = clamp(ang * 0.4, -12, 12) * (flip ? -1 : 1) + (extraAng || 0);
   const w = car.offsetWidth, h = w * 0.667;
   car.style.transform = `translate(${(x - w/2).toFixed(1)}px, ${(y - h*0.82).toFixed(1)}px) rotate(${ang.toFixed(1)}deg)`;
   car.classList.toggle('flip', flip);
+}
+function idxForY(yWant){
+  let idx = 0;
+  while (idx < lut.length - 1 && lut[idx+1][1] <= yWant) idx++;
+  return idx;
+}
+// after the last curve the car floors it and leaves on its own
+function startDash(fromIdx){
+  if (reduced) { gone = true; car.classList.add('gone'); return; }
+  const t0 = performance.now(), D = 1300, from = fromIdx, to = lut.length - 1;
+  flip = false; car.classList.add('dashing');
+  sfxWroom.classList.add('on');
+  dash = requestAnimationFrame(function step(now){
+    const k = clamp((now - t0) / D, 0, 1);
+    const e = k * k * k;                       // slow roll, then full throttle
+    const idx = Math.round(from + (to - from) * e);
+    const wheelie = k > 0.25 && k < 0.8 ? -5 * Math.sin((k - 0.25) / 0.55 * Math.PI) : 0;
+    poseAt(idx, wheelie);
+    car.style.setProperty('--speed', Math.min(1, e * 3).toFixed(2));
+    if (k < 1) dash = requestAnimationFrame(step);
+    else { dash = null; gone = true; car.classList.remove('dashing'); car.classList.add('gone'); setTimeout(() => sfxWroom.classList.remove('on'), 900); }
+  });
+}
+function resetDash(){
+  if (dash) cancelAnimationFrame(dash);
+  dash = null; gone = false;
+  car.classList.remove('dashing', 'gone');
+  sfxWroom.classList.remove('on');
+}
+function placeCar(){
+  if (!lut.length) return;
+  const yWant = scrollY + innerHeight * 0.55 - rideTop;
+  const endY = lut[lut.length - 1][1];
+  const trigY = endY - innerHeight * 0.38;
+  const maxScroll = document.documentElement.scrollHeight - innerHeight;
+  const nearBottom = scrollY >= maxScroll - innerHeight * 0.45;
+  if (dash || gone) {
+    if (yWant < trigY - 160 && !nearBottom) resetDash(); else return;
+  }
+  if (yWant >= trigY || nearBottom) { startDash(idxForY(Math.min(yWant, trigY))); return; }
+  poseAt(idxForY(yWant));
 }
 let rideRaf = null;
 addEventListener('scroll', () => { if (rideRaf === null) rideRaf = requestAnimationFrame(() => { rideRaf = null; placeCar(); }); }, { passive: true });
