@@ -13,10 +13,13 @@
 <meta property="og:url" content="https://seitenkino.de/">
 <meta property="og:image" content="https://seitenkino.de/assets/hero-ending.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23060c1a'/%3E%3Crect x='12' y='18' width='40' height='28' rx='4' fill='none' stroke='%235fe1ff' stroke-width='4'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%23e7c98f'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/Unbounded.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/HankenGrotesk.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+/* Schriften liegen lokal (keine Verbindung zu Google, DSGVO) */
+@font-face{font-family:"Unbounded";font-style:normal;font-weight:400 700;font-display:swap;src:url("assets/fonts/Unbounded.woff2") format("woff2")}
+@font-face{font-family:"Hanken Grotesk";font-style:normal;font-weight:400 600;font-display:swap;src:url("assets/fonts/HankenGrotesk.woff2") format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:400;font-display:swap;src:url("assets/fonts/IBMPlexMono.woff2") format("woff2")}
 :root{
   --canvas:#060c1a;
   --canvas-2:#081227;
@@ -242,6 +245,7 @@ section{position:relative;z-index:1}
 .price li::before{content:"";position:absolute;left:0;top:.62em;width:14px;height:2px;background:var(--line);box-shadow:0 0 8px var(--line)}
 .price .btn{margin-top:30px}
 .pricing .note{margin-top:22px;color:var(--text-secondary);font-size:.95rem}
+.pricing .note.fine{margin-top:6px;font-size:.8rem;opacity:.75}
 
 /* faq */
 .faq .wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:60px;align-items:start}
@@ -447,23 +451,26 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
             <li>Eigenes Design, keine Vorlage</li>
             <li>Texte, die deine Kunden verstehen</li>
             <li>Optimiert für Handy und Computer</li>
-            <li>Impressum, Datenschutz, Cookie-Hinweis</li>
+            <li>Impressum, Datenschutz, Cookie-Hinweis wo nötig</li>
+            <li>Grundlagen für Google: saubere Struktur, schnelle Ladezeit</li>
             <li>Domain und Zugänge gehören dir</li>
           </ul>
           <a class="btn" href="#kontakt">Erstgespräch buchen</a>
         </div>
         <div class="price reveal" style="--i:2">
-          <span class="tag">Instandhaltung</span>
-          <div class="amt"><b>99 €</b><span>pro Monat</span></div>
+          <span class="tag">Hosting und Instandhaltung</span>
+          <div class="amt"><b>129 €</b><span>pro Monat</span></div>
           <ul>
-            <li>Hosting und Technik laufen</li>
-            <li>Sicherheits-Updates</li>
-            <li>Kleine Änderungen auf Zuruf</li>
+            <li>Hosting inklusive</li>
+            <li>SSL-Verschlüsselung</li>
+            <li>Regelmäßige Backups</li>
+            <li>Erreichbarkeit und Technik im Blick</li>
             <li>Rechtstexte aktuell halten</li>
           </ul>
         </div>
       </div>
       <p class="note reveal">Der genaue Festpreis steht nach dem Erstgespräch fest, bevor du dich entscheidest.</p>
+      <p class="note fine reveal">Alle Preise sind Endpreise. Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.</p>
     </div>
   </section>
 
@@ -474,11 +481,11 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
         <h2>Was andere vorher wissen wollten.</h2>
       </div>
       <div class="list reveal" style="--i:1">
-        <details><summary>Gibt es versteckte Kosten?</summary><p>Nein. Du bekommst vorher einen Festpreis. Die Website kostet ab 999 € einmalig, die Instandhaltung 99 € im Monat. Mehr kommt nicht dazu.</p></details>
+        <details><summary>Gibt es versteckte Kosten?</summary><p>Nein. Du bekommst vor dem Start einen Festpreis für deine Website, ab 999 €. Hosting und Instandhaltung kosten 129 € im Monat. Wenn später neue Wünsche dazukommen, sagen wir dir vorher, was sie kosten.</p></details>
         <details><summary>Bin ich danach an euch gebunden?</summary><p>Nein. Domain, Zugänge und Inhalte gehören dir. Wenn du wechseln willst, bekommst du alles mit.</p></details>
         <details><summary>Wie lange dauert es?</summary><p>Das hängt von deinem Projekt ab. Im Erstgespräch bekommst du einen klaren Zeitplan, bevor es losgeht.</p></details>
         <details><summary>Was ist mit Abmahnungen?</summary><p>Wir achten von Anfang an auf Impressum, Datenschutzerklärung und Cookie-Hinweis. Eine Rechtsberatung ersetzt das nicht, die typischen Stolperfallen vermeiden wir aber.</p></details>
-        <details><summary>Kann ich später etwas ändern lassen?</summary><p>Ja. Kleine Änderungen machen wir im Rahmen der Instandhaltung für dich. Du schreibst uns einfach, was neu soll.</p></details>
+        <details><summary>Kann ich später etwas ändern lassen?</summary><p>Ja, jederzeit. Du schreibst uns einfach, was neu soll, und wir setzen es für dich um.</p></details>
         <details><summary>Warum sieht keine Seite aus wie die andere?</summary><p>Weil wir keine Vorlagen benutzen. Jede Seite entsteht neu, mit eigenem Design, eigenen Texten und eigenen Bildern.</p></details>
       </div>
     </div>
@@ -524,13 +531,13 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
       <a class="brand" href="#top"><span class="s">Seiten</span><span class="k">Kino</span><span class="dot" aria-hidden="true"></span></a>
       <p style="margin-top:12px;max-width:34ch">Individuelles Webdesign für Firmen aus der Region.</p>
     </div>
-    <div id="impressum">
-      <h4>Impressum</h4>
-      <address>SeitenKino<br>Inhaberin: Jeannine Lieske<br>[Straße und Hausnummer]<br>[PLZ Ort]<br>E-Mail: <a href="mailto:Info@SeitenKino.de">Info@SeitenKino.de</a><br>[Telefon]</address>
+    <div>
+      <h4>Kontakt</h4>
+      <address>SeitenKino<br>Jeannine Lieske<br>[PLZ Ort]<br><a href="mailto:Info@SeitenKino.de">Info@SeitenKino.de</a></address>
     </div>
     <div>
       <h4>Rechtliches</h4>
-      <p><a href="#impressum">Impressum</a><br><a href="#datenschutz" id="datenschutz">Datenschutz</a> [folgt]</p>
+      <p><a href="impressum.html">Impressum</a><br><a href="datenschutz.html">Datenschutz</a></p>
     </div>
     <div class="bottom"><span>© 2026 SeitenKino</span><span>Diese Seite gibt es nur einmal.</span></div>
   </div>
