@@ -274,6 +274,10 @@ form{display:grid;gap:16px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 form .btn{justify-self:start;margin-top:6px}
 .formnote{font-size:.88rem;color:var(--text-secondary)}
+.formnote a{color:var(--text-primary)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.ts:empty{display:none}
+.btn[disabled]{opacity:.6;pointer-events:none}
 .success{display:none;padding:26px;border-radius:18px;border:1px solid rgba(95,225,255,.4);background:rgba(95,225,255,.06)}
 .success h3{font-size:1.25rem}
 .success p{margin-top:10px;color:var(--text-secondary)}
@@ -512,12 +516,14 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
               <div class="field"><label for="f-tel">Telefon (optional)</label><input id="f-tel" name="tel" type="tel" autocomplete="tel" placeholder="0171 2345678"></div>
             </div>
             <div class="field"><label for="f-msg">Worum geht es?</label><textarea id="f-msg" name="nachricht" placeholder="Zum Beispiel: Ich brauche eine neue Website für meinen Betrieb."></textarea></div>
+            <div class="hp" aria-hidden="true"><label for="f-web">Website</label><input id="f-web" name="website" tabindex="-1" autocomplete="off"></div>
+            <div class="ts" id="ts"></div>
             <button class="btn" type="submit">Erstgespräch anfragen</button>
-            <p class="formnote">Beim Absenden öffnet sich dein E-Mail-Programm mit deiner fertigen Nachricht an Info@SeitenKino.de.</p>
+            <p class="formnote" id="formnote">Deine Anfrage geht direkt an uns. Zum Schutz vor Spam prüft Cloudflare Turnstile kurz, ob ein Mensch absendet. Mehr dazu in der <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
           </form>
           <div class="success" role="status" aria-live="polite">
-            <h3>Fast geschafft.</h3>
-            <p>Dein E-Mail-Programm hat sich mit deiner Nachricht geöffnet. Einfach dort absenden, dann melden wir uns bei dir.</p>
+            <h3 id="succ-h">Danke, deine Anfrage ist da.</h3>
+            <p id="succ-p">Wir melden uns bei dir und finden einen Termin, der dir passt.</p>
           </div>
         </div>
       </div>
@@ -534,7 +540,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
     </div>
     <div>
       <h4>Kontakt</h4>
-      <address>SeitenKino<br>Jeannine Lieske<br>[PLZ Ort]<br><a href="mailto:Info@SeitenKino.de">Info@SeitenKino.de</a></address>
+      <address>SeitenKino<br>Jeannine Lieske<br>46399 Bocholt<br><a href="mailto:Info@SeitenKino.de">Info@SeitenKino.de</a></address>
     </div>
     <div>
       <h4>Rechtliches</h4>
@@ -882,9 +888,39 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   function unpinFinalStates(){ drawShown = -1; drawCables(); layoutProcess(); }
   reduce.addEventListener('change', e => { if (e.matches) pinToFinalStates(); else { unpinFinalStates(); applyHeroMode(); } });
 
-  /* ---------- form: honest mailto ---------- */
+  /* ---------- form: direct send (Turnstile + /api/kontakt), mailto as fallback ---------- */
   const form = document.getElementById('form');
-  form.addEventListener('submit', e => {
+  const formBtn = form.querySelector('button[type=submit]');
+  let api = null, tsWidget = null, tsToken = '';
+  function setSuccess(h, p){ document.getElementById('succ-h').textContent = h; document.getElementById('succ-p').textContent = p; }
+  function useMailtoNote(){ document.getElementById('formnote').textContent = 'Beim Absenden öffnet sich dein E-Mail-Programm mit deiner fertigen Nachricht an Info@SeitenKino.de.'; }
+  function loadTurnstile(sitekey){
+    window.skTsReady = () => {
+      tsWidget = turnstile.render('#ts', { sitekey, theme: 'dark', language: 'de', appearance: 'interaction-only',
+        callback: t => { tsToken = t; }, 'expired-callback': () => { tsToken = ''; }, 'error-callback': () => { tsToken = ''; } });
+    };
+    const s = document.createElement('script');
+    s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=skTsReady&render=explicit';
+    s.async = true; s.onerror = () => { api = null; useMailtoNote(); };
+    document.head.appendChild(s);
+  }
+  // Turnstile erst laden, wenn das Formular in die Nähe kommt.
+  const formIO = new IntersectionObserver(es => {
+    if (!es.some(e => e.isIntersecting)) return;
+    formIO.disconnect();
+    fetch('/api/kontakt', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(c => {
+      if (c && c.ready && c.sitekey) { api = c; loadTurnstile(c.sitekey); } else useMailtoNote();
+    }).catch(useMailtoNote);
+  }, { rootMargin: '800px 0px' });
+  formIO.observe(form);
+
+  function sendMailto(f, name, mail){
+    const body = `Name: ${name}\nFirma: ${f.get('firma') || ''}\nE-Mail: ${mail}\nTelefon: ${f.get('tel') || ''}\n\n${f.get('nachricht') || ''}`;
+    location.href = `mailto:Info@SeitenKino.de?subject=${encodeURIComponent('Erstgespräch: ' + (f.get('firma') || name))}&body=${encodeURIComponent(body)}`;
+    setSuccess('Fast geschafft.', 'Dein E-Mail-Programm hat sich mit deiner Nachricht geöffnet. Einfach dort absenden, dann melden wir uns bei dir.');
+    form.classList.add('sent');
+  }
+  form.addEventListener('submit', async e => {
     e.preventDefault();
     const f = new FormData(form);
     const name = (f.get('name') || '').trim(), mail = (f.get('email') || '').trim();
@@ -893,9 +929,20 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
       form.querySelector(!name ? '#f-name' : '#f-mail').setAttribute('aria-invalid', 'true');
       return;
     }
-    const body = `Name: ${name}\nFirma: ${f.get('firma') || ''}\nE-Mail: ${mail}\nTelefon: ${f.get('tel') || ''}\n\n${f.get('nachricht') || ''}`;
-    location.href = `mailto:Info@SeitenKino.de?subject=${encodeURIComponent('Erstgespräch: ' + (f.get('firma') || name))}&body=${encodeURIComponent(body)}`;
-    form.classList.add('sent');
+    if (!api) { sendMailto(f, name, mail); return; }
+    if (!tsToken) { document.getElementById('formnote').textContent = 'Einen Moment, die Spam-Prüfung läuft noch. Bitte gleich noch einmal auf „Erstgespräch anfragen“ tippen.'; return; }
+    formBtn.disabled = true; formBtn.textContent = 'Wird gesendet …';
+    const data = Object.fromEntries(f); data.token = tsToken;
+    let ok = false;
+    try {
+      const r = await fetch('/api/kontakt', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(data) });
+      ok = r.ok && (await r.json()).ok;
+    } catch (_) {}
+    if (ok) { form.classList.add('sent'); return; }
+    // Senden fehlgeschlagen: nichts geht verloren, das E-Mail-Programm übernimmt.
+    formBtn.disabled = false; formBtn.textContent = 'Erstgespräch anfragen';
+    if (tsWidget !== null) { try { turnstile.reset(tsWidget); } catch (_) {} tsToken = ''; }
+    sendMailto(f, name, mail);
   });
 
   /* ---------- pause on hidden tab ---------- */
