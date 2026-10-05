@@ -133,6 +133,8 @@ section.block{padding-block:clamp(72px,10vw,120px)}
 .map .note{position:absolute;left:14px;bottom:12px;font-family:var(--f-data);font-size:11.5px;color:var(--moss-soft)}
 .info{background:var(--lichen);border:1px solid var(--line);border-radius:18px;padding:22px;min-height:150px}
 .info h3{margin-bottom:6px}
+.info .thumb{float:right;width:42%;max-width:200px;aspect-ratio:4/3;object-fit:cover;border-radius:12px;margin:0 0 10px 16px}
+.info::after{content:"";display:block;clear:both}
 .info .km{font-family:var(--f-data);font-size:13px;color:var(--granite-deep);margin-bottom:8px}
 .filters{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0}
 .filters button{font:500 14px var(--f-body);padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--paper);color:var(--moss);cursor:pointer;display:flex;align-items:center;gap:8px}
@@ -292,12 +294,12 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
       </div>
     </div>
     <div class="gallery" aria-label="Foto's">
-      <figure class="slot g-a" style="margin:0" data-img="huis-buiten" data-alt="Vakantiewoning De Steen"><!--ph--><div class="ph"><b>Foto</b>Buitenaanzicht / Außenansicht</div><!--/ph--></figure>
-      <figure class="slot g-b" style="margin:0" data-img="woonkamer" data-alt="Woonkamer met open keuken"><!--ph--><div class="ph"><b>Foto</b>Woonkamer</div><!--/ph--></figure>
-      <figure class="slot g-c" style="margin:0" data-img="keuken" data-alt="Keuken"><!--ph--><div class="ph"><b>Foto</b>Keuken</div><!--/ph--></figure>
-      <figure class="slot g-d" style="margin:0" data-img="slaapkamer" data-alt="Slaapkamer"><!--ph--><div class="ph"><b>Foto</b>Slaapkamer</div><!--/ph--></figure>
-      <figure class="slot g-e" style="margin:0" data-img="badkamer" data-alt="Badkamer"><!--ph--><div class="ph"><b>Foto</b>Badkamer</div><!--/ph--></figure>
-      <figure class="slot g-f" style="margin:0" data-img="terras" data-alt="Ontbijt op het terras"><!--ph--><div class="ph"><b>GPT</b>Terras-sfeer</div><!--/ph--></figure>
+      <figure class="slot g-a" style="margin:0" data-img="huis-buiten" data-alt="Vakantiewoning De Steen"><img src="img/huis-buiten.jpg" alt="Vakantiewoning De Steen" loading="lazy" decoding="async"></figure>
+      <figure class="slot g-b" style="margin:0" data-img="woonkamer" data-alt="Woonkamer met open keuken"><img src="img/woonkamer.jpg" alt="Woonkamer met open keuken" loading="lazy" decoding="async"></figure>
+      <figure class="slot g-c" style="margin:0" data-img="keuken" data-alt="Keuken"><img src="img/keuken.jpg" alt="Keuken" loading="lazy" decoding="async"></figure>
+      <figure class="slot g-d" style="margin:0" data-img="slaapkamer" data-alt="Slaapkamer"><img src="img/slaapkamer.jpg" alt="Slaapkamer" loading="lazy" decoding="async"></figure>
+      <figure class="slot g-e" style="margin:0" data-img="badkamer" data-alt="Badkamer"><img src="img/badkamer.jpg" alt="Badkamer" loading="lazy" decoding="async"></figure>
+      <figure class="slot g-f" style="margin:0" data-img="tuin" data-alt="Tuin met terras"><img src="img/tuin.jpg" alt="Tuin met terras" loading="lazy" decoding="async"></figure>
     </div>
   </div>
 </section>
@@ -490,22 +492,23 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   }
   // Orte: x/y schematisch um das Haus (330,350), km ungefähr
   var P=[
+    {id:'grotesteen',img:'img/map-grotesteen.jpg',cat:'zien',x:352,y:326,nl:'De Grote Steen',de:'De Grote Steen',km:'',tnl:'De grote zwerfkei waar de woning naar vernoemd is, vlak bij de Wooldseweg.',tde:'Der große Findling, nach dem das Haus benannt ist, direkt an der Wooldseweg.'},
     {id:'winterswijk',cat:'plaats',x:330,y:235,nl:'Winterswijk',de:'Winterswijk',km:'± 5 km',tnl:'Gezellig centrum met markt, winkels en het VVV. Plaats op een steenworp van de Duitse grens.',tde:'Gemütliches Zentrum mit Markt, Geschäften und Touristinfo. Nur einen Steinwurf von der deutschen Grenze.'},
     {id:'bredevoort',cat:'plaats',x:150,y:290,nl:'Bredevoort',de:'Bredevoort',km:'± 10 km',tnl:'Boeken- en vestingstad: antiquariaten in een historisch stadje.',tde:'Bücher- und Festungsstadt: Antiquariate in einem historischen Städtchen.'},
     {id:'aalten',cat:'plaats',x:95,y:345,nl:'Aalten',de:'Aalten',km:'± 13 km',tnl:'Dorp vlak bij Bredevoort, op korte afstand.',tde:'Ort nahe Bredevoort, schnell erreicht.'},
     {id:'lichtenvoorde',cat:'plaats',x:150,y:150,nl:'Lichtenvoorde',de:'Lichtenvoorde',km:'± 15 km',tnl:'Dorp op korte afstand in de Achterhoek.',tde:'Ort im Achterhoek, nicht weit entfernt.'},
     {id:'groenlo',cat:'plaats',x:215,y:85,nl:'Groenlo',de:'Groenlo',km:'± 17 km',tnl:'Vestingstad met wallen en grachten.',tde:'Festungsstadt mit Wällen und Grachten.'},
     {id:'bocholt',cat:'plaats',x:150,y:530,nl:'Bocholt (DE)',de:'Bocholt (DE)',km:'± 17 km',tnl:'De Duitse winkelstad net over de grens.',tde:'Die deutsche Einkaufsstadt gleich hinter der Grenze.'},
-    {id:'wooldseveen',cat:'natuur',x:470,y:385,nl:'Wooldse Veen',de:'Wooldse Veen',km:'± 4 km',tnl:'Hoogveen aan de grens, vlak bij de woning.',tde:'Hochmoor an der Grenze, ganz nah am Haus.'},
-    {id:'bekkendelle',cat:'natuur',x:455,y:210,nl:'Bekkendelle',de:'Bekkendelle',km:'± 8 km',tnl:'Bosgebied met beek, met eigen wandelroute.',tde:'Waldgebiet am Bach, mit eigener Wanderroute.'},
+    {id:'wooldseveen',img:'img/map-wooldseveen.jpg',cat:'natuur',x:470,y:385,nl:'Wooldse Veen',de:'Wooldse Veen',km:'± 4 km',tnl:'Hoogveen aan de grens, vlak bij de woning.',tde:'Hochmoor an der Grenze, ganz nah am Haus.'},
+    {id:'bekkendelle',img:'img/map-bekkendelle.jpg',cat:'natuur',x:455,y:210,nl:'Bekkendelle',de:'Bekkendelle',km:'± 8 km',tnl:'Bosgebied met beek, met eigen wandelroute.',tde:'Waldgebiet am Bach, mit eigener Wanderroute.'},
     {id:'korenburgerveen',cat:'natuur',x:95,y:205,nl:'Korenburgerveen',de:'Korenburgerveen',km:'± 14 km',tnl:'Uitgestrekt veengebied tussen Winterswijk en Groenlo.',tde:'Weites Moorgebiet zwischen Winterswijk und Groenlo.'},
-    {id:'steengroeve',cat:'zien',x:440,y:290,nl:'Steengroeve',de:'Steinbruch',km:'± 7 km',tnl:'De fraaie steengroeve van Winterswijk.',tde:'Der schöne Steinbruch von Winterswijk.'},
-    {id:'berenschot',cat:'zien',x:290,y:400,nl:'Berenschot’s Watermolen',de:'Berenschots Wassermühle',km:'± 2 km',tnl:'Rustieke water- en korenmolen in de Woold.',tde:'Rustikale Wasser- und Kornmühle im Woold.'},
+    {id:'steengroeve',img:'img/map-steengroeve.jpg',cat:'zien',x:440,y:290,nl:'Steengroeve',de:'Steinbruch',km:'± 7 km',tnl:'De fraaie steengroeve van Winterswijk.',tde:'Der schöne Steinbruch von Winterswijk.'},
+    {id:'berenschot',img:'img/map-berenschot.jpg',cat:'zien',x:290,y:400,nl:'Berenschot’s Watermolen',de:'Berenschots Wassermühle',km:'± 2 km',tnl:'Rustieke water- en korenmolen in de Woold.',tde:'Rustikale Wasser- und Kornmühle im Woold.'},
     {id:'freriks',cat:'zien',x:305,y:268,end:1,nl:'Museum Freriks',de:'Museum Freriks',km:'± 5 km',tnl:'Museum en heemtuin Freriks in Winterswijk.',tde:'Museum und Heimatgarten Freriks in Winterswijk.'},
     {id:'hilgelo',cat:'zien',x:350,y:150,nl:'’t Hilgelo',de:'’t Hilgelo',km:'± 8 km',tnl:'Recreatieplas om te zwemmen en te ontspannen.',tde:'Badesee zum Schwimmen und Entspannen.'},
     {id:'slingeplas',cat:'zien',x:220,y:345,nl:'Slingeplas',de:'Slingeplas',km:'± 6 km',tnl:'Recreatiegebied met plas.',tde:'Freizeitgebiet mit See.'}
   ];
-  var current='wooldseveen', g=document.getElementById('pins'), ns='http://www.w3.org/2000/svg';
+  var current='grotesteen', g=document.getElementById('pins'), ns='http://www.w3.org/2000/svg';
   P.forEach(function(p){
     var el=document.createElementNS(ns,'g');el.setAttribute('class','pin cat-'+p.cat);el.setAttribute('tabindex','0');el.setAttribute('role','button');el.dataset.id=p.id;
     var c=document.createElementNS(ns,'circle');c.setAttribute('class','dot');c.setAttribute('cx',p.x);c.setAttribute('cy',p.y);c.setAttribute('r',6);
@@ -519,7 +522,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
     current=id;var l=site.getAttribute('data-lang'),p=P.filter(function(x){return x.id===id})[0];
     g.querySelectorAll('.pin').forEach(function(el){var q=P.filter(function(x){return x.id===el.dataset.id})[0];el.querySelector('text').textContent=q[l];el.classList.toggle('on',el.dataset.id===id)});
     var i=document.getElementById('info');i.innerHTML='';
-    var k=document.createElement('p');k.className='km';k.textContent=p.km+(l==='nl'?' vanaf De Steen':' von De Steen');
+    if(p.img){var im=document.createElement('img');im.src=p.img;im.alt=p[l];im.className='thumb';i.appendChild(im)}
+    var k=document.createElement('p');k.className='km';k.textContent=p.km?p.km+(l==='nl'?' vanaf De Steen':' von De Steen'):(l==='nl'?'Bij de woning':'Am Haus');
     var h=document.createElement('h3');h.textContent=p[l];
     var d=document.createElement('p');d.className='muted';d.textContent=l==='nl'?p.tnl:p.tde;
     i.appendChild(k);i.appendChild(h);i.appendChild(d);

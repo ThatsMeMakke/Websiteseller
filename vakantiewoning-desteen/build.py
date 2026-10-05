@@ -1,11 +1,13 @@
 """Baut die Seite aus index.html (Quelle) und den Bildern in img/.
 
 Bilder: img/<schluessel>.png oder .jpg ablegen, z. B. img/start.png.
-Schluessel: start, terras, radweg, veen, huis-buiten, woonkamer, keuken, slaapkamer, badkamer.
+Schluessel: start, radweg, veen, tuin, huis-buiten, woonkamer, keuken, slaapkamer, badkamer;
+Kartenfotos als map-<ort>.jpg.
 
 Ergebnis:
   dist/            fertige Website (index.html + img/) zum Hochladen
   preview.html     Vorschau mit eingebetteten Bildern (fuer den Vorschau-Link)
+  De-Steen-Website.html  eine einzige Datei zum Zeigen (Doppelklick im Browser)
 """
 import base64, io, json, pathlib, re, shutil
 from PIL import Image
@@ -71,6 +73,17 @@ def build(embed):
         used.append(key)
         lazy = '' if key == 'start' else ' loading="lazy"'
         return f'{tag}<img src="{src}" alt="{alt}"{lazy} decoding="async">'
+    def ref(m):
+        key = m.group(2)
+        p = find_image(key)
+        if not p:
+            return m.group(0)
+        if embed:
+            return m.group(1) + 'data:image/jpeg;base64,' + base64.b64encode(encode(p, 600, 75)).decode() + m.group(1)
+        (DIST / 'img').mkdir(parents=True, exist_ok=True)
+        (DIST / 'img' / f'{key}.jpg').write_bytes(encode(p, 800, 80))
+        return m.group(0)
+    html = re.sub(r"(['\"])img/([\w-]+)\.jpg\1", ref, html)
     html = re.sub(r'(<[^>]*data-img="([^"]+)" data-alt="([^"]*)"[^>]*>)\s*<!--ph-->(.*?)<!--/ph-->', swap, html, flags=re.S)
     return html, used
 
@@ -81,8 +94,14 @@ if __name__ == '__main__':
     site, _ = build(embed=False)
     og = '<meta property="og:image" content="https://www.vakantiewoningdesteen.nl/img/start.jpg">' if 'start' in used else ''
     head = HEAD.format(og_image=og, ld=json.dumps(LD, ensure_ascii=False))
-    # <title> und <meta description> stehen schon oben in index.html und landen so im <head>
-    body_start = site.index('<div data-lang=')
+
+    def page(html):
+        # <title> und <meta description> stehen oben in index.html und landen so im <head>
+        cut = html.index('<div data-lang=')
+        return head + html[:cut] + '</head>\n<body>\n' + html[cut:] + '\n</body>\n</html>\n'
+
     DIST.mkdir(exist_ok=True)
-    (DIST / 'index.html').write_text(head + site[:body_start] + '</head>\n<body>\n' + site[body_start:] + '\n</body>\n</html>\n', encoding='utf8')
+    (DIST / 'index.html').write_text(page(site), encoding='utf8')
+    # Eine einzige Datei zum Verschicken/Zeigen, Bilder eingebettet
+    (ROOT / 'De-Steen-Website.html').write_text(page(preview), encoding='utf8')
     print('Bilder eingebaut:', ', '.join(used) or 'keine')
