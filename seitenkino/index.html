@@ -65,11 +65,12 @@ p{margin:0}
 
 /* the environment: one fixed background layer */
 .env{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;background:radial-gradient(120% 80% at 50% 0%,#0b1a38 0%,var(--canvas) 60%)}
-.env::before,.env::after{content:"";position:absolute;width:70vmax;height:70vmax;border-radius:50%;filter:blur(40px);opacity:.5;will-change:transform}
+.env::before,.env::after{content:"";position:absolute;width:70vmax;height:70vmax;border-radius:50%;opacity:.5;will-change:transform}
 .env::before{left:-20vmax;top:10vh;background:radial-gradient(circle,rgba(40,120,190,.22),transparent 65%);animation:drift1 70s ease-in-out infinite alternate;animation-delay:-12s}
 .env::after{right:-25vmax;top:50vh;background:radial-gradient(circle,rgba(231,201,143,.08),transparent 65%);animation:drift2 90s ease-in-out infinite alternate;animation-delay:-30s}
 @keyframes drift1{to{transform:translate(18vmax,30vh)}}
 @keyframes drift2{to{transform:translate(-20vmax,-25vh)}}
+body.in-hero .env::before,body.in-hero .env::after,.paused,.paused *{animation-play-state:paused!important}
 
 /* nav */
 .nav{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px clamp(16px,4vw,48px);transition:background .5s var(--ease-out),backdrop-filter .5s}
@@ -164,7 +165,7 @@ section{position:relative;z-index:1}
 
 /* problem: staggered cards to the right of a left-running cable */
 .problem .grid{margin-top:56px;display:grid;grid-template-columns:repeat(3,1fr);gap:22px;padding-left:clamp(0px,8vw,110px)}
-.pcard{position:relative;background:linear-gradient(180deg,rgba(16,32,63,.75),rgba(12,23,48,.55));border:1px solid var(--border);border-radius:20px;padding:30px 26px 34px;backdrop-filter:blur(6px)}
+.pcard{position:relative;background:linear-gradient(180deg,rgba(16,32,63,.86),rgba(12,23,48,.7));border:1px solid var(--border);border-radius:20px;padding:30px 26px 34px}
 .pcard:nth-child(2){margin-top:46px}
 .pcard:nth-child(3){margin-top:92px}
 .pcard .num{font-family:var(--mono);font-size:.8rem;color:var(--line);letter-spacing:.12em}
@@ -354,14 +355,6 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 .poster:nth-child(2):hover,.poster:nth-child(2):focus-visible{transform:translateY(-8px) rotate(.6deg)}
 .poster:hover .sweep,.poster:focus-visible .sweep{transform:translateX(120%)}
 .poster .badge{position:absolute;top:18px;left:50%;transform:translateX(-50%);z-index:4;font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent-muted);background:rgba(6,12,26,.7);padding:5px 12px;border-radius:6px;white-space:nowrap}
-.poster .art{flex:1;display:grid;place-items:center;padding:56px 34px 0}
-.poster .art svg{width:78%;height:auto;overflow:visible}
-.poster .art .ln{fill:none;stroke:var(--line);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(95,225,255,.7))}
-.poster .art .gd{fill:none;stroke:var(--accent);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(231,201,143,.6))}
-.poster .art .spin{transform-box:fill-box;transform-origin:center;animation:pspin 14s linear infinite}
-@keyframes pspin{to{transform:rotate(360deg)}}
-.poster .art .sway{transform-box:fill-box;transform-origin:50% 100%;animation:psway 5s ease-in-out infinite}
-@keyframes psway{50%{transform:rotate(3deg)}}
 .poster .info{position:relative;z-index:4;padding:0 34px 30px;text-align:center}
 .poster .genre{font-family:var(--mono);font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-secondary)}
 .poster h3{font-size:clamp(1.5rem,2.6vw,2rem);margin-top:8px}
@@ -375,7 +368,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 .poster .badge.now{background:var(--accent);color:#17120a;border-color:var(--accent);font-weight:600}
 .showcase .note{margin-top:28px;text-align:center;font-size:.88rem;color:var(--text-secondary)}
 @media (max-width:720px){.posters{grid-template-columns:minmax(0,380px)}}
-@media (prefers-reduced-motion:reduce){.poster .art .spin,.poster .art .sway{animation:none}.poster,.poster .sweep{transition:none}}
+@media (prefers-reduced-motion:reduce){.poster,.poster .sweep{transition:none}}
 
 /* ---------- Vorprogramm: Cookie-Abfrage im Stil eines Kino-Werbespots ---------- */
 .vp{position:fixed;inset:0;z-index:90;display:none;align-items:flex-end;justify-content:center;padding:16px 16px max(16px,env(safe-area-inset-bottom))}
@@ -916,6 +909,11 @@ body.vp-flash .cables{animation:vpcable 1.2s var(--ease-out)}
   }), { threshold: 0.18, rootMargin: '0px 0px -6% 0px' });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
+  /* ---------- idle animations only run while on screen ---------- */
+  const pauseIO = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('paused', !e.isIntersecting)));
+  document.querySelectorAll('.pcard .flicker,.pitem .glow,#cables').forEach(el => pauseIO.observe(el));
+  new IntersectionObserver(es => document.body.classList.toggle('in-hero', es[0].isIntersecting), { rootMargin: '0px 0px -100% 0px' }).observe(document.getElementById('stage').parentElement);
+
   /* ---------- fiber-optic cables through the page ---------- */
   const after = document.getElementById('after');
   const svg = document.getElementById('cables');
@@ -970,24 +968,25 @@ body.vp-flash .cables{animation:vpcable 1.2s var(--ease-out)}
     const tmask = document.createElementNS(NS, 'mask');
     tmask.setAttribute('id', 'tm'); tmask.setAttribute('maskUnits', 'userSpaceOnUse');
     tmask.setAttribute('x', 0); tmask.setAttribute('y', 0); tmask.setAttribute('width', W); tmask.setAttribute('height', H);
-    const filt = document.createElementNS(NS, 'filter');
-    filt.setAttribute('id', 'tb'); filt.setAttribute('x', '-20%'); filt.setAttribute('y', '-20%'); filt.setAttribute('width', '140%'); filt.setAttribute('height', '140%');
-    const blur = document.createElementNS(NS, 'feGaussianBlur'); blur.setAttribute('stdDeviation', '16'); filt.appendChild(blur);
-    defs.appendChild(filt);
-    const full = document.createElementNS(NS, 'rect');
-    full.setAttribute('width', W); full.setAttribute('height', H); full.setAttribute('fill', '#fff');
-    tmask.appendChild(full);
-    const gHole = document.createElementNS(NS, 'g'); gHole.setAttribute('filter', 'url(#tb)');
+    /* soft holes drawn once into a small bitmap (a live blur filter here re-rendered on every pulse frame) */
+    const SC = 0.25, cw = Math.max(1, Math.ceil(W * SC)), ch = Math.max(1, Math.ceil(H * SC));
+    const cv = document.createElement('canvas'); cv.width = cw; cv.height = ch;
+    const cx = cv.getContext('2d');
+    cx.fillStyle = '#fff'; cx.fillRect(0, 0, cw, ch);
+    cx.shadowColor = '#000'; cx.shadowBlur = 32 * SC; cx.shadowOffsetX = cw + 100; cx.fillStyle = '#000';
     const ar = after.getBoundingClientRect();
     after.querySelectorAll('.sec-head h2,.sec-head p,.sec-head .kicker,.pcard,.turn,.pitem,.facts,.payoff,.price,.faq details,.contact .box,.poster').forEach(el => {
       const r = el.getBoundingClientRect();
-      const rc = document.createElementNS(NS, 'rect');
-      rc.setAttribute('x', r.left - ar.left - 18); rc.setAttribute('y', r.top - ar.top - 14);
-      rc.setAttribute('width', r.width + 36); rc.setAttribute('height', r.height + 28);
-      rc.setAttribute('rx', 16); rc.setAttribute('fill', '#000');
-      gHole.appendChild(rc);
+      const x = (r.left - ar.left - 18) * SC, y = (r.top - ar.top - 14) * SC, w = (r.width + 36) * SC, h = (r.height + 28) * SC, rr = 16 * SC;
+      cx.beginPath();
+      if (cx.roundRect) cx.roundRect(x - cw - 100, y, w, h, rr); else cx.rect(x - cw - 100, y, w, h);
+      cx.fill();
     });
-    tmask.appendChild(gHole);
+    const img = document.createElementNS(NS, 'image');
+    img.setAttribute('x', 0); img.setAttribute('y', 0); img.setAttribute('width', W); img.setAttribute('height', H);
+    img.setAttribute('preserveAspectRatio', 'none');
+    img.setAttribute('href', cv.toDataURL('image/png'));
+    tmask.appendChild(img);
     defs.appendChild(tmask);
     const gAll = document.createElementNS(NS, 'g'); gAll.setAttribute('mask', 'url(#tm)');
     gAll.appendChild(gDraw); gAll.appendChild(gPulse);
