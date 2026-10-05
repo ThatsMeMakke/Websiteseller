@@ -1,0 +1,541 @@
+<title>Vakantiewoning De Steen</title>
+<meta name="description" content="Vakantiewoning De Steen in Winterswijk-Woold, Achterhoek. 4 personen, alles gelijkvloers, tuin met terras.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: één rustige kolom als wandeling door het coulisselandschap; de kaart is het enige grote moment */
+:root{
+  --lichen:#EDEFE6;      /* achtergrond: korstmos op steen */
+  --paper:#F7F8F3;       /* kaarten */
+  --moss:#1F2B23;        /* tekst */
+  --moss-soft:#4C5A4F;   /* tweede tekst */
+  --granite:#A8796E;     /* accent: roze graniet van de zwerfkei */
+  --granite-deep:#8A5E54;
+  --hedge:#5E7354;       /* groen */
+  --line:#D4D8CB;
+  --mist:#DDE3D8;
+  --f-display:"Young Serif",Georgia,"Times New Roman",serif;
+  --f-body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --gutter:clamp(16px,4vw,40px);
+  --max:1120px;
+  color-scheme:light;
+}
+html{scroll-behavior:smooth}
+body{background:var(--lichen);color:var(--moss);font-family:var(--f-body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+[data-lang="nl"] [lang="de"],[data-lang="de"] [lang="nl"]{display:none!important}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--granite);outline-offset:3px;border-radius:4px}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.12;text-wrap:balance;margin:0}
+h2{font-size:clamp(30px,4.4vw,48px)}
+h3{font-size:22px}
+p{margin:0}
+.wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--gutter)}
+.eyebrow{font-family:var(--f-data);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--granite-deep)}
+.btn{display:inline-flex;align-items:center;gap:.5em;font:500 16px/1 var(--f-body);padding:15px 22px;border-radius:999px;text-decoration:none;border:1.5px solid var(--moss);cursor:pointer;transition:background .25s,color .25s,transform .25s}
+.btn-solid{background:var(--moss);color:var(--paper)}
+.btn-solid:hover{background:var(--granite-deep);border-color:var(--granite-deep)}
+.btn-ghost{background:transparent;color:var(--moss)}
+.btn-ghost:hover{background:var(--moss);color:var(--paper)}
+.btn:hover{transform:translateY(-1px)}
+
+/* Kopfzeile */
+.notice{background:var(--moss);color:var(--paper);font-size:14.5px;text-align:center;padding:9px var(--gutter)}
+.notice a{color:var(--paper);font-weight:700}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--lichen) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:20px;min-height:64px;flex-wrap:wrap}
+.brand{font-family:var(--f-display);font-size:23px;text-decoration:none;display:flex;align-items:center;gap:10px}
+.brand svg{width:30px;height:24px}
+nav.main{display:flex;gap:22px;margin-left:auto;font-size:15.5px}
+nav.main a{text-decoration:none;color:var(--moss-soft)}
+nav.main a:hover{color:var(--moss)}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;font-family:var(--f-data);font-size:13px}
+.lang button{background:none;border:0;padding:7px 11px;cursor:pointer;color:var(--moss-soft);font:inherit}
+.lang button[aria-pressed="true"]{background:var(--moss);color:var(--paper)}
+@media (max-width:760px){nav.main{display:none}.lang{margin-left:auto}}
+
+/* Hero */
+.hero{position:relative;overflow:hidden;background:var(--mist)}
+.hero-art{position:absolute;inset:0}
+.hero-art svg{width:100%;height:100%;display:block}
+.hero-art img{width:100%;height:100%;object-fit:cover;object-position:70% 50%}
+.hero .wrap{position:relative;padding-block:clamp(70px,12vw,150px) clamp(150px,20vw,240px)}
+.hero h1{font-size:clamp(44px,8vw,96px);max-width:11ch}
+.hero .lead{max-width:34rem;margin-top:22px;font-size:clamp(17px,1.6vw,19px);color:var(--moss)}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.hero .loc{margin-top:26px;font-family:var(--f-data);font-size:13px;color:var(--moss-soft)}
+.layer{transform:translateY(calc(var(--p,0) * var(--d,0) * 1px));will-change:transform}
+@keyframes rise{from{transform:translateY(14px);opacity:.01}to{transform:none;opacity:1}}
+.hero h1,.hero .lead,.hero .cta,.hero .loc{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
+.hero .lead{animation-delay:.12s}.hero .cta{animation-delay:.24s}.hero .loc{animation-delay:.36s}
+
+/* Fakten-Leiste */
+.facts{margin-top:-64px;position:relative;z-index:2}
+.facts ul{list-style:none;margin:0;padding:22px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 40px -24px rgba(31,43,35,.35)}
+.facts li{display:flex;flex-direction:column;gap:2px;padding:6px 12px;min-width:0}
+.facts li+li{border-left:1px solid var(--line)}
+.facts b{font-family:var(--f-display);font-weight:400;font-size:26px}
+.facts span{font-size:14px;color:var(--moss-soft)}
+@media (max-width:860px){.facts ul{grid-template-columns:repeat(2,1fr)}.facts li+li{border-left:0}.facts li:last-child{grid-column:1/-1}}
+
+section.block{padding-block:clamp(72px,10vw,120px)}
+.head{display:grid;gap:14px;max-width:44rem;margin-bottom:44px}
+.head p{color:var(--moss-soft)}
+
+/* Haus */
+.house{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(28px,5vw,64px);align-items:start}
+.house>*{min-width:0}
+.rooms{list-style:none;margin:26px 0 0;padding:0;display:grid}
+.rooms li{display:grid;grid-template-columns:30px 1fr;gap:12px;padding:13px 0;border-top:1px solid var(--line)}
+.rooms li:last-child{border-bottom:1px solid var(--line)}
+.rooms svg{width:22px;height:22px;stroke:var(--hedge);fill:none;stroke-width:1.6;margin-top:3px}
+.rules{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.chip{font-size:14px;padding:7px 13px;border-radius:999px;background:var(--mist);color:var(--moss)}
+.gallery{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.slot{position:relative;border-radius:14px;overflow:hidden;background:var(--mist);aspect-ratio:4/3;max-width:100%}
+.slot img{width:100%;height:100%;object-fit:cover;display:block}
+.slot .ph{position:absolute;inset:0;display:grid;place-content:center;text-align:center;gap:4px;padding:10px;font-size:13px;color:var(--moss-soft);background:repeating-linear-gradient(135deg,var(--mist) 0 10px,var(--lichen) 10px 20px)}
+.slot .ph b{font-family:var(--f-data);font-weight:500;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--granite-deep)}
+.g-a{grid-column:span 6;aspect-ratio:3/2}.g-b{grid-column:span 3}.g-c{grid-column:span 3}.g-d{grid-column:span 2;aspect-ratio:1}.g-e{grid-column:span 2;aspect-ratio:1}.g-f{grid-column:span 2;aspect-ratio:1}
+@media (max-width:860px){.house{grid-template-columns:1fr}}
+
+/* Umgebung / Karte */
+.area{background:var(--paper);border-block:1px solid var(--line)}
+.mapgrid{display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(24px,4vw,48px);align-items:start}
+.mapgrid>*{min-width:0}
+.map{position:relative;border-radius:22px;background:var(--lichen);border:1px solid var(--line);aspect-ratio:1/1;max-width:100%;overflow:hidden}
+.map svg{width:100%;height:100%;display:block}
+.pin{cursor:pointer}
+.pin circle.dot{transition:r .2s}
+.pin:hover circle.dot,.pin.on circle.dot{r:9}
+.pin text{font:500 13px var(--f-body);fill:var(--moss)}
+.pin.cat-natuur circle.dot{fill:var(--hedge)}
+.pin.cat-plaats circle.dot{fill:var(--moss)}
+.pin.cat-zien circle.dot{fill:var(--granite)}
+.pin.on text{font-weight:700}
+@keyframes pulse{0%{r:10;opacity:.55}100%{r:34;opacity:0}}
+.home-pulse{animation:pulse 2.6s ease-out infinite;fill:var(--granite)}
+.map .note{position:absolute;left:14px;bottom:12px;font-family:var(--f-data);font-size:11.5px;color:var(--moss-soft)}
+.info{background:var(--lichen);border:1px solid var(--line);border-radius:18px;padding:22px;min-height:150px}
+.info h3{margin-bottom:6px}
+.info .km{font-family:var(--f-data);font-size:13px;color:var(--granite-deep);margin-bottom:8px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0}
+.filters button{font:500 14px var(--f-body);padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--paper);color:var(--moss);cursor:pointer;display:flex;align-items:center;gap:8px}
+.filters button i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.filters button[aria-pressed="false"]{opacity:.45}
+.lists{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:56px}
+.lists>div{min-width:0}
+.lists h3{font-size:19px;margin-bottom:10px}
+.lists ul{list-style:none;margin:0;padding:0;display:grid;gap:7px;color:var(--moss-soft)}
+.lists a{text-decoration-color:var(--granite);text-underline-offset:3px}
+.border{margin-top:56px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.border>div{min-width:0}
+@media (max-width:860px){.mapgrid,.border{grid-template-columns:1fr}.lists{grid-template-columns:1fr}}
+
+/* Preise */
+.prices{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.season{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:26px;min-width:0}
+.season.high{background:var(--moss);color:var(--paper);border-color:var(--moss)}
+.season.high .muted{color:#C9D2C4}
+.season .months{font-family:var(--f-data);font-size:13px;margin-top:4px}
+.muted{color:var(--moss-soft)}
+.rate{display:flex;justify-content:space-between;align-items:baseline;padding:14px 0;border-bottom:1px solid color-mix(in srgb,currentColor 18%,transparent)}
+.rate:last-child{border-bottom:0}
+.rate b{font-family:var(--f-display);font-weight:400;font-size:30px;font-variant-numeric:tabular-nums}
+.incl{margin-top:22px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.incl>div{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px;font-size:15px;min-width:0}
+.incl b{display:block;font-family:var(--f-data);font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--granite-deep);margin-bottom:4px}
+.small{font-size:13.5px;color:var(--moss-soft);margin-top:16px}
+@media (max-width:760px){.prices,.incl{grid-template-columns:1fr}}
+
+/* Warteliste + Kontakt */
+.wait{position:relative;overflow:hidden;background:var(--moss);color:var(--paper)}
+.wait-art{position:absolute;inset:0;opacity:.9}
+.wait-art svg,.wait-art img{width:100%;height:100%;display:block;object-fit:cover}
+.wait .wrap{position:relative;display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(24px,5vw,64px);align-items:start}
+.wait .wrap>*{min-width:0}
+.wait .eyebrow{color:#E7C4B9}
+.wait h2{margin-top:12px}
+.wait p.lead{margin-top:16px;color:#DCE3D7;max-width:30rem}
+.contact{margin-top:30px;display:grid;gap:6px;font-size:16px}
+.contact .addr{font-family:var(--f-data);font-size:14px;color:#C9D2C4}
+.contact .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.copy{font:500 12.5px var(--f-data);background:transparent;border:1px solid #6E7D70;color:var(--paper);border-radius:999px;padding:4px 10px;cursor:pointer}
+form.card{background:var(--paper);color:var(--moss);border-radius:22px;padding:clamp(20px,3vw,30px);display:grid;grid-template-columns:1fr 1fr;gap:14px}
+form.card .full{grid-column:1/-1}
+form.card label{display:grid;gap:5px;font-size:14px;font-weight:500;min-width:0}
+form.card input,form.card textarea,form.card select{font:16px var(--f-body);padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--lichen);color:var(--moss);width:100%;box-sizing:border-box}
+form.card textarea{min-height:96px;resize:vertical}
+.mode{display:flex;gap:6px;background:var(--mist);padding:5px;border-radius:999px}
+.mode button{flex:1;border:0;background:none;padding:9px;border-radius:999px;font:500 14px var(--f-body);cursor:pointer;color:var(--moss-soft)}
+.mode button[aria-pressed="true"]{background:var(--paper);color:var(--moss);box-shadow:0 1px 4px rgba(31,43,35,.15)}
+.check{display:flex!important;grid-template-columns:none;align-items:center;gap:8px;font-weight:400!important}
+form.card .check input{width:auto}
+.sent{grid-column:1/-1;background:var(--mist);border-radius:12px;padding:12px 14px;font-size:14.5px}
+@media (max-width:860px){.wait .wrap{grid-template-columns:1fr}}
+@media (max-width:520px){form.card{grid-template-columns:1fr}}
+
+footer{padding-block:34px;font-size:14px;color:var(--moss-soft)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.layer{transform:none!important}html{scroll-behavior:auto}}
+</style>
+
+<div data-lang="nl" id="site">
+
+<div class="notice">
+  <span lang="nl">In verband met verbouwing is de vakantiewoning in 2025 en 2026 helaas niet beschikbaar. <a href="#wachtlijst">Zet u op de wachtlijst voor 2027</a></span>
+  <span lang="de">Wegen Umbau ist das Ferienhaus 2025 und 2026 leider nicht verfügbar. <a href="#wachtlijst">Jetzt auf die Warteliste für 2027</a></span>
+</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="De Steen">
+      <svg viewBox="0 0 30 24" aria-hidden="true"><path d="M3 21c-1-5 2-11 7-14s11-4 15 0 4 10 0 13-21 6-22 1z" fill="var(--granite)"/><path d="M9 9c3-2 7-3 10-1" stroke="var(--paper)" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+      De Steen
+    </a>
+    <nav class="main" aria-label="Menu">
+      <a href="#huis"><span lang="nl">Het huis</span><span lang="de">Das Haus</span></a>
+      <a href="#omgeving"><span lang="nl">Omgeving</span><span lang="de">Umgebung</span></a>
+      <a href="#prijzen"><span lang="nl">Prijzen</span><span lang="de">Preise</span></a>
+      <a href="#wachtlijst"><span lang="nl">Boeken / contact</span><span lang="de">Buchen / Kontakt</span></a>
+    </nav>
+    <div class="lang" role="group" aria-label="Taal / Sprache">
+      <button type="button" id="l-nl" aria-pressed="true">NL</button>
+      <button type="button" id="l-de" aria-pressed="false">DE</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="hero-art" aria-hidden="true">
+    <!-- Platzhalter bis Bild 01-start-grote-steen.png da ist -->
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9EDE3"/><stop offset=".6" stop-color="#E8E2D6"/><stop offset="1" stop-color="#DDE3D8"/></linearGradient>
+        <radialGradient id="sun" cx=".18" cy=".55" r=".5"><stop offset="0" stop-color="#F6E7CF" stop-opacity=".9"/><stop offset="1" stop-color="#F6E7CF" stop-opacity="0"/></radialGradient>
+      </defs>
+      <rect width="1600" height="900" fill="url(#sky)"/>
+      <rect width="1600" height="900" fill="url(#sun)"/>
+      <g class="layer" style="--d:-.05"><path d="M0 520 C120 470 200 500 300 480 S470 430 560 470 760 440 860 460 1060 420 1180 450 1400 430 1600 455 V900 H0Z" fill="#CFD8C9"/></g>
+      <g class="layer" style="--d:-.1"><path d="M0 590 C90 540 170 560 250 545 S380 500 470 540 610 520 700 545 880 500 990 535 1170 505 1280 540 1450 515 1600 540 V900 H0Z" fill="#AEBDA6"/></g>
+      <g class="layer" style="--d:-.16"><path d="M0 660 C100 620 160 640 260 625 S420 590 520 630 720 600 840 628 1050 590 1170 625 1380 600 1600 630 V900 H0Z" fill="#7E9475"/></g>
+      <g class="layer" style="--d:-.22"><path d="M0 760 C200 730 420 740 640 735 S1100 720 1600 745 V900 H0Z" fill="#5E7354"/>
+        <path d="M1090 760 C1080 700 1120 650 1190 640 S1320 650 1340 700 1330 770 1300 772 1100 790 1090 760Z" fill="#B08A80"/>
+        <path d="M1130 690 C1160 662 1210 655 1250 665" stroke="#D2B3A9" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M1100 760 C1140 745 1200 750 1250 742 S1320 748 1338 740" stroke="#7E9475" stroke-width="10" fill="none" opacity=".7"/>
+      </g>
+    </svg>
+  </div>
+  <div class="wrap">
+    <p class="eyebrow">Winterswijk · Woold · Achterhoek</p>
+    <h1><span lang="nl">Welkom in de Achterhoek</span><span lang="de">Willkommen im Achterhoek</span></h1>
+    <p class="lead">
+      <span lang="nl">Rust, ruimte en een terras in het groen. Onze vakantiewoning ligt in het coulisselandschap van Winterswijk, vlak bij “De Grote Steen”. De ideale uitvalsbasis om te wandelen en te fietsen.</span>
+      <span lang="de">Ruhe, Weite und eine Terrasse im Grünen. Unser Ferienhaus liegt in der Heckenlandschaft von Winterswijk, gleich bei „De Grote Steen“. Der ideale Ausgangspunkt zum Wandern und Radfahren.</span>
+    </p>
+    <div class="cta">
+      <a class="btn btn-solid" href="#wachtlijst"><span lang="nl">Op de wachtlijst voor 2027</span><span lang="de">Auf die Warteliste für 2027</span></a>
+      <a class="btn btn-ghost" href="#prijzen"><span lang="nl">Prijzen vanaf € 300</span><span lang="de">Preise ab 300 €</span></a>
+    </div>
+    <p class="loc">Wooldseweg 104 · 7108 AB Winterswijk-Woold</p>
+  </div>
+</section>
+
+<div class="wrap facts">
+  <ul>
+    <li><b>4</b><span lang="nl">personen</span><span lang="de">Personen</span></li>
+    <li><b>2</b><span lang="nl">slaapkamers</span><span lang="de">Schlafzimmer</span></li>
+    <li><b lang="nl">Gelijkvloers</b><b lang="de">Ebenerdig</b><span lang="nl">alle vertrekken</span><span lang="de">alle Räume</span></li>
+    <li><b lang="nl">Tuin</b><b lang="de">Garten</b><span lang="nl">met terras</span><span lang="de">mit Terrasse</span></li>
+    <li><b lang="nl">Incl.</b><b lang="de">Inkl.</b><span lang="nl">beddengoed &amp; schoonmaak</span><span lang="de">Bettwäsche &amp; Reinigung</span></li>
+  </ul>
+</div>
+
+<section class="block" id="huis">
+  <div class="wrap house">
+    <div>
+      <p class="eyebrow"><span lang="nl">Het huis</span><span lang="de">Das Haus</span></p>
+      <h2 style="margin-top:12px"><span lang="nl">Alles op één verdieping, de tuin voor de deur</span><span lang="de">Alles auf einer Ebene, der Garten vor der Tür</span></h2>
+      <p class="muted" style="margin-top:16px">
+        <span lang="nl">De vakantiewoning is gebouwd in 2008 en biedt ruimte aan 4 personen. Alle vertrekken liggen op de begane grond.</span>
+        <span lang="de">Das Ferienhaus wurde 2008 gebaut und bietet Platz für 4 Personen. Alle Räume liegen im Erdgeschoss.</span>
+      </p>
+      <ul class="rooms">
+        <li><svg viewBox="0 0 24 24"><path d="M3 20V9l9-6 9 6v11M8 20v-6h8v6"/></svg><span><span lang="nl">Ruime woonkamer met open keuken, vaatwasser en magnetron</span><span lang="de">Großes Wohnzimmer mit offener Küche, Spülmaschine und Mikrowelle</span></span></li>
+        <li><svg viewBox="0 0 24 24"><path d="M3 18V8M3 14h18v4M21 14v-3a3 3 0 0 0-3-3h-7v6"/></svg><span><span lang="nl">Twee 2-persoonsslaapkamers: 2 × eenpersoonsbed en 1 × tweepersoonsbed, incl. beddengoed</span><span lang="de">Zwei Doppelzimmer: 2 × Einzelbett und 1 × Doppelbett, inkl. Bettwäsche</span></span></li>
+        <li><svg viewBox="0 0 24 24"><path d="M5 11h14v2a7 7 0 0 1-14 0zM7 11V5a2 2 0 0 1 4 0"/></svg><span><span lang="nl">Badkamer met douche en apart toilet</span><span lang="de">Bad mit Dusche und separates WC</span></span></li>
+        <li><svg viewBox="0 0 24 24"><path d="M12 21v-7M7 21h10M12 14c-4 0-6-3-6-6a6 6 0 0 1 12 0c0 3-2 6-6 6z"/></svg><span><span lang="nl">Tuin met terras, inclusief tuinmeubelen</span><span lang="de">Garten mit Terrasse, inklusive Gartenmöbeln</span></span></li>
+      </ul>
+      <div class="rules">
+        <span class="chip"><span lang="nl">Niet roken in de woning</span><span lang="de">Nichtraucherhaus</span></span>
+        <span class="chip"><span lang="nl">Geen huisdieren</span><span lang="de">Keine Haustiere</span></span>
+      </div>
+    </div>
+    <div class="gallery" aria-label="Foto's">
+      <figure class="slot g-a" style="margin:0"><div class="ph"><b>Foto</b>Buitenaanzicht / Außenansicht</div></figure>
+      <figure class="slot g-b" style="margin:0"><div class="ph"><b>Foto</b>Woonkamer</div></figure>
+      <figure class="slot g-c" style="margin:0"><div class="ph"><b>Foto</b>Keuken</div></figure>
+      <figure class="slot g-d" style="margin:0"><div class="ph"><b>Foto</b>Slaapkamer</div></figure>
+      <figure class="slot g-e" style="margin:0"><div class="ph"><b>Foto</b>Badkamer</div></figure>
+      <figure class="slot g-f" style="margin:0"><div class="ph"><b>GPT</b>Terras-sfeer</div></figure>
+    </div>
+  </div>
+</section>
+
+<section class="block area" id="omgeving">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow"><span lang="nl">Omgeving · binnen 15 km</span><span lang="de">Umgebung · im Umkreis von 15 km</span></p>
+      <h2><span lang="nl">Uw uitvalsbasis in de Achterhoek</span><span lang="de">Ihr Basislager im Achterhoek</span></h2>
+      <p>
+        <span lang="nl">Talloze fiets- en wandelroutes voeren langs betoverende plekjes, oude boerenerven, onverwachte doorkijkjes en fraaie monumenten. Tik op een punt op de kaart.</span>
+        <span lang="de">Unzählige Rad- und Wanderwege führen vorbei an verwunschenen Ecken, alten Bauernhöfen, überraschenden Ausblicken und schönen Denkmälern. Tippen Sie auf einen Punkt der Karte.</span>
+      </p>
+    </div>
+    <div class="mapgrid">
+      <div class="map">
+        <svg viewBox="0 0 600 600" id="mapsvg" role="img" aria-label="Kaart van de omgeving">
+          <defs><pattern id="dots" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="var(--line)"/></pattern></defs>
+          <rect width="600" height="600" fill="url(#dots)"/>
+          <circle cx="330" cy="350" r="250" fill="none" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="4 6"/>
+          <circle cx="330" cy="350" r="125" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 6"/>
+          <path d="M600 330 C560 380 520 420 520 470 S470 560 440 600" fill="none" stroke="var(--granite)" stroke-width="1.5" stroke-dasharray="7 5" opacity=".8"/>
+          <text x="548" y="470" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--granite-deep)">NL | DE</text>
+          <g id="pins"></g>
+          <circle cx="330" cy="350" r="10" class="home-pulse"/>
+          <circle cx="330" cy="350" r="9" fill="var(--granite-deep)" stroke="var(--paper)" stroke-width="3"/>
+          <text x="345" y="372" font-family="Young Serif,Georgia,serif" font-size="16" fill="var(--moss)">De Steen</text>
+        </svg>
+        <span class="note"><span lang="nl">Schematisch, afstanden ca.</span><span lang="de">Schematisch, Entfernungen ca.</span></span>
+      </div>
+      <div>
+        <div class="info" id="info" aria-live="polite"></div>
+        <div class="filters" role="group" aria-label="Filter">
+          <button type="button" data-cat="plaats" aria-pressed="true"><i style="background:var(--moss)"></i><span lang="nl">Plaatsen</span><span lang="de">Orte</span></button>
+          <button type="button" data-cat="natuur" aria-pressed="true"><i style="background:var(--hedge)"></i><span lang="nl">Natuur</span><span lang="de">Natur</span></button>
+          <button type="button" data-cat="zien" aria-pressed="true"><i style="background:var(--granite)"></i><span lang="nl">Bezienswaardig</span><span lang="de">Sehenswert</span></button>
+        </div>
+        <figure class="slot" style="margin:0"><div class="ph"><b>GPT</b>Fietsen op een zandpad / Radweg</div></figure>
+      </div>
+    </div>
+
+    <div class="lists">
+      <div>
+        <h3><span lang="nl">Plaatsen</span><span lang="de">Orte</span></h3>
+        <ul>
+          <li><a href="http://www.vvvwinterswijk.nl/" target="_blank" rel="noopener">Winterswijk</a></li>
+          <li>Aalten</li>
+          <li><a href="http://www.bredevoort.nu/" target="_blank" rel="noopener"><span lang="nl">Boeken- en vestingstad Bredevoort</span><span lang="de">Bücher- und Festungsstadt Bredevoort</span></a></li>
+          <li><a href="http://www.groenlovestingstad.nl/" target="_blank" rel="noopener"><span lang="nl">Vestingstad Groenlo</span><span lang="de">Festungsstadt Groenlo</span></a></li>
+          <li>Lichtenvoorde</li>
+          <li><a href="http://www.bocholt.de/seiten/touristik/" target="_blank" rel="noopener"><span lang="nl">Winkelstad Bocholt (DE)</span><span lang="de">Einkaufsstadt Bocholt (DE)</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <h3><span lang="nl">Bezienswaardigheden</span><span lang="de">Sehenswürdigkeiten</span></h3>
+        <ul>
+          <li><span lang="nl">Steengroeve Winterswijk</span><span lang="de">Steinbruch Winterswijk</span></li>
+          <li><span lang="nl">Museum en heemtuin Freriks</span><span lang="de">Museum und Heimatgarten Freriks</span></li>
+          <li><span lang="nl">Berenschot's Watermolen</span><span lang="de">Berenschots Wassermühle</span></li>
+          <li><span lang="nl">Kaasboerderij de Harmienehoeve</span><span lang="de">Käsehof de Harmienehoeve</span></li>
+          <li><span lang="nl">Geitenkaasmakerij de Brömmels</span><span lang="de">Ziegenkäserei de Brömmels</span></li>
+          <li><span lang="nl">Recreatiegebieden de Slingeplas en 't Hilgelo</span><span lang="de">Badeseen de Slingeplas und 't Hilgelo</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3><span lang="nl">Wandel- en fietsroutes</span><span lang="de">Wander- und Radrouten</span></h3>
+        <ul>
+          <li><span lang="nl">Wandelen rondom Winterswijk</span><span lang="de">Wandern rund um Winterswijk</span></li>
+          <li><span lang="nl">VVV wandelroutes</span><span lang="de">VVV-Wanderrouten</span></li>
+          <li><span lang="nl">Traproute Winterswijk</span><span lang="de">Pedalroute (Traproute) Winterswijk</span></li>
+          <li><span lang="nl">VVV fietsroutes</span><span lang="de">VVV-Radrouten</span></li>
+          <li><span lang="nl">Route Bekkendelle</span><span lang="de">Route Bekkendelle</span></li>
+          <li><a href="http://www.100procentwinterswijk.nl/" target="_blank" rel="noopener">100procentwinterswijk.nl</a> · <a href="http://www.woold.info" target="_blank" rel="noopener">woold.info</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border">
+      <div class="info">
+        <h3><span lang="nl">Natuur om de hoek</span><span lang="de">Natur gleich um die Ecke</span></h3>
+        <p class="muted"><span lang="nl">Natuurgebieden als het Wooldse Veen, de Bekkendelle en het Korenburgerveen. Fraaie steengroeven, rustieke water- en korenmolens: alles op korte afstand.</span><span lang="de">Naturgebiete wie das Wooldse Veen, die Bekkendelle und das Korenburgerveen. Schöne Steinbrüche, rustikale Wasser- und Kornmühlen: alles ganz in der Nähe.</span></p>
+      </div>
+      <div class="info">
+        <h3><span lang="nl">Over de grens</span><span lang="de">Über die Grenze</span></h3>
+        <p class="muted"><span lang="nl">Winterswijk ligt op een steenworp van de Duitse grens. Aan de andere kant ligt het mooie Münsterland met zijn kastelen, abdijen en vele bossen.</span><span lang="de">Winterswijk liegt nur einen Steinwurf von der deutschen Grenze entfernt. Auf der anderen Seite wartet das schöne Münsterland mit seinen Schlössern, Abteien und vielen Wäldern.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="prijzen">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow"><span lang="nl">Prijzen 2022 / 2023</span><span lang="de">Preise 2022 / 2023</span></p>
+      <h2><span lang="nl">Eén prijs, alles inbegrepen</span><span lang="de">Ein Preis, alles inklusive</span></h2>
+      <p><span lang="nl">Inclusief toeristenbelasting, bedlinnen en eindschoonmaak.</span><span lang="de">Inklusive Kurtaxe, Bettwäsche und Endreinigung.</span></p>
+    </div>
+    <div class="prices">
+      <div class="season">
+        <h3><span lang="nl">Laagseizoen</span><span lang="de">Nebensaison</span></h3>
+        <p class="months muted"><span lang="nl">november t/m maart</span><span lang="de">November bis März</span></p>
+        <div class="rate"><span lang="nl">Week</span><span lang="de">Woche</span><b>€ 375</b></div>
+        <div class="rate"><span>Midweek</span><b>€ 300</b></div>
+        <div class="rate"><span lang="nl">Weekend</span><span lang="de">Wochenende</span><b>€ 300</b></div>
+      </div>
+      <div class="season high">
+        <h3><span lang="nl">Hoogseizoen</span><span lang="de">Hauptsaison</span></h3>
+        <p class="months muted"><span lang="nl">april t/m oktober</span><span lang="de">April bis Oktober</span></p>
+        <div class="rate"><span lang="nl">Week</span><span lang="de">Woche</span><b>€ 425</b></div>
+        <div class="rate"><span>Midweek</span><b>€ 350</b></div>
+        <div class="rate"><span lang="nl">Weekend</span><span lang="de">Wochenende</span><b>€ 350</b></div>
+      </div>
+    </div>
+    <div class="incl">
+      <div><b lang="nl">Aankomst</b><b lang="de">Anreise</b><span lang="nl">na 14.00 uur</span><span lang="de">ab 14:00 Uhr</span></div>
+      <div><b lang="nl">Vertrek</b><b lang="de">Abreise</b><span lang="nl">voor 10.00 uur</span><span lang="de">bis 10:00 Uhr</span></div>
+      <div><b lang="nl">Feestdagen</b><b lang="de">Feiertage</b><span lang="nl">toeslag € 50 per boeking</span><span lang="de">Zuschlag 50 € pro Buchung</span></div>
+    </div>
+    <p class="small">
+      <span lang="nl">Wij verwachten van onze gasten dat ze de woning netjes achterlaten. Prijsveranderingen per 8-7-2022; eerder gemaakte boekingen blijven bestaan.</span>
+      <span lang="de">Wir erwarten von unseren Gästen, dass sie das Haus ordentlich hinterlassen. Preisänderungen ab 08.07.2022; bereits getätigte Buchungen bleiben bestehen.</span>
+    </p>
+  </div>
+</section>
+
+<section class="block wait" id="wachtlijst">
+  <div class="wait-art" aria-hidden="true">
+    <!-- Platzhalter bis Bild 04-veen-abend.png da ist -->
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+      <defs><linearGradient id="dusk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1F2B23"/><stop offset=".55" stop-color="#3B3A35"/><stop offset=".78" stop-color="#7A564C"/><stop offset="1" stop-color="#1F2B23"/></linearGradient></defs>
+      <rect width="1600" height="900" fill="url(#dusk)"/>
+      <path d="M0 720 C300 690 600 700 900 695 S1400 690 1600 705 V900 H0Z" fill="#1A241D"/>
+      <path d="M220 700 v-120 M232 700 v-90 M1320 700 v-140 M1336 700 v-100" stroke="#1A241D" stroke-width="5"/>
+    </svg>
+  </div>
+  <div class="wrap">
+    <div>
+      <p class="eyebrow"><span lang="nl">Boeken / contact</span><span lang="de">Buchen / Kontakt</span></p>
+      <h2><span lang="nl">Vanaf 2027 weer welkom</span><span lang="de">Ab 2027 wieder willkommen</span></h2>
+      <p class="lead">
+        <span lang="nl">In verband met verbouwing is de woning in 2025 en 2026 helaas niet beschikbaar. Laat uw gegevens achter, dan hoort u als eerste wanneer u weer kunt boeken. Graag verwelkomen wij u op een ander moment.</span>
+        <span lang="de">Wegen Umbau ist das Haus 2025 und 2026 leider nicht verfügbar. Hinterlassen Sie Ihre Daten, dann erfahren Sie als Erste, wann Sie wieder buchen können. Gerne begrüßen wir Sie zu einem anderen Zeitpunkt.</span>
+      </p>
+      <div class="contact">
+        <strong>Familie ten Pas</strong>
+        <div class="row"><span id="tel">06-21977876</span><button class="copy" type="button" data-copy="tel"><span lang="nl">kopieer</span><span lang="de">kopieren</span></button></div>
+        <div class="row"><span id="mail">info@vakantiewoningdesteen.nl</span><button class="copy" type="button" data-copy="mail"><span lang="nl">kopieer</span><span lang="de">kopieren</span></button></div>
+        <span class="addr">Wooldseweg 104 · 7108 AB Winterswijk-Woold</span>
+        <a class="btn btn-ghost" style="margin-top:14px;color:var(--paper);border-color:#8D9A8E;width:max-content" href="https://www.dekalendervan.nl/agendadesteen" target="_blank" rel="noopener"><span lang="nl">Bekijk beschikbaarheid</span><span lang="de">Verfügbarkeit ansehen</span></a>
+      </div>
+    </div>
+    <form class="card" id="form" novalidate>
+      <div class="mode full" role="group" aria-label="Soort aanvraag">
+        <button type="button" id="m-wait" aria-pressed="true"><span lang="nl">Wachtlijst 2027</span><span lang="de">Warteliste 2027</span></button>
+        <button type="button" id="m-req" aria-pressed="false"><span lang="nl">Aanvraag</span><span lang="de">Anfrage</span></button>
+      </div>
+      <label><span><span lang="nl">Naam</span><span lang="de">Name</span> *</span><input id="f-name" required autocomplete="name"></label>
+      <label><span><span lang="nl">E-mailadres</span><span lang="de">E-Mail-Adresse</span> *</span><input id="f-mail" type="email" required autocomplete="email"></label>
+      <label><span><span lang="nl">Telefoonnummer</span><span lang="de">Telefonnummer</span> *</span><input id="f-tel" type="tel" required autocomplete="tel"></label>
+      <label><span><span lang="nl">Aantal personen</span><span lang="de">Anzahl Personen</span> *</span><select id="f-pers"><option>1</option><option selected>2</option><option>3</option><option>4</option></select></label>
+      <label><span><span lang="nl">Aankomst</span><span lang="de">Anreise</span> *</span><input id="f-in" type="date"></label>
+      <label><span><span lang="nl">Vertrek</span><span lang="de">Abreise</span> *</span><input id="f-out" type="date"></label>
+      <label class="full"><span><span lang="nl">Bericht</span><span lang="de">Nachricht</span> *</span><textarea id="f-msg"></textarea></label>
+      <label class="check full"><input type="checkbox" id="f-copy"><span lang="nl">Stuur mij een kopie</span><span lang="de">Kopie an mich senden</span></label>
+      <button class="btn btn-solid full" type="submit" style="justify-content:center"><span lang="nl">Verzenden</span><span lang="de">Absenden</span></button>
+      <p class="sent full" id="sent" hidden></p>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Vakantiewoning “De Steen” · Familie ten Pas · Wooldseweg 104, 7108 AB Winterswijk-Woold</span>
+    <span>© 2016 – 2026</span>
+  </div>
+</footer>
+</div>
+
+<script>
+(function(){
+  var site=document.getElementById('site');
+  function setLang(l){
+    site.setAttribute('data-lang',l);document.documentElement.lang=l;
+    document.getElementById('l-nl').setAttribute('aria-pressed',l==='nl');
+    document.getElementById('l-de').setAttribute('aria-pressed',l==='de');
+    try{localStorage.setItem('desteen-lang',l)}catch(e){}
+    renderInfo(current);
+  }
+  // Orte: x/y schematisch um das Haus (330,350), km ungefähr
+  var P=[
+    {id:'winterswijk',cat:'plaats',x:330,y:235,nl:'Winterswijk',de:'Winterswijk',km:'± 5 km',tnl:'Gezellig centrum met markt, winkels en het VVV. Plaats op een steenworp van de Duitse grens.',tde:'Gemütliches Zentrum mit Markt, Geschäften und Touristinfo. Nur einen Steinwurf von der deutschen Grenze.'},
+    {id:'bredevoort',cat:'plaats',x:150,y:290,nl:'Bredevoort',de:'Bredevoort',km:'± 10 km',tnl:'Boeken- en vestingstad: antiquariaten in een historisch stadje.',tde:'Bücher- und Festungsstadt: Antiquariate in einem historischen Städtchen.'},
+    {id:'aalten',cat:'plaats',x:95,y:345,nl:'Aalten',de:'Aalten',km:'± 13 km',tnl:'Dorp vlak bij Bredevoort, op korte afstand.',tde:'Ort nahe Bredevoort, schnell erreicht.'},
+    {id:'lichtenvoorde',cat:'plaats',x:150,y:150,nl:'Lichtenvoorde',de:'Lichtenvoorde',km:'± 15 km',tnl:'Dorp op korte afstand in de Achterhoek.',tde:'Ort im Achterhoek, nicht weit entfernt.'},
+    {id:'groenlo',cat:'plaats',x:215,y:85,nl:'Groenlo',de:'Groenlo',km:'± 17 km',tnl:'Vestingstad met wallen en grachten.',tde:'Festungsstadt mit Wällen und Grachten.'},
+    {id:'bocholt',cat:'plaats',x:150,y:530,nl:'Bocholt (DE)',de:'Bocholt (DE)',km:'± 17 km',tnl:'De Duitse winkelstad net over de grens.',tde:'Die deutsche Einkaufsstadt gleich hinter der Grenze.'},
+    {id:'wooldseveen',cat:'natuur',x:470,y:385,nl:'Wooldse Veen',de:'Wooldse Veen',km:'± 4 km',tnl:'Hoogveen aan de grens, vlak bij de woning.',tde:'Hochmoor an der Grenze, ganz nah am Haus.'},
+    {id:'bekkendelle',cat:'natuur',x:455,y:210,nl:'Bekkendelle',de:'Bekkendelle',km:'± 8 km',tnl:'Bosgebied met beek, met eigen wandelroute.',tde:'Waldgebiet am Bach, mit eigener Wanderroute.'},
+    {id:'korenburgerveen',cat:'natuur',x:95,y:205,nl:'Korenburgerveen',de:'Korenburgerveen',km:'± 14 km',tnl:'Uitgestrekt veengebied tussen Winterswijk en Groenlo.',tde:'Weites Moorgebiet zwischen Winterswijk und Groenlo.'},
+    {id:'steengroeve',cat:'zien',x:440,y:290,nl:'Steengroeve',de:'Steinbruch',km:'± 7 km',tnl:'De fraaie steengroeve van Winterswijk.',tde:'Der schöne Steinbruch von Winterswijk.'},
+    {id:'berenschot',cat:'zien',x:290,y:400,nl:'Berenschot’s Watermolen',de:'Berenschots Wassermühle',km:'± 2 km',tnl:'Rustieke water- en korenmolen in de Woold.',tde:'Rustikale Wasser- und Kornmühle im Woold.'},
+    {id:'freriks',cat:'zien',x:305,y:268,end:1,nl:'Museum Freriks',de:'Museum Freriks',km:'± 5 km',tnl:'Museum en heemtuin Freriks in Winterswijk.',tde:'Museum und Heimatgarten Freriks in Winterswijk.'},
+    {id:'hilgelo',cat:'zien',x:350,y:150,nl:'’t Hilgelo',de:'’t Hilgelo',km:'± 8 km',tnl:'Recreatieplas om te zwemmen en te ontspannen.',tde:'Badesee zum Schwimmen und Entspannen.'},
+    {id:'slingeplas',cat:'zien',x:220,y:345,nl:'Slingeplas',de:'Slingeplas',km:'± 6 km',tnl:'Recreatiegebied met plas.',tde:'Freizeitgebiet mit See.'}
+  ];
+  var current='wooldseveen', g=document.getElementById('pins'), ns='http://www.w3.org/2000/svg';
+  P.forEach(function(p){
+    var el=document.createElementNS(ns,'g');el.setAttribute('class','pin cat-'+p.cat);el.setAttribute('tabindex','0');el.setAttribute('role','button');el.dataset.id=p.id;
+    var c=document.createElementNS(ns,'circle');c.setAttribute('class','dot');c.setAttribute('cx',p.x);c.setAttribute('cy',p.y);c.setAttribute('r',6);
+    var t=document.createElementNS(ns,'text');t.setAttribute('x',p.x+11);t.setAttribute('y',p.y+4);
+    if(p.end||p.x>500){t.setAttribute('x',p.x-11);t.setAttribute('text-anchor','end')}
+    el.appendChild(c);el.appendChild(t);g.appendChild(el);
+    el.addEventListener('click',function(){renderInfo(p.id)});
+    el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();renderInfo(p.id)}});
+  });
+  function renderInfo(id){
+    current=id;var l=site.getAttribute('data-lang'),p=P.filter(function(x){return x.id===id})[0];
+    g.querySelectorAll('.pin').forEach(function(el){var q=P.filter(function(x){return x.id===el.dataset.id})[0];el.querySelector('text').textContent=q[l];el.classList.toggle('on',el.dataset.id===id)});
+    var i=document.getElementById('info');i.innerHTML='';
+    var k=document.createElement('p');k.className='km';k.textContent=p.km+(l==='nl'?' vanaf De Steen':' von De Steen');
+    var h=document.createElement('h3');h.textContent=p[l];
+    var d=document.createElement('p');d.className='muted';d.textContent=l==='nl'?p.tnl:p.tde;
+    i.appendChild(k);i.appendChild(h);i.appendChild(d);
+  }
+  document.querySelectorAll('.filters button').forEach(function(b){
+    b.addEventListener('click',function(){var on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);
+      g.querySelectorAll('.cat-'+b.dataset.cat).forEach(function(el){el.style.display=on?'':'none'})});
+  });
+  document.getElementById('l-nl').onclick=function(){setLang('nl')};
+  document.getElementById('l-de').onclick=function(){setLang('de')};
+  var saved=null;try{saved=localStorage.getItem('desteen-lang')}catch(e){}
+  if(!saved){saved=(navigator.language||'').toLowerCase().indexOf('de')===0?'de':'nl'}
+  setLang(saved);
+
+  // Formular: Warteliste oder Anfrage
+  var mode='wait';
+  function setMode(m){mode=m;document.getElementById('m-wait').setAttribute('aria-pressed',m==='wait');document.getElementById('m-req').setAttribute('aria-pressed',m==='req')}
+  document.getElementById('m-wait').onclick=function(){setMode('wait')};
+  document.getElementById('m-req').onclick=function(){setMode('req')};
+  document.getElementById('form').addEventListener('submit',function(e){
+    e.preventDefault();var l=site.getAttribute('data-lang'),s=document.getElementById('sent');
+    var ok=document.getElementById('f-name').value.trim()&&/.+@.+\..+/.test(document.getElementById('f-mail').value);
+    s.hidden=false;
+    s.textContent=!ok?(l==='nl'?'Vul a.u.b. uw naam en een geldig e-mailadres in.':'Bitte Namen und eine gültige E-Mail-Adresse eintragen.')
+      :(l==='nl'?'Voorbeeldweergave: op de echte website wordt uw bericht hier verzonden.':'Vorschau: Auf der echten Website wird Ihre Nachricht hier abgeschickt.');
+  });
+  document.querySelectorAll('.copy').forEach(function(b){b.addEventListener('click',function(){
+    var el=document.getElementById(b.dataset.copy),txt=el.textContent;
+    function sel(){var r=document.createRange();r.selectNodeContents(el);var w=getSelection();w.removeAllRanges();w.addRange(r)}
+    if(navigator.clipboard){navigator.clipboard.writeText(txt).then(function(){b.style.borderColor='var(--granite)'},sel)}else sel();
+  })});
+
+  // dezente Parallaxe im Startbild
+  var layers=document.querySelectorAll('.layer'),tick=false;
+  addEventListener('scroll',function(){if(tick)return;tick=true;requestAnimationFrame(function(){var y=Math.min(scrollY,900);layers.forEach(function(L){L.style.setProperty('--p',y)});tick=false})},{passive:true});
+})();
+</script>
