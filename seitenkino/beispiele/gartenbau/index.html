@@ -463,7 +463,9 @@ const useFilm = !reduced && !mobile;
 const seqEls = [...stage.querySelectorAll('.seq .s')];
 const ramp = (p, a, b) => clamp((p - a) / (b - a), 0, 1);
 function updateSeq(p){
-  const f2 = ramp(p, .28, .44), f3 = ramp(p, .6, .76);
+  // short, eased blends so both photos are never half-visible for long
+  const ease = t => t * t * (3 - 2 * t);
+  const f2 = ease(ramp(p, .34, .39)), f3 = ease(ramp(p, .66, .71));
   const m = reduced ? 0 : 1;
   seqEls[0].style.transform = `translateY(${(-6 * ramp(p, 0, .44) * m).toFixed(2)}%) scale(${(1.04 + .04 * ramp(p, 0, .44) * m).toFixed(3)})`;
   seqEls[1].style.opacity = f2;
