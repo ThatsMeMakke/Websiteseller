@@ -346,7 +346,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 /* ---------- Beispiele: Filmplakate ---------- */
 .showcase .sec-head{margin-inline:auto;text-align:center}
 .showcase .sec-head p{margin-inline:auto}
-.posters{display:grid;grid-template-columns:repeat(2,minmax(0,380px));justify-content:center;gap:clamp(22px,4vw,48px);margin-top:clamp(40px,7vh,70px)}
+.posters{display:grid;grid-template-columns:repeat(3,minmax(0,350px));justify-content:center;gap:clamp(22px,4vw,48px);margin-top:clamp(40px,7vh,70px)}
 .poster{position:relative;display:flex;flex-direction:column;aspect-ratio:3/4.2;border-radius:22px;overflow:hidden;text-decoration:none;color:var(--text-primary);background:linear-gradient(170deg,#10203f 0%,#0a1530 55%,#060c1a 100%);border:1px solid var(--border);box-shadow:0 30px 80px -40px rgba(0,0,0,.9);transition:transform .6s var(--ease-out),border-color .6s var(--ease-out),box-shadow .6s var(--ease-out)}
 .poster::before,.poster::after{content:"";position:absolute;top:0;bottom:0;width:14px;background:repeating-linear-gradient(180deg,transparent 0 10px,rgba(238,243,251,.12) 10px 18px);opacity:.7;z-index:2}
 .poster::before{left:8px}.poster::after{right:8px}
@@ -367,6 +367,12 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 .poster.has-img:hover .bg,.poster.has-img:focus-visible .bg{transform:scale(1.05)}
 .poster .badge.now{background:var(--accent);color:#17120a;border-color:var(--accent);font-weight:600}
 .showcase .note{margin-top:28px;text-align:center;font-size:.88rem;color:var(--text-secondary)}
+.poster .art{flex:1;display:grid;place-items:center;padding:70px 40px 10px}
+.poster .art svg{width:min(62%,200px);height:auto;fill:none;stroke:var(--accent);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 14px rgba(95,225,255,.25))}
+.poster .art .qr{stroke:#5fe1ff}
+.poster h3.long{font-size:clamp(1.3rem,2.1vw,1.6rem)}
+.poster .badge.real{color:#5fe1ff;border-color:rgba(95,225,255,.5)}
+@media (max-width:1140px){.posters{grid-template-columns:repeat(2,minmax(0,380px))}}
 @media (max-width:720px){.posters{grid-template-columns:minmax(0,380px)}}
 @media (prefers-reduced-motion:reduce){.poster,.poster .sweep{transition:none}}
 
@@ -574,7 +580,7 @@ body.vp-flash .cables{animation:vpcable 1.2s var(--ease-out)}
       <div class="sec-head reveal">
         <span class="kicker">Beispiele</span>
         <h2>So könnte deine Website aussehen.</h2>
-        <p>Zwei Kostproben aus unserem Vorführraum. Klick rein und schau dich um.</p>
+        <p>Zwei Kostproben aus unserem Vorführraum und ein echtes Projekt. Klick rein und schau dich um.</p>
       </div>
       <div class="posters">
         <a class="poster has-img reveal" href="beispiele/kfz-werkstatt/" style="--i:1">
@@ -599,8 +605,25 @@ body.vp-flash .cables{animation:vpcable 1.2s var(--ease-out)}
           </div>
           <span class="sweep" aria-hidden="true"></span>
         </a>
+        <a class="poster reveal" href="https://momentenochmal.com/" target="_blank" rel="noopener" style="--i:3">
+          <span class="badge real">Echtes Projekt</span>
+          <div class="art" aria-hidden="true">
+            <svg viewBox="0 0 200 200">
+              <path d="M30 70h28l10-16h44l10 16h28a8 8 0 0 1 8 8v70a8 8 0 0 1-8 8H30a8 8 0 0 1-8-8V78a8 8 0 0 1 8-8z"/>
+              <circle cx="100" cy="112" r="28"/><circle cx="100" cy="112" r="14"/>
+              <g class="qr"><path d="M140 24h22v22h-22zM170 24h10v10h-10zM170 36h10v10M140 54h10v10h-10zM158 54h22v10"/></g>
+            </svg>
+          </div>
+          <div class="info">
+            <span class="genre">Event-Fotoalbum, online</span>
+            <h3 class="long">MomenteNochMal!</h3>
+            <p class="tagline">Wir können auch ruhig. Und viel mehr: QR-Upload, Live-Album, Fotobox.</p>
+            <span class="go">Live ansehen ↗</span>
+          </div>
+          <span class="sweep" aria-hidden="true"></span>
+        </a>
       </div>
-      <p class="note reveal">Beispielseiten mit erfundenen Firmen, gebaut von SeitenKino.</p>
+      <p class="note reveal">Musterkolben und RankTastisch sind Beispielseiten mit erfundenen Firmen. Alle drei gebaut von SeitenKino.</p>
     </div>
   </section>
 
