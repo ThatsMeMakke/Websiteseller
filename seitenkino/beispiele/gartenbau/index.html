@@ -64,6 +64,14 @@ h1 em,h2 em{font-style:italic;font-weight:400;color:var(--leaf)}
 .stage.past .scroll-hint{opacity:0}
 .loader{position:absolute;z-index:4;right:16px;bottom:16px;font:600 .8rem "Hanken Grotesk",sans-serif;color:var(--cream);background:rgba(23,17,12,.7);padding:4px 10px;border-radius:99px;transition:opacity .4s}
 .stage.ready .loader,.stage.no-video .loader{opacity:0}
+/* phones: three portrait stills that blend into each other while scrolling */
+.seq{display:none;position:absolute;inset:0}
+.seq .s{position:absolute;inset:0;background:center/cover no-repeat;opacity:0;will-change:opacity,transform}
+.stage.mobile .seq{display:block}
+.stage.mobile video,.stage.mobile .still,.stage.mobile .loader{display:none}
+.stage.mobile .s1{background-image:url('assets/handy-1.webp');opacity:1}
+.stage.mobile .s2{background-image:url('assets/handy-2.webp')}
+.stage.mobile .s3{background-image:url('assets/handy-3.webp')}
 
 .btn{display:inline-flex;align-items:center;gap:8px;font:700 1rem "Hanken Grotesk",sans-serif;padding:13px 24px;border-radius:99px;background:var(--gold);color:var(--ink);border:0;text-decoration:none;cursor:pointer;transition:transform .15s,background .15s,box-shadow .15s;box-shadow:0 8px 24px -8px rgba(224,168,74,.7)}
 .btn:hover{background:var(--gold-2);transform:translateY(-2px)}
@@ -193,8 +201,9 @@ footer small{display:block;margin-top:18px;opacity:.7}
 
 @media (max-width:760px){
   body{font-size:16px}
-  .hero{height:400vh}
-  .c1,.c2,.c5{left:4vw;right:4vw;top:11vh}
+  .hero{height:320vh}
+  .c1,.c2{left:4vw;right:4vw;top:11vh}
+  .c5{left:4vw;right:4vw;top:auto;bottom:5vh}
   .c3{right:4vw;left:4vw;top:auto;bottom:16vh}
   .c4{left:4vw;right:4vw;bottom:14vh}
   .stop{padding:90px 0 80px}
@@ -222,6 +231,7 @@ footer small{display:block;margin-top:18px;opacity:.7}
     <div class="still start" style="background-image:url('assets/poster-start.jpg')" role="img" aria-label="Ein Keimling wächst auf einer wilden Wiese, darunter sieht man die Erde im Querschnitt"></div>
     <video id="film" muted playsinline preload="none" aria-hidden="true"></video>
     <div class="still end" style="background-image:url('assets/poster-ende.jpg')"></div>
+    <div class="seq" aria-hidden="true"><div class="s s1"></div><div class="s s2"></div><div class="s s3"></div></div>
 
     <div class="cap c1" data-a="0" data-b=".13">
       <div class="glass"><span class="kicker">Garten- und Landschaftsbau</span><h1>Rank<em>Tastisch</em></h1><p>Gärten, die von Grund auf wachsen.</p></div>
@@ -442,11 +452,27 @@ function tick(now){
   shown += (target - shown) * (1 - Math.pow(1 - 0.16, dt / 16.667));
   if (Math.abs(target - shown) < 0.0006) { shown = target; raf = null; last = 0; } else raf = requestAnimationFrame(tick);
   if (film.duration) seek(filmT(shown) * (film.duration - 0.05));
+  if (mobile) updateSeq(shown);
   updateCaps(shown);
 }
 function onHeroScroll(){ target = heroP(); if (raf === null) raf = requestAnimationFrame(tick); }
 
-const useFilm = !reduced && !matchMedia('(max-width: 720px) and (pointer: coarse)').matches;
+const mobile = matchMedia('(max-width: 720px) and (pointer: coarse)').matches;
+const useFilm = !reduced && !mobile;
+/* phones: stage 1 slowly sinks away (we go underground), stage 3 rises into view (we surface) */
+const seqEls = [...stage.querySelectorAll('.seq .s')];
+const ramp = (p, a, b) => clamp((p - a) / (b - a), 0, 1);
+function updateSeq(p){
+  // short, eased blends so both photos are never half-visible for long
+  const ease = t => t * t * (3 - 2 * t);
+  const f2 = ease(ramp(p, .34, .39)), f3 = ease(ramp(p, .66, .71));
+  const m = reduced ? 0 : 1;
+  seqEls[0].style.transform = `translateY(${(-6 * ramp(p, 0, .44) * m).toFixed(2)}%) scale(${(1.04 + .04 * ramp(p, 0, .44) * m).toFixed(3)})`;
+  seqEls[1].style.opacity = f2;
+  seqEls[1].style.transform = `translateY(${((4 - 8 * ramp(p, .28, .76)) * m).toFixed(2)}%) scale(1.06)`;
+  seqEls[2].style.opacity = f3;
+  seqEls[2].style.transform = `translateY(${(5 * (1 - ramp(p, .6, 1)) * m).toFixed(2)}%) scale(${(1.08 - .06 * ramp(p, .6, 1) * m).toFixed(3)})`;
+}
 async function loadFilm(){
   try {
     const res = await fetch(FILM_URL);
@@ -464,7 +490,7 @@ function noFilm(){
   addEventListener('scroll', swap, { passive: true }); swap();
 }
 addEventListener('scroll', onHeroScroll, { passive: true });
-if (useFilm) loadFilm(); else noFilm();
+if (mobile) { stage.classList.add('mobile'); updateSeq(heroP()); } else if (useFilm) loadFilm(); else noFilm();
 onHeroScroll();
 
 /* ---------- ground: a root that grows down the page ---------- */
