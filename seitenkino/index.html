@@ -373,6 +373,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 .poster h3.long{font-size:clamp(1.3rem,2.1vw,1.6rem)}
 .poster .badge.calm{color:#eef3fb;border-color:rgba(238,243,251,.45)}
 .poster .badge.real{color:#5fe1ff;border-color:rgba(95,225,255,.5)}
+.poster.has-img .badge.real,.poster.has-img .badge.calm{background:rgba(6,12,26,.88)}
 @media (min-width:1241px){.poster .info{padding:0 24px 26px}.poster h3{font-size:clamp(1.2rem,1.55vw,1.45rem)}.poster h3.long{font-size:clamp(1.05rem,1.3vw,1.25rem)}.poster .tagline{font-size:.92rem}}
 @media (max-width:1240px){.posters{grid-template-columns:repeat(2,minmax(0,380px))}}
 @media (max-width:720px){.posters{grid-template-columns:minmax(0,380px)}}
@@ -618,15 +619,9 @@ body.vp-flash .cables{animation:vpcable 1.2s var(--ease-out)}
           </div>
           <span class="sweep" aria-hidden="true"></span>
         </a>
-        <a class="poster reveal" href="https://momentenochmal.com/" target="_blank" rel="noopener" style="--i:4">
+        <a class="poster has-img reveal" href="https://momentenochmal.com/" target="_blank" rel="noopener" style="--i:4">
           <span class="badge real">Echtes Projekt</span>
-          <div class="art" aria-hidden="true">
-            <svg viewBox="0 0 200 200">
-              <path d="M30 70h28l10-16h44l10 16h28a8 8 0 0 1 8 8v70a8 8 0 0 1-8 8H30a8 8 0 0 1-8-8V78a8 8 0 0 1 8-8z"/>
-              <circle cx="100" cy="112" r="28"/><circle cx="100" cy="112" r="14"/>
-              <g class="qr"><path d="M140 24h22v22h-22zM170 24h10v10h-10zM170 36h10v10M140 54h10v10h-10zM158 54h22v10"/></g>
-            </svg>
-          </div>
+          <img class="bg" src="assets/beispiele/momentenochmal-plakat.webp" alt="" width="720" height="1080" loading="lazy" decoding="async" style="object-position:50% 30%">
           <div class="info">
             <span class="genre">Event-Fotoalbum, online</span>
             <h3 class="long">MomenteNochMal!</h3>
