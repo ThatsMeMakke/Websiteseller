@@ -373,6 +373,8 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 .poster h3.long{font-size:clamp(1.3rem,2.1vw,1.6rem)}
 .poster .badge.calm{color:#eef3fb;border-color:rgba(238,243,251,.45)}
 .poster .badge.real{color:#5fe1ff;border-color:rgba(95,225,255,.5)}
+.poster.has-img .bg.mnm{top:-24%}
+@media (min-width:1241px){.poster.has-img .bg.mnm{top:-36%}}
 .poster.has-img .badge.real,.poster.has-img .badge.calm{background:rgba(6,12,26,.88)}
 @media (min-width:1241px){.poster .info{padding:0 24px 26px}.poster h3{font-size:clamp(1.2rem,1.55vw,1.45rem)}.poster h3.long{font-size:clamp(1.05rem,1.3vw,1.25rem)}.poster .tagline{font-size:.92rem}}
 @media (max-width:1240px){.posters{grid-template-columns:repeat(2,minmax(0,380px))}}
@@ -621,7 +623,7 @@ body.vp-flash .cables{animation:vpcable 1.2s var(--ease-out)}
         </a>
         <a class="poster has-img reveal" href="https://momentenochmal.com/" target="_blank" rel="noopener" style="--i:4">
           <span class="badge real">Echtes Projekt</span>
-          <img class="bg" src="assets/beispiele/momentenochmal-plakat.webp" alt="" width="720" height="1080" loading="lazy" decoding="async" style="object-position:50% 30%">
+          <img class="bg mnm" src="assets/beispiele/momentenochmal-plakat.webp" alt="" width="720" height="1080" loading="lazy" decoding="async" style="height:100%;object-position:22% 50%;-webkit-mask-image:linear-gradient(#000 84%,transparent);mask-image:linear-gradient(#000 84%,transparent)">
           <div class="info">
             <span class="genre">Event-Fotoalbum, online</span>
             <h3 class="long">MomenteNochMal!</h3>
