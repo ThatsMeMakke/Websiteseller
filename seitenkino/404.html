@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Filmriss · SeitenKino</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#060c1a">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+@font-face{font-family:"Unbounded";font-style:normal;font-weight:400 700;font-display:swap;src:url("/assets/fonts/Unbounded.woff2") format("woff2")}
+@font-face{font-family:"Hanken Grotesk";font-style:normal;font-weight:400 600;font-display:swap;src:url("/assets/fonts/HankenGrotesk.woff2") format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:400;font-display:swap;src:url("/assets/fonts/IBMPlexMono.woff2") format("woff2")}
+:root{--canvas:#060c1a;--accent:#e7c98f;--line:#5fe1ff;--text-secondary:#a9badb;--text-primary:#eef3fb;color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+html{background:var(--canvas)}
+body{margin:0;min-height:100vh;min-height:100svh;display:grid;place-items:center;padding:32px 16px;background:radial-gradient(120% 70% at 50% 0%,#0b1a38 0%,var(--canvas) 65%) fixed,var(--canvas);color:var(--text-primary);font:1.0625rem/1.65 "Hanken Grotesk",system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-align:center}
+main{width:min(34rem,100%)}
+.reel{position:relative;width:min(300px,80vw);aspect-ratio:16/9;margin:0 auto 34px;border-radius:14px;border:1px solid rgba(95,225,255,.35);background:repeating-linear-gradient(90deg,rgba(238,243,251,.04) 0 2px,transparent 2px 6px),linear-gradient(170deg,#10203f,#060c1a);overflow:hidden;box-shadow:0 0 60px -20px rgba(95,225,255,.5)}
+.reel::before,.reel::after{content:"";position:absolute;left:0;right:0;height:12px;background:repeating-linear-gradient(90deg,transparent 0 8px,rgba(238,243,251,.16) 8px 16px)}
+.reel::before{top:6px}.reel::after{bottom:6px}
+.tear{position:absolute;inset:0;display:grid;place-items:center;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.8rem;letter-spacing:.3em;color:var(--line);animation:flick 2.4s steps(1) infinite}
+.tear::before{content:"";position:absolute;top:0;bottom:0;left:30%;width:3px;background:var(--canvas);box-shadow:0 0 0 1px rgba(95,225,255,.5);transform:skewX(-14deg)}
+@keyframes flick{0%,100%{opacity:1}46%{opacity:.35}48%{opacity:1}72%{opacity:.6}74%{opacity:1}}
+.kicker{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--line)}
+h1{font-family:"Unbounded",system-ui,sans-serif;font-size:clamp(2rem,6vw,3rem);line-height:1.1;margin:12px 0 16px}
+p{color:var(--text-secondary);margin:0 auto 30px;max-width:30rem}
+a.btn{display:inline-block;padding:14px 26px;border-radius:999px;background:var(--accent);color:#17120a;font-weight:600;text-decoration:none}
+a.btn:hover{filter:brightness(1.08)}
+a.alt{display:inline-block;margin-left:18px;color:var(--text-secondary)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.tear{animation:none}}
+</style>
+</head>
+<body>
+<main>
+  <div class="reel" aria-hidden="true"><span class="tear">404</span></div>
+  <span class="kicker">Fehler 404</span>
+  <h1>Filmriss.</h1>
+  <p>Diese Szene gibt es nicht, oder sie ist dem Schnitt zum Opfer gefallen. Der Hauptfilm läuft aber weiter.</p>
+  <a class="btn" href="/">Zurück zum Hauptfilm</a><a class="alt" href="/#kontakt">Kontakt</a>
+</main>
+</body>
+</html>
